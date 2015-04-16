@@ -79,6 +79,33 @@ public class MarkovChain {
   }
 
   /**
+   * tries n times to generate a string within the min and max length. 
+   * If it cannot, it returns "".
+   * @param min minimum length
+   * @param max maximum length
+   * @param start the start word (not included)
+   * @param end the last word (not included)
+   * @return the string
+   */
+  public List<String> makeStringOfLength(int min, int max,
+      String start, String end, int numTries) {
+    List<String> output;
+    for (int i = 0; i < numTries; i ++) {
+      output = new ArrayList<String>();
+      output.add(getNextWord(start));
+      while (output.size() <= max) {
+        String n = getNextWord(output.get(output.size() - 1));
+        if (n.equals(end) && output.size() >= min) {
+          return output;
+        } else {
+          output.add(n);
+        }
+      }
+    }
+    return new ArrayList<String>();
+  }
+  
+  /**
   * @param n the length of the string that we are making
   * @return A random, awesome, string of words
   */

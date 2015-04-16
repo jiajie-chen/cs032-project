@@ -61,7 +61,6 @@ public class MarkovManager {
     for (int i = 0; i < books.length; i++) {
       String[] sentences = books[i].split("\\.");
       //System.out.println(Arrays.toString(sentences));
-
       for (int j = 0; j < sentences.length; j++) {
         String sentence = sentences[j].replaceAll(" +", " ");
         String[] sentenceArray = sentence.split(" ");
@@ -88,6 +87,10 @@ public class MarkovManager {
    */
   public String generateSentence() {
     String sentence = getRandomSentence();
+    //splitSentence(sentence)
+//    Random rand = new Random();
+//    int start = 3;//Math.floor(candidateSentences.size());
+//    int end = 5;
     return "";
   }
   
