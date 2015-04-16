@@ -51,11 +51,14 @@ public class MarkovChain {
  public String getNextWord(String word) {
    Random rand = new Random();
    if (!bigram.containsKey(word)) {
-     Set<Entry<String>> keys = unigram.entrySet();
+     Set<String> keys = unigram.elementSet();
      return keys.toArray(new String[keys.size()])[rand.nextInt(keys.size())];
    } else {
+
      List<String> l = bigram.get(word);
      int s = l.size();
+//     System.out.println(word);
+//     System.out.println(Arrays.toString(l.toArray()));
      return l.get(rand.nextInt(s));
    }
  }
@@ -65,14 +68,20 @@ public class MarkovChain {
   * @param sentenceArray - the sentence, split on spaces, that we want to add
   */
   public void addSentence(String[] sentenceArray) {
+    //System.out.println(word);
+    //System.out.println(Arrays.toString(sentenceArray));
     //unigram.put(sentenceArray[0], unigram.get(sentenceArray[0] + 1));
     for (int i = 0; i < sentenceArray.length; i++) {
       unigram.add(sentenceArray[i]);
       if (i > 0) {
         if (!bigram.containsKey(sentenceArray[i - 1])) {
           bigram.put(sentenceArray[i - 1], new ArrayList<String>());
-          //System.out.println(Arrays.toString(bigram.keySet().toArray()));
+          //System.out.println(Arrays`.toString(bigram.keySet().toArray()));
         }
+//        if (sentenceArray[i - 1].equals("Words")) {
+//          System.out.println(Arrays.toString(sentenceArray));
+//        }
+
         bigram.get(sentenceArray[i - 1]).add(sentenceArray[i]);
       }
     }
@@ -87,20 +96,26 @@ public class MarkovChain {
    * @param end the last word (not included)
    * @return the string
    */
-  public List<String> makeStringOfLength(int min, int max,
+  public List<String> makeSentenceFragment(int min, int max,
       String start, String end, int numTries) {
+    assert max > min;
     List<String> output;
     for (int i = 0; i < numTries; i ++) {
       output = new ArrayList<String>();
       output.add(getNextWord(start));
       while (output.size() <= max) {
+
+
         String n = getNextWord(output.get(output.size() - 1));
+//        System.out.println(output.get(output.size() - 1));
+//        System.out.println(n);
         if (n.equals(end) && output.size() >= min) {
           return output;
         } else {
           output.add(n);
         }
       }
+      //System.out.println(Arrays.toString(output.toArray()));
     }
     return new ArrayList<String>();
   }

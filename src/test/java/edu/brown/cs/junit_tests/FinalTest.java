@@ -9,6 +9,7 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
@@ -22,6 +23,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import edu.brown.cs.dshieble.finalproject.*;
+import edu.brown.cs.qc14.parser.Parser;
 import static org.junit.Assert.*;
 
 import com.google.common.collect.HashMultiset;
@@ -31,6 +33,11 @@ public class FinalTest {
 
   public boolean nearlyEqual(double n1, double n2) {
     return Math.abs(n1 - n2) < 1;
+  }
+  
+  public void print(Collection c) {
+    System.out.println(Arrays.toString(c.toArray()));
+
   }
 
   @Test
@@ -77,14 +84,14 @@ public class FinalTest {
   }
   
   @Test
-  public void markovManagerTest() {
+  public void markovManagerTest1() {
     String[] text = new String[] {
-        "this sentence has a lot of words. words are fun",
-        "this only has one sentence. Actually I lied."};
-    String[] pw = new String[] {"fun", "lied"};
+        "This sentence has a lot of words. Words are fun",
+        "This only has one sentence. Actually I lied."};
+    String[] pw = new String[] {"fuN", "Lied"};
     MarkovManager man = new MarkovManager(text, pw);
     List<String> c = man.getCandidates();
-    System.out.println(Arrays.toString(c.toArray()));
+    //System.out.println(Arrays.toString(c.toArray()));
     assertTrue(c.size() == 2);
     for (String s : c) {
       assertTrue(!c.contains(pw[0]));
@@ -92,7 +99,50 @@ public class FinalTest {
     }
   }
   
+  @Test
+  public void markovManagerTest2() {
+    String[] text = new String[] {
+        "This sentence has a lot of words. Words are only",
+        "This Only has one sentence. Actually I lied.",
+        "This file is kind of long. It starts with more words. Yay, I love words",
+        "Oh my god so many letters. How many words can you place if you love placing words? Does that make sense?"};
+    String[] pw = new String[] {"love", "Only", "This", "file"};
+    MarkovManager man = new MarkovManager(text, pw);
+    Hashtable<String, MarkovChain> wordToMarkov = man.getHash();
+    MarkovChain m1 = wordToMarkov.get("love");
+    Map<String, List<String>> big1 = m1.getBigramHash();
+    for (int i = 0; i < 100; i++) {
+      List<String> frag = m1.makeSentenceFragment(2, 5, "love", "place", 100);
+      assertTrue(frag.get(0).equals("words") || frag.get(0).equals("placing"));
+      assertTrue(frag.get(frag.size() - 1).equals("you"));
+    }
+    
+    MarkovChain m2 = wordToMarkov.get("only");
+    Map<String, List<String>> big2 = m2.getBigramHash();
+    for (int i = 0; i < 100; i++) {
+      List<String> frag = m2.makeSentenceFragment(2, 5, "Words", "sentence", 100);
+      print(frag);
+      System.out.println(Arrays.toString(frag.toArray()));
+      assertTrue(frag.get(0).equals("are"));// || frag.get(0).equals("placing"));
+      assertTrue(frag.get(frag.size() - 1).equals("one"));
+    }
+    
+//    List<String> frag = man.makeSentenceFragment(2, 5, "Words", "sentence", 100);
+//    for (int i = 0; i < 100; i++) {
+//
+//      printCollection(frag);
+//    }
+    //System.out.println(Arrays.toString(frag.toArray()));
+
+  }
   
+  @Test
+  public void parseTester() {
+    String sentence = "This is a good sentence to test parsing.";
+    Parser P = new Parser();
+    //System.out.println(P.parseSentence(sentence));
+
+  }
   
   
  // System.out.println(Arrays.toString(c.toArray()));

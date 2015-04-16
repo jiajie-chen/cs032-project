@@ -5,7 +5,6 @@ import java.util.Arrays;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Random;
-
 /**
  *This class handles the markov chain, the synonym parsing, etc
  *
@@ -38,12 +37,20 @@ public class MarkovManager {
 
   /**
    * map from priority word to a map from word to markov chain
+   * ALL WORDS ARE STORED IN LOWER CASE
    */
   private Hashtable<String, MarkovChain> wordToMarkov;
+
   /**
    * possible sentences
    */
   private List<String> candidateSentences;
+
+  /**
+   * priority words, in order
+   */
+  private String[] pW;
+
   private static final int numRepetitions = 3;
   private static final int FOUR = 4;
   private static final int FIVE = 5;
@@ -55,18 +62,27 @@ public class MarkovManager {
    * 
    */
   public MarkovManager(String[] books, String[] priorityWords) {
+    pW = priorityWords;
+    for (int i = 0; i < pW.length; i++) {
+      pW[i] = pW[i].toLowerCase();
+    }
     candidateSentences = new ArrayList<String>();
     wordToMarkov = new Hashtable<String, MarkovChain>();
     Boolean hasPriority;
     for (int i = 0; i < books.length; i++) {
-      String[] sentences = books[i].split("\\.");
+      String[] sentences = books[i].split("[.!?]");
       //System.out.println(Arrays.toString(sentences));
       for (int j = 0; j < sentences.length; j++) {
         String sentence = sentences[j].replaceAll(" +", " ");
         String[] sentenceArray = sentence.split(" ");
         hasPriority = false;
         for (String word : priorityWords) {
-          if (sentence.contains(word)) {
+          //case insensitive regexp
+          if (sentence.toLowerCase().contains(word)) {
+            System.out.println(word);
+
+            System.out.println(sentence);
+          //if (sentence.matches("(?i).*" + word + ".*")) {
             hasPriority = true;
             if (!wordToMarkov.containsKey(word)) {
               wordToMarkov.put(word, new MarkovChain());
@@ -81,6 +97,29 @@ public class MarkovManager {
     }
   }
 
+  /**
+   * Calls each markov chain in order to generate a sentence
+   * @param min minimum length
+   * @param max maximum length
+   * @param start the start word (not included)
+   * @param end the last word (not included)
+   * @return the string
+   */
+  public List<String> makeSentenceFragment(int min, int max,
+      String start, String end, int numTries) {
+    assert max > min;
+    for (String word : pW) {
+      List<String> sentence =
+          wordToMarkov.get(word)
+          .makeSentenceFragment(min, max, start, end, numTries);
+      if (sentence.size() > 0) {
+        return sentence;
+      }
+    }
+    return new ArrayList<String>();
+  }
+  
+  
   /**
    * the major method of the class. 
    * @return a sentence that matches all of the facets.
@@ -111,6 +150,13 @@ public class MarkovManager {
     return candidateSentences;
   }
   
+  /**
+   * 
+   * @return getter
+   */
+  public Hashtable<String, MarkovChain> getHash() {
+    return wordToMarkov;
+  }
 }
 
         
