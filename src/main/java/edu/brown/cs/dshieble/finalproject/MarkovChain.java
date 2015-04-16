@@ -34,6 +34,7 @@ public class MarkovChain {
 //   * stores all mapped to values
 //   */
 //  List<String> allValues;
+
   /**
    * constructor just initialized the hashes - we need to add words manually
    */
@@ -98,18 +99,17 @@ public class MarkovChain {
    */
   public List<String> makeSentenceFragment(int min, int max,
       String start, String end, int numTries) {
-    assert max > min;
+    assert min > 0;
+    assert max >= min;
     List<String> output;
     for (int i = 0; i < numTries; i ++) {
       output = new ArrayList<String>();
       output.add(getNextWord(start));
       while (output.size() <= max) {
-
-
         String n = getNextWord(output.get(output.size() - 1));
 //        System.out.println(output.get(output.size() - 1));
 //        System.out.println(n);
-        if (n.equals(end) && output.size() >= min) {
+        if ((end == null || n.equals(end)) && output.size() >= min ) {
           return output;
         } else {
           output.add(n);
@@ -119,7 +119,7 @@ public class MarkovChain {
     }
     return new ArrayList<String>();
   }
-  
+
   /**
   * @param n the length of the string that we are making
   * @return A random, awesome, string of words
