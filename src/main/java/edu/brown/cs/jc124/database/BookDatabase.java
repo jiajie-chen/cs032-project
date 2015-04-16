@@ -18,10 +18,12 @@ public class BookDatabase {
   }
   
   public Set<String> getBooksOfAttribute(Set<BookAttributes> attr) {
+    return null;
     
   }
   
   public Set<String> getBooksOfAuthor(String author) {
+    return null;
     
   }
 }
