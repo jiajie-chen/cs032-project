@@ -2,17 +2,22 @@ package edu.brown.cs.qc14.parser;
 
 import java.io.FileNotFoundException;
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 
 
 public class Main {
 	// passing "wsj2-21.blt" as args[0]
 	public static void main(String[] args) {
+		
 		Parser parser = new Parser();
 		parser.buildRules(args[0]);
+		String[] terminals = "they never considered themselves to be anything else .".split(" ");
+		System.out.println(parser.parseSentence(terminals));
+
 		// parseSentence method takes a string of sentence (punctuations and words separated by space)
 		// returns its parsing in String
 		// in Parser.java, I set max_length of input sentence as 25. you may change it.
-		String parsing = parser.parseSentence("replace this with whatever string");
+		//String parsing = parser.parseSentence("replace this with whatever string");
 		/*try {
 			parser.parse(args[1], args[2]);
 		} catch (FileNotFoundException e) {
@@ -20,6 +25,8 @@ public class Main {
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}*/
+		
+		
 	}
 }
 
