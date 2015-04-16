@@ -44,7 +44,10 @@ public final class Main {
    */
   public static void main(final String[] args) {
     System.out.println("working");
-    GUIManager.makeGUI();
+    //GUIManager.makeGUI();
+    String[] text = {"this is the first book. Its a fun book. Oh, it is so good.", 
+                     "This is the second book. Man this one sucks. It is really not fun at all."};
+    String[] pw = {"fun, its"};
   }
     //gui inputs
 }

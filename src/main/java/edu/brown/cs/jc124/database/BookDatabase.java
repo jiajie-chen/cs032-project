@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Set;
 
 public class BookDatabase {
   private Connection conn;
@@ -17,10 +18,12 @@ public class BookDatabase {
   }
   
   public Set<String> getBooksOfAttribute(Set<BookAttributes> attr) {
+    return null;
     
   }
   
   public Set<String> getBooksOfAuthor(String author) {
+    return null;
     
   }
 }
