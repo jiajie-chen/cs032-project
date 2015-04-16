@@ -21,6 +21,7 @@ public class Parser {
 	private HashMap<String, HashMap<String, Double>> _rules;
 	private HashMap<String, Integer> _counts;
 	private HashMap[][] _tree;
+	private int _MAX_LENGTH = 25;
 	
 	public Parser() {
 		_rules = new HashMap<String, HashMap<String, Double>>();
@@ -70,6 +71,27 @@ public class Parser {
 			System.err.println("ERROR: cannot open file");
 		}
 		writer.close();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public String parseSentence(String s) {
+		String[] terminals = s.split(" ");
+		if (terminals.length > _MAX_LENGTH) {
+			return "*IGNORE*";
+		} else {
+			_tree = new HashMap[terminals.length][terminals.length];
+			for (int m=1; m <= terminals.length; m++) {
+				for (int n=0; n <= terminals.length-m; n++) {
+					this.fillCell(n, n+m, terminals);
+				}
+			}
+			HashMap<String, Pointers> root = _tree[terminals.length-1][0];
+			if (root.containsKey("TOP")) {
+				return this.debinarization(root.get("TOP"));
+			} else {
+				return "No Parsing";
+			}
+		}
 	}
 	
 	// cell(i,k)
