@@ -71,6 +71,7 @@ public class MarkovManager {
    */
   public MarkovManager(String[] books, String[] priorityWords) {
     //TODO: LOWERCASE EVERYTHING AND HANDLE CASING SEPERATELY
+    //TODO: PRESERVE STARTING AND ENDING WORDS OF SENTENCES (by handling short sentence ssperately)
     pW = priorityWords;
     for (int i = 0; i < pW.length; i++) {
       pW[i] = pW[i].toLowerCase();

@@ -52,7 +52,7 @@ public class Main {
            .toLowerCase()
            .trim()
            .replaceAll(" +", " ")
-           .replaceAll("[()[]\"\"]", "");
+           .replaceAll("[()\"]", "");
       String[] books = new String[] {words};
 	    MarkovManager man = new MarkovManager(books,
 	        Arrays.copyOfRange(
