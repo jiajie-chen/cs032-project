@@ -42,22 +42,33 @@ public class Parser {
 		subTrees.add(top.getLeft());
 		// under while loop
 		boolean ready = false;
+		int i = 0;
 		while (!ready) {
+			i ++;
+			System.out.println(i);
+			System.out.println(subTrees.size());
 			ready = true;
 			// if containing _clauseTags or "_", break it
 			ArrayList<Pointers> temp = new ArrayList<Pointers>();
 			for (Pointers p : subTrees) {
-				if (_clauseTags.contains((p.getLabel())) || p.getLabel().contains("_")) {
+				if (_clauseTags.contains((p.getLabel())) || p.getLabel().contains("_") || p.getLeft().getLabel().contains("_")) {
 					ready = false;
 					temp.add(p.getLeft());
 					if (p.getRight() != null) {
 						temp.add(p.getRight());
 					}
-				} else {
+				}
+				else {
 					temp.add(p);
 				}
 			}
+			subTrees.clear();
 			subTrees.addAll(temp);
+			System.out.println("==========");
+			for (Pointers a : subTrees) {
+				System.out.println(a.getLabel());
+			}
+			System.out.println("=========");
 			temp.clear();
 			
 			// if NP, VP..., call another method
@@ -67,21 +78,29 @@ public class Parser {
 			for (Pointers p : subTrees) {
 				if (_phraseTags.contains(p.getLabel())) {
 					String left = p.getLeft().getLabel();
-					String right = p.getRight().getLabel();
-					if ((_phraseTags.contains(left) || _verbTags.contains(left))
-							&& (_phraseTags.contains(right) || _verbTags.contains(right))) {
-						ready = false;
-						temp.add(p.getLeft());
-						if (p.getRight() != null) {
-							temp.add(p.getRight());
+					if (p.getRight() == null) {
+						if (_phraseTags.contains(left) || _verbTags.contains(left)) {
+							ready = false;
+							temp.add(p.getLeft());
+						} else {
+							temp.add(p);
 						}
 					} else {
-						temp.add(p);
+						String right = p.getRight().getLabel();
+						if ((_phraseTags.contains(left) || _verbTags.contains(left))
+								&& (_phraseTags.contains(right) || _verbTags.contains(right) || _clauseTags.contains(right))) {
+							ready = false;
+							temp.add(p.getLeft());
+							temp.add(p.getRight());
+						} else {
+							temp.add(p);
+						}
 					}
 				} else {
 					temp.add(p);
 				}
 			}
+			subTrees.clear();
 			subTrees.addAll(temp);
 		}
 		return subTrees;
@@ -148,6 +167,28 @@ public class Parser {
 				res.add(new ArrayList<String>(Arrays.asList("No Parsing")));
 				return res;
 				//return "No Parsing";
+			}
+		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	public String testParsing(String[] terminals) {
+		if (terminals.length > _MAX_LENGTH) {
+			return "*IGNORE*";
+			//return "*IGNORE*";
+		} else {
+			_tree = new HashMap[terminals.length][terminals.length];
+			for (int m=1; m <= terminals.length; m++) {
+				for (int n=0; n <= terminals.length-m; n++) {
+					this.fillCell(n, n+m, terminals);
+				}
+			}
+			HashMap<String, Pointers> root = _tree[terminals.length-1][0];
+			if (root.containsKey("TOP")) {
+				return this.debinarization((root.get("TOP")));
+				//return this.debinarization(root.get("TOP"));
+			} else {
+				return "No Parsing";
 			}
 		}
 	}

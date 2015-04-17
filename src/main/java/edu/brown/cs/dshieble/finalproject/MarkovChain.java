@@ -2,6 +2,7 @@ package edu.brown.cs.dshieble.finalproject;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
@@ -167,6 +168,10 @@ public class MarkovChain {
  public HashMultiset<String> getUnigramHash() {
    return unigram;
  }
- 
- 
+
+ public void print(Collection c) {
+   System.out.println(Arrays.toString(c.toArray()));
+
+ }
+
 }

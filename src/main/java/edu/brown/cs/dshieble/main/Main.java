@@ -10,20 +10,17 @@ import java.util.Arrays;
 import edu.brown.cs.dshieble.finalproject.MarkovManager;
 import edu.brown.cs.qc14.parser.Parser;
 
-
 public class Main {
   // passing "wsj2-21.blt" as args[0]
   public static void main(String[] args) {
-    
-	  
-	  
-	  
+
     //PARSER STUFF FOR DEMO
     if (args[0].equals("1")) {
       Parser parser = new Parser();
-      parser.buildRules("wsj2-21.blt");
-      String[] terminals = "they never considered themselves to be anything else .".split(" ");
+      parser.buildRules("src/main/java/edu/brown/cs/qc14/parser/wsj2-21.blt");
+      String[] terminals = "any change of control in farmers needs approval of the insurance commissioners in the nine states .".split(" ");
       System.out.println("****  " + parser.parseSentence(terminals));
+      System.out.println(parser.testParsing(terminals));
     }
   }
       // parseSentence method takes a string of sentence (punctuations and words separated by space)
