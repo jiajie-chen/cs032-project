@@ -44,7 +44,7 @@ public class Parser {
 		boolean ready = false;
 		while (!ready) {
 			ready = true;
-			// if containing _claseTags or "_", break it
+			// if containing _clauseTags or "_", break it
 			ArrayList<Pointers> temp = new ArrayList<Pointers>();
 			for (Pointers p : subTrees) {
 				if (_clauseTags.contains((p.getLabel())) || p.getLabel().contains("_")) {

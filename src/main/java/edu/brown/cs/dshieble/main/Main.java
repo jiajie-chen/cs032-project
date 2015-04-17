@@ -15,10 +15,17 @@ public class Main {
   // passing "wsj2-21.blt" as args[0]
   public static void main(String[] args) {
     
+	  
+	  
+	  
     //PARSER STUFF FOR DEMO
     if (args[0].equals("1")) {
       Parser parser = new Parser();
-      parser.buildRules(args[1]);
+      parser.buildRules("wsj2-21.blt");
+      String[] terminals = "they never considered themselves to be anything else .".split(" ");
+      System.out.println("****  " + parser.parseSentence(terminals));
+    }
+  }
       // parseSentence method takes a string of sentence (punctuations and words separated by space)
       // returns its parsing in String
       // in Parser.java, I set max_length of input sentence as 25. you may change it.
@@ -31,7 +38,7 @@ public class Main {
         e.printStackTrace();
       }*/
       
-      
+      /*
       //MARKOV STUFF FOR DEMO
     } else if (args[0].equals("2")) {
       assert args.length >= 3;
@@ -68,7 +75,7 @@ public class Main {
     } else {
       System.out.println("args[0] should be 1, 2 or 3");
     }
-  }
+  }*/
 }
 
 
