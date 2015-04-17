@@ -35,6 +35,7 @@ public class Parser {
 		_phraseTags = new HashSet<String>(Arrays.asList("NP", "PP", "VP"));   //////
 		_verbTags = new HashSet<String>(Arrays.asList("VB", "VBD", "VBG", "VBN", "VBP", "VBZ"));
 		_prepTags = new HashSet<String>(Arrays.asList("IN", "TO", "CC"));
+		this.buildRules("src/main/java/edu/brown/cs/qc14/parser/wsj2-21.blt");
 	}
 	
 	public ArrayList<Pointers> partialParse(Pointers top) {
@@ -79,7 +80,7 @@ public class Parser {
 				if (_phraseTags.contains(p.getLabel())) {
 					String left = p.getLeft().getLabel();
 					if (p.getRight() == null) {
-						if (_phraseTags.contains(left) || _verbTags.contains(left)) {
+						if (_phraseTags.contains(left) || _verbTags.contains(left) || _prepTags.contains(left)) {
 							ready = false;
 							temp.add(p.getLeft());
 						} else {
@@ -87,8 +88,8 @@ public class Parser {
 						}
 					} else {
 						String right = p.getRight().getLabel();
-						if ((_phraseTags.contains(left) || _verbTags.contains(left))
-								&& (_phraseTags.contains(right) || _verbTags.contains(right) || _clauseTags.contains(right))) {
+						if ((_phraseTags.contains(left) || _verbTags.contains(left) || _prepTags.contains(left))
+								&& (_phraseTags.contains(right) || _verbTags.contains(right) || _clauseTags.contains(right) || _prepTags.contains(left))) {
 							ready = false;
 							temp.add(p.getLeft());
 							temp.add(p.getRight());
