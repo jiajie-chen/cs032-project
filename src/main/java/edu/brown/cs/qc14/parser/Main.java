@@ -48,11 +48,7 @@ public class Main {
         return;
       }
       String words = builder
-           .toString()
-           .toLowerCase()
-           .trim()
-           .replaceAll(" +", " ")
-           .replaceAll("[()\"]", "");
+           .toString();
       String[] books = new String[] {words};
 	    MarkovManager man = new MarkovManager(books,
 	        Arrays.copyOfRange(

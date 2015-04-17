@@ -53,7 +53,12 @@ public class MarkovManager {
    * priority words, in order
    */
   private String[] pW;
-  
+
+  /**
+   * priority words, in order
+   */
+  private static final int minLength = 2;
+
   /**
    * priority words, in order
    */
@@ -80,7 +85,12 @@ public class MarkovManager {
     wordToMarkov = new Hashtable<String, MarkovChain>();
     Boolean hasPriority;
     for (int i = 0; i < books.length; i++) {
-      String[] sentences = books[i].split("[.!?]");
+      String[] sentences = books[i]
+          .toLowerCase()
+          .trim()
+          .replaceAll(" +", " ")
+          .replaceAll("[()\"]", "")
+          .split("[.!?]");
       //System.out.println(Arrays.toString(sentences));
       for (int j = 0; j < sentences.length; j++) {
         String sentence = sentences[j].replaceAll(" +", " ");
@@ -144,7 +154,7 @@ public class MarkovManager {
     for (int i = 0; i < recombinations; i++) {
       sentence = recombineSentence(sentence);
     }
-    while (sentence.length() < 2) {
+    while (sentence.length() < minLength) {
       sentence = recombineSentence(sentence);
     }
     return sentence.substring(0, 1).toUpperCase()
@@ -184,7 +194,7 @@ public class MarkovManager {
     String outputSentence = combine(startPart, frag, endPart);
     return outputSentence;
   }
-  
+
   /**
    * generates indices of a sentence split - this method uses parser
    * @param sentenceArray to split
