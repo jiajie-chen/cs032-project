@@ -24,6 +24,7 @@ import spark.template.freemarker.FreeMarkerEngine;
 public final class GUIManager {
 
   private static final Gson GSON = new Gson();
+  private static MarkovManager man;
 
 
   /**
@@ -38,6 +39,7 @@ public final class GUIManager {
    * @param m the markov manager
    */
   public static void makeGUI(MarkovManager m) {
+    man = m;
     runSparkServer();
   }
 

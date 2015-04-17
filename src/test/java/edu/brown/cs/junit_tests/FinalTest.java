@@ -31,7 +31,7 @@ import com.google.common.collect.HashMultiset;
 
 public class FinalTest {
 
-	/*
+	
   public boolean nearlyEqual(double n1, double n2) {
     return Math.abs(n1 - n2) < 1;
   }
@@ -143,7 +143,7 @@ public class FinalTest {
         "Oh my god so many letters. How many words can you place if you love placing words? Does that make sense?"};
     String[] pw = new String[] {"love", "Only", "This", "file"};
     MarkovManager man = new MarkovManager(text, pw);
-    for (int i = 0; i < 100; i++) {
+    for (int i = 0; i < 10; i++) {
       //System.out.println(man.generateSentence(10));
       man.generateSentence(10); //ERROR TEST, and can also use to print
     }
@@ -155,7 +155,7 @@ public class FinalTest {
     String[] pw = new String[] {"past", "disappointment, government, appointment, married"};
     MarkovManager man = new MarkovManager(text, pw);
     for (int i = 0; i < 10; i++) {
-      System.out.println(man.generateSentence(100));
+      System.out.println(man.generateSentence(10));
     }
   }  
   
@@ -166,7 +166,7 @@ public class FinalTest {
     Parser P = new Parser();
     //System.out.println(P.parseSentence(sentence));
 
-  } */
+  }
   
   public String getSherlockText() {
     return "And thus was solved the mystery of the sinister house with the " +

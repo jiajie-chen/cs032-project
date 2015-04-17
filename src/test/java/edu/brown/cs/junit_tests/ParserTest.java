@@ -8,7 +8,7 @@ import edu.brown.cs.qc14.parser.Parser;
 
 public class ParserTest {
 	
-	@Test
+	//@Test
 	public void test() {
 		Parser parser = new Parser();
 		parser.buildRules("edu.brown.cs.qc14.parser.wsj2-21");
