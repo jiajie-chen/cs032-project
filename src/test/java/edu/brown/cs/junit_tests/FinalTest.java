@@ -92,7 +92,7 @@ public class FinalTest {
     MarkovManager man = new MarkovManager(text, pw);
     List<String> c = man.getCandidates();
     //System.out.println(Arrays.toString(c.toArray()));
-    assertTrue(c.size() == 4);
+    assertTrue(c.size() == 2);
 //    for (String s : c) {
 //      assertTrue(!c.contains(pw[0]));
 //      assertTrue(!c.contains(pw[1]));
@@ -121,7 +121,7 @@ public class FinalTest {
     Map<String, List<String>> big2 = m2.getBigramHash();
     for (int i = 0; i < 100; i++) {
       List<String> frag = m2.makeSentenceFragment(2, 5, "Words", "sentence", 100);
-      print(frag);
+      //print(frag);
       assertTrue(frag.get(0).equals("are"));// || frag.get(0).equals("placing"));
       assertTrue(frag.get(frag.size() - 1).equals("one"));
     }
@@ -143,10 +143,21 @@ public class FinalTest {
     String[] pw = new String[] {"love", "Only", "This", "file"};
     MarkovManager man = new MarkovManager(text, pw);
     for (int i = 0; i < 100; i++) {
-      man.generateSentence(10); //ERROR TEST
+      //System.out.println(man.generateSentence(10));
+      man.generateSentence(10); //ERROR TEST, and can also use to print
     }
-    
   }
+
+  @Test
+  public void markovManagerTest4() {
+    String[] text = new String[] {getSherlockText()};
+    String[] pw = new String[] {"past", "disappointment, government, appointment, married"};
+    MarkovManager man = new MarkovManager(text, pw);
+    for (int i = 0; i < 10; i++) {
+      System.out.println(man.generateSentence(100));
+    }
+  }  
+  
   
   @Test
   public void parseTester() {
@@ -154,6 +165,22 @@ public class FinalTest {
     Parser P = new Parser();
     //System.out.println(P.parseSentence(sentence));
 
+  }
+  
+  public String getSherlockText() {
+    return "And thus was solved the mystery of the sinister house with the " +
+        "copper beeches in front of the door. Mr. Rucastle survived, but " +
+        "was always a broken man, kept alive solely through the care of " +
+        "his devoted wife. They still live with their old servants, who " +
+        "probably know so much of Rucastle's past life that he finds it " +
+        "difficult to part from them. Mr. Fowler and Miss Rucastle were " +
+        "married, by special license, in Southampton the day after their " +
+        "flight, and he is now the holder of a government appointment in " +
+        "the island of Mauritius. As to Miss Violet Hunter, my friend " +
+        "Holmes, rather to my disappointment, manifested no further " +
+        "interest in her when once she had ceased to be the centre of one " +
+        "of his problems, and she is now the head of a private school at " +
+        "Walsall, where I believe that she has met with considerable success.";
   }
   
   

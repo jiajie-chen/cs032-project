@@ -35,14 +35,9 @@ public final class GUIManager {
 
   /**
    * Initializes the GUI.
-   * @param t - the trie manager
-   * @param m - the markov manager
-   * @param p - the modifiers
-   * @param l - the modifiers
-   * @param w - the modifiers
-   * @param s - the modifiers
+   * @param m the markov manager
    */
-  public static void makeGUI() {
+  public static void makeGUI(MarkovManager m) {
     runSparkServer();
   }
 
