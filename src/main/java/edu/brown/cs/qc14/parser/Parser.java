@@ -52,11 +52,30 @@ public class Parser {
 			// if containing _clauseTags or "_", break it
 			ArrayList<Pointers> temp = new ArrayList<Pointers>();
 			for (Pointers p : subTrees) {
-				if (_clauseTags.contains((p.getLabel())) || p.getLabel().contains("_") || p.getLeft().getLabel().contains("_")) {
+				if (_clauseTags.contains((p.getLabel())) || p.getLabel().contains("_")) {
 					ready = false;
 					temp.add(p.getLeft());
 					if (p.getRight() != null) {
 						temp.add(p.getRight());
+					}
+				}
+				else if (p.getLeft().getLabel().contains("_")) {
+					String[] parts = p.getLeft().getLabel().split("_");
+					boolean toSplit = true;
+					for (String s : parts) {
+						if (!(_phraseTags.contains(s) || _prepTags.contains(s) || _verbTags.contains(s))) {
+							toSplit = false;
+							break;
+						}
+					}
+					if (toSplit) {
+						ready = false;
+						temp.add(p.getLeft());
+						if (p.getRight() != null) {
+							temp.add(p.getRight());
+						}
+					} else {
+						temp.add(p);
 					}
 				}
 				else {
