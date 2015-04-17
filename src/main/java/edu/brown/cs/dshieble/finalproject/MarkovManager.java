@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Random;
 
 import com.google.common.collect.ObjectArrays;
+
+import edu.brown.cs.qc14.parser.Parser;
 /**
  *This class handles the markov chain, the synonym parsing, etc
  *
@@ -55,6 +57,11 @@ public class MarkovManager {
   private String[] usedPW;
 
   /**
+   * a sentence parser
+   */
+  private Parser p;
+
+  /**
    * minimum sentence length
    */
   private static final int minLength = 4;
@@ -80,7 +87,7 @@ public class MarkovManager {
    * 
    */
   public MarkovManager(String[] books, String[] priorityWords) {
-    //TODO: PRESERVE STARTING AND ENDING WORDS OF SENTENCES (by handling short sentence ssperately)
+   Parser p = new Parser();
    String[] pW = priorityWords;
     for (int i = 0; i < pW.length; i++) {
       pW[i] = pW[i].toLowerCase();
@@ -241,6 +248,9 @@ public class MarkovManager {
     if (sentenceArray.length <= 3) {
       return new int[] {0, sentenceArray.length - 1};
     }
+    //ArrayList<ArrayList<String>> parseSentence(String[] terminals)
+    ArrayList<ArrayList<String>> parsed = p.parseSentence(sentenceArray);
+    
     Random rand = new Random();
     int start = rand.nextInt((int) Math.floor(sentenceArray.length/2));
     int end = start + 1 + rand.nextInt(Math.max(start + 1, sentenceArray.length - start - 1));
