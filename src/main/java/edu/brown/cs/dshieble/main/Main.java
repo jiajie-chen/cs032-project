@@ -7,18 +7,22 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.Arrays;
 
+import edu.brown.cs.dshieble.finalproject.GUIManager;
 import edu.brown.cs.dshieble.finalproject.MarkovManager;
 import edu.brown.cs.qc14.parser.Parser;
-
 
 public class Main {
   // passing "wsj2-21.blt" as args[0]
   public static void main(String[] args) {
-    
+
     //PARSER STUFF FOR DEMO
     if (args[0].equals("1")) {
       Parser parser = new Parser();
-      parser.buildRules(args[1]);
+      //parser.buildRules("src/main/java/edu/brown/cs/qc14/parser/wsj2-21.blt");
+      String[] terminals = 
+          "any change of control in farmers needs approval of the insurance commissioners in the nine states .".split(" ");
+      System.out.println("****  " + parser.parseSentence(terminals));
+      System.out.println(parser.testParsing(terminals));
       // parseSentence method takes a string of sentence (punctuations and words separated by space)
       // returns its parsing in String
       // in Parser.java, I set max_length of input sentence as 25. you may change it.
@@ -34,6 +38,7 @@ public class Main {
       
       //MARKOV STUFF FOR DEMO
     } else if (args[0].equals("2")) {
+      //./run 2 faust.txt crime keys lamp thunder spirits be me the
       assert args.length >= 3;
       String filename = args[1];
       StringBuilder builder = new StringBuilder();
@@ -54,9 +59,10 @@ public class Main {
       MarkovManager man = new MarkovManager(books,
           Arrays.copyOfRange(
           args, 2, args.length));
-      for (int i = 0; i < 10; i++) {
-        System.out.println(man.generateSentence(10));
-      }
+      GUIManager.makeGUI(man);
+//      for (int i = 0; i < 10; i++) {
+//        System.out.println(man.generateSentence(10));
+//      }
       
       
       
