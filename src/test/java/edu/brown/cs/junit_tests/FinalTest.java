@@ -31,6 +31,7 @@ import com.google.common.collect.HashMultiset;
 
 public class FinalTest {
 
+	/*
   public boolean nearlyEqual(double n1, double n2) {
     return Math.abs(n1 - n2) < 1;
   }
@@ -165,7 +166,7 @@ public class FinalTest {
     Parser P = new Parser();
     //System.out.println(P.parseSentence(sentence));
 
-  }
+  } */
   
   public String getSherlockText() {
     return "And thus was solved the mystery of the sinister house with the " +
