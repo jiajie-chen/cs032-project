@@ -10,7 +10,11 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.lang.NullPointerException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.ListIterator;
+import java.util.Set;
 
 /*
  * taking in a sentence, returning parsing result
@@ -22,10 +26,130 @@ public class Parser {
 	private HashMap<String, Integer> _counts;
 	private HashMap[][] _tree;
 	private int _MAX_LENGTH = 25;
+	private HashSet<String> _clauseTags, _phraseTags, _verbTags, _prepTags;
 	
 	public Parser() {
 		_rules = new HashMap<String, HashMap<String, Double>>();
 		_counts = new HashMap<String, Integer>();
+		_clauseTags = new HashSet<String>(Arrays.asList("S", "SBAR", "SBARQ", "SINV", "SQ"));
+		_phraseTags = new HashSet<String>(Arrays.asList("NP", "PP", "VP"));   //////
+		_verbTags = new HashSet<String>(Arrays.asList("VB", "VBD", "VBG", "VBN", "VBP", "VBZ"));
+		_prepTags = new HashSet<String>(Arrays.asList("IN", "TO", "CC"));
+	}
+	
+	public ArrayList<Pointers> partialParse(Pointers top) {
+		ArrayList<Pointers> subTrees = new ArrayList<Pointers>();
+		subTrees.add(top.getLeft());
+		// under while loop
+		boolean ready = false;
+		while (!ready) {
+			ready = true;
+			// if containing _claseTags or "_", break it
+			ArrayList<Pointers> temp = new ArrayList<Pointers>();
+			for (Pointers p : subTrees) {
+				if (_clauseTags.contains((p.getLabel())) || p.getLabel().contains("_")) {
+					ready = false;
+					temp.add(p.getLeft());
+					if (p.getRight() != null) {
+						temp.add(p.getRight());
+					}
+				} else {
+					temp.add(p);
+				}
+			}
+			subTrees.addAll(temp);
+			temp.clear();
+			
+			// if NP, VP..., call another method
+			// 1) VP -> VB NP
+			// 2) NP -> NN NN
+			// 3) VP -> VP NP
+			for (Pointers p : subTrees) {
+				if (_phraseTags.contains(p.getLabel())) {
+					String left = p.getLeft().getLabel();
+					String right = p.getRight().getLabel();
+					if ((_phraseTags.contains(left) || _verbTags.contains(left))
+							&& (_phraseTags.contains(right) || _verbTags.contains(right))) {
+						ready = false;
+						temp.add(p.getLeft());
+						if (p.getRight() != null) {
+							temp.add(p.getRight());
+						}
+					} else {
+						temp.add(p);
+					}
+				} else {
+					temp.add(p);
+				}
+			}
+			subTrees.addAll(temp);
+		}
+		return subTrees;
+	}
+	
+	// decode to strings, call another method
+	// group nodes with _prepTags
+	public ArrayList<ArrayList<String>> decodePartialParse(ArrayList<Pointers> subTrees) {
+		ArrayList<ArrayList<String>> res = new ArrayList<ArrayList<String>>();
+		ListIterator<Pointers> iter = subTrees.listIterator();
+		while (iter.hasNext()) {
+			Pointers p = iter.next();
+			if (_verbTags.contains(p.getLabel())) {
+				Pointers q = iter.next();
+				if (_verbTags.contains(q.getLabel())) {
+					res.add(new ArrayList<String>(Arrays.asList(p.getLabel(), q.getLabel())));
+				} else {
+					iter.previous();
+				}
+			} else if (_prepTags.contains(p.getLabel())) {
+				ArrayList<String> temp = this.pointerToStrings(p);
+				p = iter.next();
+				temp.addAll(this.pointerToStrings(p));
+				res.add(temp);
+			} else {
+				res.add(this.pointerToStrings(p));
+			}
+		}
+		return res;
+	}
+	
+	public ArrayList<String> pointerToStrings(Pointers p) {
+		ArrayList<String> res = new ArrayList<String>();
+		if (p.isTerminal()) {
+			res.add(p.getLabel());
+			return res;
+		}
+		res.addAll(this.pointerToStrings(p.getLeft()));
+		if (p.getRight() != null) {
+			res.addAll(this.pointerToStrings(p.getRight()));
+		}
+		return res;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public ArrayList<ArrayList<String>> parseSentence(String[] terminals) {
+		ArrayList<ArrayList<String>> res = new ArrayList<ArrayList<String>>();
+		if (terminals.length > _MAX_LENGTH) {
+			res.add(new ArrayList<String>(Arrays.asList("*IGNORE*")));
+			return res;
+			//return "*IGNORE*";
+		} else {
+			_tree = new HashMap[terminals.length][terminals.length];
+			for (int m=1; m <= terminals.length; m++) {
+				for (int n=0; n <= terminals.length-m; n++) {
+					this.fillCell(n, n+m, terminals);
+				}
+			}
+			HashMap<String, Pointers> root = _tree[terminals.length-1][0];
+			if (root.containsKey("TOP")) {
+				return this.decodePartialParse(this.partialParse(root.get("TOP")));
+				//return this.debinarization(root.get("TOP"));
+			} else {
+				res.add(new ArrayList<String>(Arrays.asList("No Parsing")));
+				return res;
+				//return "No Parsing";
+			}
+		}
 	}
 	
 	/*
@@ -71,27 +195,6 @@ public class Parser {
 			System.err.println("ERROR: cannot open file");
 		}
 		writer.close();
-	}
-	
-	@SuppressWarnings("unchecked")
-	public String parseSentence(String s) {
-		String[] terminals = s.split(" ");
-		if (terminals.length > _MAX_LENGTH) {
-			return "*IGNORE*";
-		} else {
-			_tree = new HashMap[terminals.length][terminals.length];
-			for (int m=1; m <= terminals.length; m++) {
-				for (int n=0; n <= terminals.length-m; n++) {
-					this.fillCell(n, n+m, terminals);
-				}
-			}
-			HashMap<String, Pointers> root = _tree[terminals.length-1][0];
-			if (root.containsKey("TOP")) {
-				return this.debinarization(root.get("TOP"));
-			} else {
-				return "No Parsing";
-			}
-		}
 	}
 	
 	// cell(i,k)

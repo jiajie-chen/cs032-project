@@ -19,6 +19,10 @@ public class TextIterator implements Iterator<String>, AutoCloseable {
     br = new BufferedReader(new InputStreamReader(is, "UTF-8"));
     next = null;
   }
+  
+  public TextIterator() {
+    next = null;
+  }
 
   @Override
   public boolean hasNext() {

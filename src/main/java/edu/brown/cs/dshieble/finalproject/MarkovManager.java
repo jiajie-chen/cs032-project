@@ -53,7 +53,12 @@ public class MarkovManager {
    * priority words, in order
    */
   private String[] pW;
-  
+
+  /**
+   * priority words, in order
+   */
+  private static final int minLength = 2;
+
   /**
    * priority words, in order
    */
@@ -80,7 +85,12 @@ public class MarkovManager {
     wordToMarkov = new Hashtable<String, MarkovChain>();
     Boolean hasPriority;
     for (int i = 0; i < books.length; i++) {
-      String[] sentences = books[i].split("[.!?]");
+      String[] sentences = books[i]
+          .toLowerCase()
+          .trim()
+          .replaceAll(" +", " ")
+          .replaceAll("[()\"]", "")
+          .split("[.!?]");
       //System.out.println(Arrays.toString(sentences));
       for (int j = 0; j < sentences.length; j++) {
         String sentence = sentences[j].replaceAll(" +", " ");
@@ -144,7 +154,7 @@ public class MarkovManager {
     for (int i = 0; i < recombinations; i++) {
       sentence = recombineSentence(sentence);
     }
-    while (sentence.length() < 2) {
+    while (sentence.length() < minLength) {
       sentence = recombineSentence(sentence);
     }
     return sentence.substring(0, 1).toUpperCase()
@@ -184,7 +194,7 @@ public class MarkovManager {
     String outputSentence = combine(startPart, frag, endPart);
     return outputSentence;
   }
-  
+
   /**
    * generates indices of a sentence split - this method uses parser
    * @param sentenceArray to split
@@ -298,5 +308,110 @@ public class MarkovManager {
 //      return l.get(rand.nextInt(s));
 //    }
 //  }
+
+
+//
+//
+//
+//
+//
+//
+//package edu.brown.cs.qc14.parser;
+//
+//import java.io.BufferedReader;
+//import java.io.FileReader;
+//import java.io.FileNotFoundException;
+//import java.io.IOException;
+//import java.io.UnsupportedEncodingException;
+//import java.util.Arrays;
+//
+//import edu.brown.cs.dshieble.finalproject.MarkovManager;
+//
+//
+//public class Main {
+//  // passing "wsj2-21.blt" as args[0]
+//  public static void main(String[] args) {
+//    
+//    //PARSER STUFF FOR DEMO
+//    if (args[0].equals("1")) {
+//      Parser parser = new Parser();
+//      parser.buildRules(args[1]);
+//      // parseSentence method takes a string of sentence (punctuations and words separated by space)
+//      // returns its parsing in String
+//      // in Parser.java, I set max_length of input sentence as 25. you may change it.
+//      String parsing = parser.parseSentence("replace this with whatever string");
+//      /*try {
+//        parser.parse(args[1], args[2]);
+//      } catch (FileNotFoundException e) {
+//        e.printStackTrace();
+//      } catch (UnsupportedEncodingException e) {
+//        e.printStackTrace();
+//      }*/
+//      
+//      
+//      //MARKOV STUFF FOR DEMO
+//    } else if (args[0].equals("2")) {
+//      assert args.length >= 3;
+//      String filename = args[1];
+//      StringBuilder builder = new StringBuilder();
+//      try (BufferedReader fileReader = new BufferedReader(
+//        new FileReader(filename))) {
+//        String line = null;
+//        while ((line = fileReader.readLine()) != null) {
+//          builder.append(line);
+//          builder.append(" ");
+//        }
+//      } catch (IOException e) {
+//        System.out.println("ERROR: File IO Error");
+//        return;
+//      }
+//      String words = builder
+//           .toString();
+//      String[] books = new String[] {words};
+//      MarkovManager man = new MarkovManager(books,
+//          Arrays.copyOfRange(
+//          args, 2, args.length));
+//      for (int i = 0; i < 10; i++) {
+//        System.out.println(man.generateSentence(10));
+//      }
+//      
+//      
+//      
+//      
+//      
+//      //DATABASE STUFF FOR DEMO
+//    } else if (args[0].equals("3")) {
+//      System.out.println("DATABASE STUFF SHOULD BE HERE");
+//    } else {
+//      System.out.println("args[0] should be 1, 2 or 3");
+//    }
+//  }
+//}
+//
+
+// //Dan's mainline
+//public final class Main {
+//
+//
+//  /**
+//   * Prevents this class from being instantiated.
+//   */
+//  private Main() {
+//
+//  }
+//
+//  /**
+//   * Mainline of code. Parses user input and finds path between actors.
+//   * @param args CL args
+//   */
+//  public static void main(final String[] args) {
+//    System.out.println("working");
+//    //GUIManager.makeGUI();
+//    String[] text = {"this is the first book. Its a fun book. Oh, it is so good.", 
+//                     "This is the second book. Man this one sucks. It is really not fun at all."};
+//    String[] pw = {"fun, its"};
+//  }
+//    //gui inputs
+//}
 
 
