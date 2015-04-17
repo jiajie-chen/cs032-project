@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.Arrays;
 
+import edu.brown.cs.dshieble.finalproject.GUIManager;
 import edu.brown.cs.dshieble.finalproject.MarkovManager;
 import edu.brown.cs.qc14.parser.Parser;
 
@@ -37,6 +38,7 @@ public class Main {
       
       //MARKOV STUFF FOR DEMO
     } else if (args[0].equals("2")) {
+      //./run 2 faust.txt crime keys lamp thunder spirits be me the
       assert args.length >= 3;
       String filename = args[1];
       StringBuilder builder = new StringBuilder();
@@ -57,9 +59,10 @@ public class Main {
       MarkovManager man = new MarkovManager(books,
           Arrays.copyOfRange(
           args, 2, args.length));
-      for (int i = 0; i < 10; i++) {
-        System.out.println(man.generateSentence(10));
-      }
+      GUIManager.makeGUI(man);
+//      for (int i = 0; i < 10; i++) {
+//        System.out.println(man.generateSentence(10));
+//      }
       
       
       

@@ -99,7 +99,7 @@ public final class GUIManager {
         System.out.println(qm.value("l" + i));
         i++;
       }
-      String str = "spark told me this!";
+      String str = man.generateSentence(10);
       Map<String, Object> variables = new ImmutableMap.Builder()
         .put("sentence", str)
         .build();

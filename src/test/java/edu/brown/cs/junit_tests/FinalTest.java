@@ -155,7 +155,8 @@ public class FinalTest {
     String[] pw = new String[] {"past", "disappointment, government, appointment, married"};
     MarkovManager man = new MarkovManager(text, pw);
     for (int i = 0; i < 10; i++) {
-      System.out.println(man.generateSentence(10));
+      String s = man.generateSentence(10);
+      //System.out.println(s);
     }
   }  
   

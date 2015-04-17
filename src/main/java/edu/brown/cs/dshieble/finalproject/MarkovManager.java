@@ -100,7 +100,7 @@ public class MarkovManager {
          // .toLowerCase()
           //.trim()
           //.replaceAll(" +", " ")
-          //.replaceAll("[()\"]", "")
+          .replaceAll("[()\"]", "")
           .split("(?<!Mr?s?|\\b[A-Z])\\.\\s*");
       //System.out.println(Arrays.toString(sentences));
       //System.out.println(Arrays.toString(sentences));
@@ -208,7 +208,7 @@ public class MarkovManager {
     }
     Random rand = new Random();
     int[] startEnd = null;
-    if (rand.nextInt(100) < 90 && sentenceArray.length < 25) {
+    if (rand.nextInt(100) < 90 && sentenceArray.length < 25 && false) {
       startEnd = splitSentenceParse(sentenceArray);
     } else {
       startEnd = splitSentenceNaive(sentenceArray);
@@ -271,7 +271,7 @@ public class MarkovManager {
       return new int[] {0, sentenceArray.length - 1};
     }
     //ArrayList<ArrayList<String>> parseSentence(String[] terminals)
-    System.out.println(Arrays.toString(sentenceArray));
+    //System.out.println(Arrays.toString(sentenceArray));
     List<ArrayList<String>> parsed = p.parseSentence(sentenceArray);
     Random rand = new Random();
     int index = rand.nextInt(parsed.size());
