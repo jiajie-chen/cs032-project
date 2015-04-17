@@ -75,7 +75,6 @@ public class MarkovManager {
    * 
    */
   public MarkovManager(String[] books, String[] priorityWords) {
-    //TODO: LOWERCASE EVERYTHING AND HANDLE CASING SEPERATELY
     //TODO: PRESERVE STARTING AND ENDING WORDS OF SENTENCES (by handling short sentence ssperately)
     pW = priorityWords;
     for (int i = 0; i < pW.length; i++) {
@@ -86,11 +85,12 @@ public class MarkovManager {
     Boolean hasPriority;
     for (int i = 0; i < books.length; i++) {
       String[] sentences = books[i]
-          .toLowerCase()
-          .trim()
-          .replaceAll(" +", " ")
-          .replaceAll("[()\"]", "")
+         // .toLowerCase()
+          //.trim()
+          //.replaceAll(" +", " ")
+          //.replaceAll("[()\"]", "")
           .split("[.!?]");
+      //System.out.println(Arrays.toString(sentences));
       //System.out.println(Arrays.toString(sentences));
       for (int j = 0; j < sentences.length; j++) {
         String sentence = sentences[j].replaceAll(" +", " ");
@@ -263,7 +263,10 @@ public class MarkovManager {
     return wordToMarkov;
   }
   
-  
+  public void print(Collection c) {
+    System.out.println(Arrays.toString(c.toArray()));
+
+  }
   
 }
 

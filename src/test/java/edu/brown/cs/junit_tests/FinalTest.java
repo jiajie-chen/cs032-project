@@ -121,7 +121,7 @@ public class FinalTest {
     Map<String, List<String>> big2 = m2.getBigramHash();
     for (int i = 0; i < 100; i++) {
       List<String> frag = m2.makeSentenceFragment(2, 5, "Words", "sentence", 100);
-      //print(frag);
+      print(frag);
       assertTrue(frag.get(0).equals("are"));// || frag.get(0).equals("placing"));
       assertTrue(frag.get(frag.size() - 1).equals("one"));
     }
