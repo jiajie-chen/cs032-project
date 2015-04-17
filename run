@@ -39,5 +39,9 @@ trap "rm -rf /ltmp/$USER; exit 255;" SIGINT SIGKILL SIGTERM
 # The funny symbol: "$@" passes the command-line arguments on from
 # this script to your Java program.
 
+<<<<<<< HEAD
 java -cp $TARGET:$CP edu.brown.cs.dshieble.main.Main "$@"
+=======
+java -cp $TARGET:$CP edu.brown.cs.main.Main "$@"
+>>>>>>> c5358f1e5025336b317c3d2960fe061ef8f6c70e
 
