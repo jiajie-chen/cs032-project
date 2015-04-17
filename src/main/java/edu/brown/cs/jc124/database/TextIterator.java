@@ -8,8 +8,8 @@ import java.io.UnsupportedEncodingException;
 import java.util.Iterator;
 
 /**
- * @author jchen
  * Provides a line-by-line Iterator through a text corpus.
+ * @author jchen
  */
 public class TextIterator implements Iterator<String>, AutoCloseable {
   private BufferedReader br;
