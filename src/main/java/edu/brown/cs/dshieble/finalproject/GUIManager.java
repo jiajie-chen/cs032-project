@@ -47,7 +47,7 @@ public final class GUIManager {
    * Opens the GUI.
    */
   private static void runSparkServer() {
-    Spark.setPort(5678);
+    Spark.setPort(5679);
     Spark.externalStaticFileLocation("src/main/resources/static");
     Spark.get("/", new GetHandler(), new FreeMarkerEngine());
     Spark.post("/results", new ResultsHandler());

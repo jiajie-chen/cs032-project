@@ -33,12 +33,23 @@
             <div id="map" ></div>
 
             <div id="slider_div"> 
-                <div id="slider_title"> Select the Range of Dates </br></div>
+                <div id="slider_title"> Select the Range of dates</br></div>
                 <div id="slider"></div>
                 <div id="label_div"></div>
             </div> 
 
             <div id="facet_div"> Sentence facets will go here!
+                <div id="imgGrid">
+                    <img id="sad" src="images/sad.png" onclick="imageClick()" alt="sad">
+                    <img id="h" src="images/sad.png" onclick="imageClick(this.id)" alt="sad">
+                    <img id="a" src="images/sad.png" onclick="imageClick(this.id)" alt="sad">
+                    <img id="b" src="images/sad.png" onclick="imageClick(this.id)" alt="sad">
+                    <img id="c" src="images/sad.png" onclick="imageClick(this.id)" alt="sad">
+                    <img id="d" src="images/sad.png" onclick="imageClick(this.id)" alt="sad">
+                    <img id="e" src="images/sad.png" onclick="imageClick(this.id)" alt="sad">
+                    <img id="f" src="images/sad.png" onclick="imageClick(this.id)" alt="sad">
+                    <img id="g" src="images/sad.png" onclick="imageClick(this.id)" alt="sad">
+                </div>
             </div> 
 
             <div id="submit_div"> 
