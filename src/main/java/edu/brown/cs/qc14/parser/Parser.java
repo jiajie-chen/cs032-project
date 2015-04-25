@@ -26,15 +26,20 @@ public class Parser {
 	private HashMap<String, Integer> _counts;
 	private HashMap[][] _tree;
 	private int _MAX_LENGTH = 25;
-	private HashSet<String> _clauseTags, _phraseTags, _verbTags, _prepTags;
+	private HashSet<String> _clauseTags, _phraseTags, _verbTags, _prepTags, _subTags;
 	
 	public Parser() {
 		_rules = new HashMap<String, HashMap<String, Double>>();
 		_counts = new HashMap<String, Integer>();
 		_clauseTags = new HashSet<String>(Arrays.asList("S", "SBAR", "SBARQ", "SINV", "SQ"));
-		_phraseTags = new HashSet<String>(Arrays.asList("NP", "PP", "VP"));   //////
-		_verbTags = new HashSet<String>(Arrays.asList("VB", "VBD", "VBG", "VBN", "VBP", "VBZ"));
+		_phraseTags = new HashSet<String>(Arrays.asList("NP", "PP", "VP"));
+		_verbTags = new HashSet<String>(Arrays.asList("VB", "VBD", "VBG", "VBN", "VBP", "VBZ", "WHNP"));
 		_prepTags = new HashSet<String>(Arrays.asList("IN", "TO", "CC"));
+		_subTags = new HashSet<String>();
+		_subTags.addAll(_clauseTags);
+		_subTags.addAll(_phraseTags);
+		_subTags.addAll(_verbTags);
+		_subTags.addAll(_prepTags);
 		this.buildRules("src/main/java/edu/brown/cs/qc14/parser/wsj2-21.blt");
 	}
 	
@@ -63,7 +68,7 @@ public class Parser {
 					String[] parts = p.getLeft().getLabel().split("_");
 					boolean toSplit = true;
 					for (String s : parts) {
-						if (!(_phraseTags.contains(s) || _prepTags.contains(s) || _verbTags.contains(s))) {
+						if (!_subTags.contains(s)) {
 							toSplit = false;
 							break;
 						}
@@ -99,7 +104,7 @@ public class Parser {
 				if (_phraseTags.contains(p.getLabel())) {
 					String left = p.getLeft().getLabel();
 					if (p.getRight() == null) {
-						if (_phraseTags.contains(left) || _verbTags.contains(left) || _prepTags.contains(left)) {
+						if (_subTags.contains(left)) {
 							ready = false;
 							temp.add(p.getLeft());
 						} else {
@@ -107,8 +112,7 @@ public class Parser {
 						}
 					} else {
 						String right = p.getRight().getLabel();
-						if ((_phraseTags.contains(left) || _verbTags.contains(left) || _prepTags.contains(left))
-								&& (_phraseTags.contains(right) || _verbTags.contains(right) || _clauseTags.contains(right) || _prepTags.contains(left))) {
+						if (_subTags.contains(left) && _subTags.contains(right)) {
 							ready = false;
 							temp.add(p.getLeft());
 							temp.add(p.getRight());
@@ -133,13 +137,19 @@ public class Parser {
 		ListIterator<Pointers> iter = subTrees.listIterator();
 		while (iter.hasNext()) {
 			Pointers p = iter.next();
-			if (_verbTags.contains(p.getLabel())) {
-				Pointers q = iter.next();
-				if (_verbTags.contains(q.getLabel())) {
-					res.add(new ArrayList<String>(Arrays.asList(p.getLabel(), q.getLabel())));
-				} else {
-					iter.previous();
+			if (_verbTags.contains(p.getLabel()) || p.getLeft().getLabel().equals("PRP")) {
+				boolean ending = false;
+				ArrayList<String> temp = this.pointerToStrings(p);
+				while (iter.hasNext() && !ending) {
+					Pointers q = iter.next();
+					if (_verbTags.contains(q.getLabel()) || q.getLabel().equals("PRP")) {
+						temp.addAll(this.pointerToStrings(q));
+					} else {
+						iter.previous();
+						ending = true;
+					}
 				}
+				res.add(temp);
 			} else if (_prepTags.contains(p.getLabel())) {
 				ArrayList<String> temp = this.pointerToStrings(p);
 				p = iter.next();

@@ -17,9 +17,9 @@ public class Main {
     //PARSER STUFF FOR DEMO
     if (args[0].equals("1")) {
       Parser parser = new Parser();
-      parser.buildRules("src/main/java/edu/brown/cs/qc14/parser/wsj2-21.blt");
+      //parser.buildRules("src/main/java/edu/brown/cs/qc14/parser/wsj2-21.blt");
       String[] terminals = 
-          "any change of control in farmers needs approval of the insurance commissioners in the nine states .".split(" ");
+          "i believe that she had met with considerable success .".split(" ");
       System.out.println("****  " + parser.parseSentence(terminals));
       System.out.println(parser.testParsing(terminals));
       // parseSentence method takes a string of sentence (punctuations and words separated by space)
