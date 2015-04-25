@@ -87,7 +87,7 @@ public class MarkovManager {
    * 
    */
   public MarkovManager(String[] books, String[] priorityWords) {
-   Parser p = new Parser();
+   p = new Parser();
    String[] pW = priorityWords;
     for (int i = 0; i < pW.length; i++) {
       pW[i] = pW[i].toLowerCase();
@@ -100,7 +100,7 @@ public class MarkovManager {
          // .toLowerCase()
           //.trim()
           //.replaceAll(" +", " ")
-          //.replaceAll("[()\"]", "")
+          .replaceAll("[()\"]", "")
           .split("(?<!Mr?s?|\\b[A-Z])\\.\\s*");
       //System.out.println(Arrays.toString(sentences));
       //System.out.println(Arrays.toString(sentences));
@@ -206,7 +206,13 @@ public class MarkovManager {
     if (sentenceArray.length <= 1) {
       return null;
     }
-    int[] startEnd = splitSentence(sentenceArray);
+    Random rand = new Random();
+    int[] startEnd = null;
+    if (rand.nextInt(100) < 90 && sentenceArray.length < 25) {
+      startEnd = splitSentenceParse(sentenceArray);
+    } else {
+      startEnd = splitSentenceNaive(sentenceArray);
+    }
     String startWord = sentenceArray[startEnd[0]];
     String endWord = sentenceArray[startEnd[1]];
     int len = startEnd[1] - startEnd[0];
@@ -243,14 +249,10 @@ public class MarkovManager {
    * @param sentenceArray to split
    * @return indices of words that are start and end to split on
    */
-  private int[] splitSentence(String[] sentenceArray) {
-    //System.out.println(sentenceArray.length);
+  private int[] splitSentenceNaive(String[] sentenceArray) {
     if (sentenceArray.length <= 3) {
       return new int[] {0, sentenceArray.length - 1};
-    }
-    //ArrayList<ArrayList<String>> parseSentence(String[] terminals)
-    ArrayList<ArrayList<String>> parsed = p.parseSentence(sentenceArray);
-    
+    }    
     Random rand = new Random();
     int start = rand.nextInt((int) Math.floor(sentenceArray.length/2));
     int end = start + 1 + rand.nextInt(Math.max(start + 1, sentenceArray.length - start - 1));
@@ -258,6 +260,58 @@ public class MarkovManager {
     assert start >= 0;
     return new int[] {start, end};
   }
+  
+  /**
+   * generates indices of a sentence split - this method uses parser
+   * @param sentenceArray to split
+   * @return indices of words that are start and end to split on
+   */
+  public int[] splitSentenceParse(String[] sentenceArray) {
+    //Don't split really short sentences
+    if (sentenceArray.length <= 3) {
+      return new int[] {0, sentenceArray.length - 1};
+    }
+    //parser expects lowercase, apparently
+    for (int i = 0; i < sentenceArray.length; i++) {
+      sentenceArray[i] = sentenceArray[i]
+          .toLowerCase()
+          .replaceAll("[^a-z, -]", "");
+    }
+    List<ArrayList<String>> parsed = p.parseSentence(sentenceArray);
+    //make sure the parser output is valid
+    boolean bad = false;
+    if (parsed.size() > 1) {
+      int counter = 0;
+      for (ArrayList<String> a : parsed) {
+        counter += a.size();
+      }
+      if (counter != sentenceArray.length) {
+        bad = true;
+      }
+    } else {
+      bad = true;
+    }
+    if (bad) {
+      return splitSentenceNaive(sentenceArray);
+    }
+    Random rand = new Random();
+    int index = rand.nextInt(parsed.size());
+    //System.out.println(parsed.size());
+    int start = 0;
+    for (int i = 0; i < index; i++) {
+      start += parsed.get(i).size();
+      //System.out.println(parsed.get(i));
+    }
+    int end = start + parsed.get(index).size() - 1;
+    //int end = start + 1 + rand.nextInt(Math.max(start + 1, sentenceArray.length - start - 1));
+    //assert end < sentenceArray.length;
+    assert start >= 0;
+    assert end < sentenceArray.length;
+    return new int[] {start, end};
+  }
+
+  
+  
 
   /**
    * 

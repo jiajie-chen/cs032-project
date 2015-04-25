@@ -51,8 +51,8 @@ public class Parser {
 		int i = 0;
 		while (!ready) {
 			i ++;
-			System.out.println(i);
-			System.out.println(subTrees.size());
+			//System.out.println(i);
+			//System.out.println(subTrees.size());
 			ready = true;
 			// if containing _clauseTags or "_", break it
 			ArrayList<Pointers> temp = new ArrayList<Pointers>();
@@ -89,11 +89,11 @@ public class Parser {
 			}
 			subTrees.clear();
 			subTrees.addAll(temp);
-			System.out.println("==========");
+			//System.out.println("==========");
 			for (Pointers a : subTrees) {
-				System.out.println(a.getLabel());
+				//System.out.println(a.getLabel());
 			}
-			System.out.println("=========");
+			//System.out.println("=========");
 			temp.clear();
 			
 			// if NP, VP..., call another method
@@ -213,7 +213,7 @@ public class Parser {
 					this.fillCell(n, n+m, terminals);
 				}
 			}
-			HashMap<String, Pointers> root = _tree[terminals.length-1][0];
+			HashMap<String, Pointers> root = _tree[terminals.length - 1][0];
 			if (root.containsKey("TOP")) {
 				return this.debinarization((root.get("TOP")));
 				//return this.debinarization(root.get("TOP"));
@@ -242,7 +242,7 @@ public class Parser {
 				// tree : {label: [left, right]}
 				// values : {label: mu}
 				if (terminals.length > 25) {
-					System.out.println("*IGNORE*");
+					//System.out.println("*IGNORE*");
 					writer.println("*IGNORE*");
 				} else {
 					_tree = new HashMap[terminals.length][terminals.length];
@@ -256,7 +256,7 @@ public class Parser {
 					
 					if (root.containsKey("TOP")) {
 						String result = this.debinarization(root.get("TOP"));
-						System.out.println(result);
+						//System.out.println(result);
 						writer.println(result);
 					}
 				}

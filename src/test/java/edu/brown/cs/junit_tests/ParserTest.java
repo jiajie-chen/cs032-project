@@ -36,7 +36,7 @@ public class ParserTest {
 		res = _parser.pointerToStrings(A);
 		assertTrue(res.size() == 3);
 	}
-	
+
 	@Test
 	public void test() {
 		

@@ -75,11 +75,7 @@
             });
 
             function submit() {
-                //TODO: Change this by adding AJAX, sending this data and getting a sentence in return
-                // if (document.getElementById("author_select").value == undefined) {
-                //     alert("Please select an author")
-                //     return
-                // } 
+                //TODO: add sentence facets as well
                 if (selected.length == 0) {
                     alert("Please select at least one location")
                     return
@@ -100,6 +96,13 @@
         		})
             }
 
+            //responds when a facet image is clicked
+            // function imageClick() {
+            //     alert(id);
+            // }
+ $("#sad").click(function(){
+    alert("fff");
+});
 
             function reset_map() {
                 if (circles!=undefined) {
@@ -136,23 +139,9 @@
             //accepts the name of a location, returns number of inscriptions, privy to current settings
             function getSize(location) {
                 return 10;
-                // var simpName = simplify_string(location);
-                // var size = 0;
-                // for (var t in multiHash[simpName]) {
-                //     if (types[t] == true) {
-                //         for (var l in multiHash[simpName][t]) {
-                //             if (languages[l] == true) {
-                //                 for (var r in multiHash[simpName][t][l]) {
-                //                     if (religions[r] == true) {
-                //                         size += multiHash[simpName][t][l][r];
-                //                     }
-                //                 }
-                //             }
-                //         }
-                //     }
-                // }
-                // return num2size(size);
             }
+
+
 
             //writes the contents of the selected array to the selected div
             function writeSelected() {

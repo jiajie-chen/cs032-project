@@ -24,6 +24,7 @@ import spark.template.freemarker.FreeMarkerEngine;
 public final class GUIManager {
 
   private static final Gson GSON = new Gson();
+  private static MarkovManager man;
 
 
   /**
@@ -38,6 +39,7 @@ public final class GUIManager {
    * @param m the markov manager
    */
   public static void makeGUI(MarkovManager m) {
+    man = m;
     runSparkServer();
   }
 
@@ -45,7 +47,7 @@ public final class GUIManager {
    * Opens the GUI.
    */
   private static void runSparkServer() {
-    Spark.setPort(5678);
+    Spark.setPort(5679);
     Spark.externalStaticFileLocation("src/main/resources/static");
     Spark.get("/", new GetHandler(), new FreeMarkerEngine());
     Spark.post("/results", new ResultsHandler());
@@ -97,7 +99,7 @@ public final class GUIManager {
         System.out.println(qm.value("l" + i));
         i++;
       }
-      String str = "spark told me this!";
+      String str = man.generateSentence(10);
       Map<String, Object> variables = new ImmutableMap.Builder()
         .put("sentence", str)
         .build();
