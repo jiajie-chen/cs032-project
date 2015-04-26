@@ -21,7 +21,9 @@
             var maker = undefined;
             var svg = undefined;
             var g = undefined;
-            
+            var unchanged = false;
+            var pending = false;
+
             //Load the JSON files
             d3.json(Json, function(locations) {
                 locations.rows.forEach(function(d,i) {
@@ -58,6 +60,7 @@
                 $( "#label_div" ).append($('<label id="leftLabel">'+(slider_min)+'</label>').css("float","left"));
                 $( "#label_div" ).append($('<label id="rightLabel">'+(slider_max)+'</label>').css("float","right"));
                 $("#slider").on( "slidechange", function(event,ui) {
+                    unchanged = false;
                     Minimum = $("#slider").slider("values",0);
                     Maximum = $("#slider").slider("values",1);
                     console.log(Minimum)
@@ -72,6 +75,9 @@
                 for (var i = 0; i < 5; i ++) {
                     document.getElementById("author_select").innerHTML += "<option value=\" author_"+ i +"\"> author_" +i+"</option>"
                 }
+            
+                //on author change, set unchanged to false
+                document.getElementById("author_select").onchange = function() {unchanged = false};
 
             });
 
@@ -81,44 +87,52 @@
                     alert("Please select at least one location")
                     return
                 }
-    			var postParameters = { 
-    					author: document.getElementById("author_select").value,
-    					date_start: slider_start,
-    					date_end: slider_end
-    			};
-                //locations
-    			for (var i = 0; i < selected.length; i++) {
-    				postParameters["l" + i] = selected[i];
-    			}
-                //sentence facets
-                for (var i = 0; i < sentenceFacets.length; i++) {
-                    postParameters["f" + i] = sentenceFacets[i];
+                if (!pending) {
+                    pending = true;
+                    document.getElementById("submit_button").innerHTML = "waiting...";
+
+        			var postParameters = {
+                        unchanged: unchanged ? "yes" : "no",
+        				author: document.getElementById("author_select").value,
+        				date_start: slider_start,
+        				date_end: slider_end
+        			};
+                    //locations
+        			for (var i = 0; i < selected.length; i++) {
+        				postParameters["l" + i] = selected[i];
+        			}
+                    //sentence facets
+                    for (var i = 0; i < sentenceFacets.length; i++) {
+                        postParameters["f" + i] = sentenceFacets[i];
+                    }
+                    unchanged = true;
+            		$.post("/results", postParameters, function(responseJSON){
+            			var responseObject = JSON.parse(responseJSON);
+                        results_div.innerHTML = responseObject.sentence;
+                        pending = false;
+                        document.getElementById("submit_button").innerHTML = "Generate a Phrase!";
+            		})
                 }
-    			console.log(postParameters)
-        		$.post("/results", postParameters, function(responseJSON){
-        			var responseObject = JSON.parse(responseJSON);
-                    results_div.innerHTML = responseObject.sentence;
-        		})
             }
 
             //responds when a facet image is clicked
             function imageClick(id) {
                 var index = sentenceFacets.indexOf(id);
-                                console.log(index)
-
                 if (index != -1) {
                     sentenceFacets.splice(index, 1);
-                    document.getElementById(id).style["background-color"] = "white";
+                    document.getElementById(id).style["background"] = "white";
+                    console.log(document.getElementById(id));
                 } else {
                     sentenceFacets.push(id);
-                    document.getElementById(id).style["background-color"] = "red";
-
+                    document.getElementById(id).style["background"] = "red";
+                    console.log(document.getElementById(id));
                 }
+                unchanged = false;
             }
 
 
             function reset_map() {
-                if (circles!=undefined) {
+                if (circles != undefined) {
                     maker.update();
                 } else {
                     console.log("Circles not initialized")
@@ -152,18 +166,6 @@
             //accepts the name of a location, returns number of inscriptions, privy to current settings
             function getSize(location) {
                 return 10;
-            }
-
-
-
-            //writes the contents of the selected array to the selected div
-            function writeSelected() {
-                string = "The selected places are: </br>";
-                for (var i = 0; i < selected.length; i++) {
-                    string += selected[i] + "</br>"
-                }
-                selected_div.innerHTML = string;
-
             }
 
             //returns the color of the input circle id, based on the different factors involved
@@ -293,6 +295,7 @@
 
                 //responds when circle is clicked - add or remove a circle from selected
                 circle_click = function(e) {
+                    unchanged = false;
                     simp = e.id
                     var index = selected.indexOf(simp);
                     if (index != -1) {

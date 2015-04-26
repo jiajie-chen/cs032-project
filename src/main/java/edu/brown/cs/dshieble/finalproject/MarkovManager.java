@@ -227,7 +227,7 @@ public class MarkovManager {
       if (startEnd[0] == sentenceArray.length - 1) {
         frag = makeSentenceFragment(
             2, 5, startWord, null, 100);
-      } 
+      }
     } else {
       endPart = Arrays.copyOfRange(
           sentenceArray, startEnd[1], sentenceArray.length);
@@ -300,7 +300,7 @@ public class MarkovManager {
     }
     Random rand = new Random();
     int index = rand.nextInt(parsed.size());
-    System.out.println(index);
+    //System.out.println(index);
     //System.out.println(parsed.size());
     int start = 0;
     for (int i = 0; i < index; i++) {

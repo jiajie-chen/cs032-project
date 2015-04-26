@@ -38,50 +38,50 @@
                 <div id="label_div"></div>
             </div> 
 
-            <div id="facet_div"> Sentence facets will go here!
+            <div id="facet_div"> Click on the themes that you want to appear in your phrase!
                 <div id="imgGrid">
 
-                    <button id="sad" onclick="imageClick(this.id )"> 
+                    <button id="sad" onclick="imageClick(this.id)"> 
                         <img id="img_sad" src="images/sad.png" alt="sad">
                     </button>
 
-                    <button id="h" onclick="imageClick(this.id )"> 
-                        <img id = "img_h" src="images/sad.png" alt="sad">
+                    <button id="happy" onclick="imageClick(this.id)"> 
+                        <img id = "img_happy" src="images/happy.png" alt="happy">
                     </button>
 
-                    <button id="a" onclick="imageClick(this.id )"> 
-                        <img id = "img_a" src="images/sad.png" alt="sad">
+                    <button id="stress" onclick="imageClick(this.id)"> 
+                        <img id = "img_stress" src="images/stress.png" alt="stress">
                     </button>
 
-                    <button id="b" onclick="imageClick(this.id )"> 
-                        <img id = "img_b" src="images/sad.png" alt="sad">
+                    <button id="love" onclick="imageClick(this.id)"> 
+                        <img id = "img_love" src="images/love.png" alt="love">
                     </button>
 
-                    <button id="c" onclick="imageClick(this.id )"> 
-                        <img id = "img_c" src="images/sad.png" alt="sad">
+                    <button id="war" onclick="imageClick(this.id)"> 
+                        <img id = "img_war" src="images/war.png" alt="war">
                     </button>
 
-                    <button id="d" onclick="imageClick(this.id )"> 
-                        <img id = "img_d" src="images/sad.png" alt="sad">
+                    <button id="fear" onclick="imageClick(this.id)"> 
+                        <img id = "img_fear" src="images/fear.png" alt="fear">
                     </button>
 
-                    <button id="e" onclick="imageClick(this.id )"> 
-                        <img id = "img_e" src="images/sad.png" alt="sad">
+                    <button id="crime" onclick="imageClick(this.id)"> 
+                        <img id = "img_crime" src="images/crime.png" alt="crime">
                     </button>
 
-                    <button id="f" onclick="imageClick(this.id )"> 
-                        <img id = "img_f" src="images/sad.png" alt="sad">
+                    <button id="angry" onclick="imageClick(this.id)"> 
+                        <img id = "img_angry" src="images/angry.png" alt="angry">
                     </button>
 
-                    <button id="g" onclick="imageClick(this.id )"> 
-                        <img id = "img_g" src="images/sad.png" alt="sad">
+                    <button id="alcohol" onclick="imageClick(this.id)"> 
+                        <img id = "img_alcohol" src="images/alcohol.png" alt="alcohol">
                     </button>
 
                 </div>
             </div> 
 
             <div id="submit_div"> 
-                <button id = "submit_button" onclick="submit()"> Generate Sentence! </button>
+                <button id = "submit_button" onclick="submit()"> Generate a Phrase! </button>
             </div>
 
             <div id="results_div">
