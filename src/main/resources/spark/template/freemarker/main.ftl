@@ -40,15 +40,43 @@
 
             <div id="facet_div"> Sentence facets will go here!
                 <div id="imgGrid">
-                    <img id="sad" src="images/sad.png" onclick="imageClick()" alt="sad">
-                    <img id="h" src="images/sad.png" onclick="imageClick(this.id)" alt="sad">
-                    <img id="a" src="images/sad.png" onclick="imageClick(this.id)" alt="sad">
-                    <img id="b" src="images/sad.png" onclick="imageClick(this.id)" alt="sad">
-                    <img id="c" src="images/sad.png" onclick="imageClick(this.id)" alt="sad">
-                    <img id="d" src="images/sad.png" onclick="imageClick(this.id)" alt="sad">
-                    <img id="e" src="images/sad.png" onclick="imageClick(this.id)" alt="sad">
-                    <img id="f" src="images/sad.png" onclick="imageClick(this.id)" alt="sad">
-                    <img id="g" src="images/sad.png" onclick="imageClick(this.id)" alt="sad">
+
+                    <button id="sad" onclick="imageClick(this.id )"> 
+                        <img id="img_sad" src="images/sad.png" alt="sad">
+                    </button>
+
+                    <button id="h" onclick="imageClick(this.id )"> 
+                        <img id = "img_h" src="images/sad.png" alt="sad">
+                    </button>
+
+                    <button id="a" onclick="imageClick(this.id )"> 
+                        <img id = "img_a" src="images/sad.png" alt="sad">
+                    </button>
+
+                    <button id="b" onclick="imageClick(this.id )"> 
+                        <img id = "img_b" src="images/sad.png" alt="sad">
+                    </button>
+
+                    <button id="c" onclick="imageClick(this.id )"> 
+                        <img id = "img_c" src="images/sad.png" alt="sad">
+                    </button>
+
+                    <button id="d" onclick="imageClick(this.id )"> 
+                        <img id = "img_d" src="images/sad.png" alt="sad">
+                    </button>
+
+                    <button id="e" onclick="imageClick(this.id )"> 
+                        <img id = "img_e" src="images/sad.png" alt="sad">
+                    </button>
+
+                    <button id="f" onclick="imageClick(this.id )"> 
+                        <img id = "img_f" src="images/sad.png" alt="sad">
+                    </button>
+
+                    <button id="g" onclick="imageClick(this.id )"> 
+                        <img id = "img_g" src="images/sad.png" alt="sad">
+                    </button>
+
                 </div>
             </div> 
 

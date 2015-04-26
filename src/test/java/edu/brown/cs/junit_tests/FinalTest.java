@@ -40,7 +40,7 @@ public class FinalTest {
     System.out.println(Arrays.toString(c.toArray()));
 
   }
-
+//
 //  @Test
 //  public void testTest() {
 //    assertTrue(1 == 1);
@@ -159,32 +159,55 @@ public class FinalTest {
 //      //System.out.println(s);
 //    }
 //  }  
-//  
+  
   
   @Test
   //TODO: Fill in this test
   public void splitSentenceParseTest() {
-//    String sentence1 = 
-//        "I believe that she has met with considerable success .";
-//    String[] sentenceArray = sentence1
-//        .toLowerCase()
-//        //.replaceAll("[^a-z, -]", "")
-//        .split(" ");
-//    for (String s : sentenceArray) {
-//      System.out.println(s);
-//    }
-//    Parser P = new Parser();
-//    List<ArrayList<String>> parsed = P.parseSentence(sentenceArray);  
+    String sentence1 = 
+        "I believe that she has met with considerable success .";
+    String[] sentenceArray = sentence1
+        .toLowerCase()
+        .replaceAll("[^a-z, -]", "")
+        .split(" ");
+    Parser P = new Parser();
+    List<ArrayList<String>> parsed = P.parseSentence(sentenceArray);  
 //    for (ArrayList<String> a : parsed) {
 //      print(a);
 //    }
-//    String[] sentenceArray = sentence1.split(" ");
-//    String[] text = new String[] {getSherlockText()};
-//    String[] pw = new String[] {"past", "disappointment, government, appointment, married"};
-//    MarkovManager man = new MarkovManager(text, pw);
-//    int[] indices = man.splitSentenceParse(sentenceArray);
-    //System.out.println(Arrays.toString(indices));
+    String[] text = new String[] {getSherlockText()};
+    String[] pw = new String[] {"past", "disappointment, government, appointment, married"};
+    MarkovManager man = new MarkovManager(text, pw);
+    int[] indices = man.splitSentenceParse(sentenceArray);
+    for (int i = 0; i < 10; i ++) {
+      indices = man.splitSentenceParse(sentenceArray);
+      assertTrue(indices[0] == 0 || indices[0] == 3 || indices[0] == 6);
+      assertTrue(indices[1] == 2 || indices[1] == 5 || indices[1] == 8);
+      //System.out.println(man.recombineSentence(sentence1, -2));
 
+    }
+    
+    String sentence2 = 
+        "And thus was solved the mystery of the sinister house with the " +
+            "copper beeches in front of the door";
+    String[] sentenceArray2 = sentence1
+        .toLowerCase()
+        .replaceAll("[^a-z, -]", "")
+        .split(" ");
+    List<ArrayList<String>> parsed2 = P.parseSentence(sentenceArray);
+    for (ArrayList<String> a : parsed) {
+      print(a);
+    }
+//    int[] indices2 = man.splitSentenceParse(sentenceArray);
+//    for (int i = 0; i < 10; i ++) {
+//      indices2 = man.splitSentenceParse(sentenceArray2);
+////      assertTrue(indices[0] == 0 || indices[0] == 3 || indices[0] == 6);
+////      assertTrue(indices[1] == 2 || indices[1] == 5 || indices[1] == 8);
+//      System.out.println(man.recombineSentence(sentence1, -2));
+//
+//    }
+    
+    
   }
   
   public String getSherlockText() {

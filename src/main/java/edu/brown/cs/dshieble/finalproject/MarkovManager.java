@@ -100,7 +100,8 @@ public class MarkovManager {
          // .toLowerCase()
           //.trim()
           //.replaceAll(" +", " ")
-          .replaceAll("[()\"]", "")
+          //.replaceAll("[()\"]", "")
+          .replaceAll("[^A-Za-z0-9,?!;\\.: -]", "")
           .split("(?<!Mr?s?|\\b[A-Z])\\.\\s*");
       //System.out.println(Arrays.toString(sentences));
       //System.out.println(Arrays.toString(sentences));
@@ -199,6 +200,8 @@ public class MarkovManager {
   /**
    * recombines a sentence - one iteration
    * @param sentence the sentence to recombine
+   * @param minAdder a paramreter to add to the
+   * minimum value for sentence length
    * @return a sentence that matches all of the facets.
    */
   public String recombineSentence(String sentence, int minAdder) {
@@ -206,13 +209,13 @@ public class MarkovManager {
     if (sentenceArray.length <= 1) {
       return null;
     }
-    Random rand = new Random();
     int[] startEnd = null;
-    if (rand.nextInt(100) < 90 && sentenceArray.length < 25) {
+    if (sentenceArray.length < 25) {
       startEnd = splitSentenceParse(sentenceArray);
     } else {
       startEnd = splitSentenceNaive(sentenceArray);
     }
+    //System.out.println(Arrays.toString(startEnd));
     String startWord = sentenceArray[startEnd[0]];
     String endWord = sentenceArray[startEnd[1]];
     int len = startEnd[1] - startEnd[0];
@@ -291,11 +294,13 @@ public class MarkovManager {
     } else {
       bad = true;
     }
+    //System.out.println(bad);
     if (bad) {
       return splitSentenceNaive(sentenceArray);
     }
     Random rand = new Random();
     int index = rand.nextInt(parsed.size());
+    System.out.println(index);
     //System.out.println(parsed.size());
     int start = 0;
     for (int i = 0; i < index; i++) {

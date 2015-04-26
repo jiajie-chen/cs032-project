@@ -10,6 +10,7 @@
             //This array stores the unsimplified names of the location (unsimplified keys of location_dict) -> only locations that have books published in the current time period are included
             var names = [];
             var positions = [];
+            var sentenceFacets = [];
 
             var slider_min = -2000;
             var slider_max = 2000;
@@ -84,11 +85,15 @@
     					author: document.getElementById("author_select").value,
     					date_start: slider_start,
     					date_end: slider_end
-    					//facets will go here next
     			};
+                //locations
     			for (var i = 0; i < selected.length; i++) {
     				postParameters["l" + i] = selected[i];
     			}
+                //sentence facets
+                for (var i = 0; i < sentenceFacets.length; i++) {
+                    postParameters["f" + i] = sentenceFacets[i];
+                }
     			console.log(postParameters)
         		$.post("/results", postParameters, function(responseJSON){
         			var responseObject = JSON.parse(responseJSON);
@@ -97,12 +102,20 @@
             }
 
             //responds when a facet image is clicked
-            // function imageClick() {
-            //     alert(id);
-            // }
- $("#sad").click(function(){
-    alert("fff");
-});
+            function imageClick(id) {
+                var index = sentenceFacets.indexOf(id);
+                                console.log(index)
+
+                if (index != -1) {
+                    sentenceFacets.splice(index, 1);
+                    document.getElementById(id).style["background-color"] = "white";
+                } else {
+                    sentenceFacets.push(id);
+                    document.getElementById(id).style["background-color"] = "red";
+
+                }
+            }
+
 
             function reset_map() {
                 if (circles!=undefined) {

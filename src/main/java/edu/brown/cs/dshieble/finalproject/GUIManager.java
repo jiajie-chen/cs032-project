@@ -99,6 +99,12 @@ public final class GUIManager {
         System.out.println(qm.value("l" + i));
         i++;
       }
+      i = 0;
+
+      while (qm.value("f" + i) != null) {
+        System.out.println(qm.value("f" + i));
+        i++;
+      }
       String str = man.generateSentence(10);
       Map<String, Object> variables = new ImmutableMap.Builder()
         .put("sentence", str)
