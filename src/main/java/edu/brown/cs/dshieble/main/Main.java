@@ -20,7 +20,7 @@ public class Main {
       Parser parser = new Parser();
       //parser.buildRules("src/main/java/edu/brown/cs/qc14/parser/wsj2-21.blt");
       String[] terminals = 
-          "any change of control in farmers needs approval of the insurance commissioners in the nine states .".split(" ");
+          "i believe that she had met with considerable success .".split(" ");
       System.out.println("****  " + parser.parseSentence(terminals));
       System.out.println(parser.testParsing(terminals));
       // parseSentence method takes a string of sentence (punctuations and words separated by space)
@@ -56,18 +56,7 @@ public class Main {
       String words = builder
            .toString();
       String[] books = new String[] {words};
-      MarkovManager man = new MarkovManager(books,
-          Arrays.copyOfRange(
-          args, 2, args.length));
-      GUIManager.makeGUI(man);
-//      for (int i = 0; i < 10; i++) {
-//        System.out.println(man.generateSentence(10));
-//      }
-      
-      
-      
-      
-      
+      GUIManager.makeGUI(books);
       //DATABASE STUFF FOR DEMO
     } else if (args[0].equals("3")) {
       System.out.println("DATABASE STUFF SHOULD BE HERE");

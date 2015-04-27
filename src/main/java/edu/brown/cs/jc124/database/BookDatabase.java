@@ -49,7 +49,7 @@ public class BookDatabase implements Closeable {
     facetQuery.deleteCharAt(facetQuery.length() - 1).append(")");
     
     String query = "SELECT"
-        + " b.file_name"
+        + " b.file_id"
         + " FROM"
         + " " + BOOK_TABLE + " AS b, " + FACET_TABLE + " AS f"
         + " WHERE"
@@ -82,7 +82,7 @@ public class BookDatabase implements Closeable {
    */
   public Set<String> getBooksOfAuthor(String author) throws SQLException {
     String query = "SELECT"
-        + " b.file_name"
+        + " b.file_id"
         + " FROM"
         + " " + BOOK_TABLE + " AS b, " + AUTHOR_TABLE + " AS a"
         + " WHERE"
@@ -110,7 +110,7 @@ public class BookDatabase implements Closeable {
     }
     
     String query = "SELECT"
-        + " b.file_name"
+        + " b.file_id"
         + " FROM"
         + " " + BOOK_TABLE + " AS b, " + AUTHOR_TABLE + " AS a"
         + " WHERE"

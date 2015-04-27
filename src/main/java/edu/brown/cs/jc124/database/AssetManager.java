@@ -12,8 +12,10 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import com.google.common.collect.ImmutableSet;
+
 public class AssetManager {
-  private static final String BOOK_PATH = "/home/jchen/course/cs032-project/books/";
+  private static final String BOOK_PATH = "/home/jchen/course/temp/books/";
   private static final String FILE_TYPE = ".txt";
   private BookDatabase bd;
   
@@ -78,12 +80,16 @@ public class AssetManager {
     return new String[0];
   }
   
-  public void Main(String[] args) {
+  public static void main(String[] args) {
+    BookDatabase b;
     AssetManager a;
     try {
-      a = new AssetManager("/home/jchen/course/cs032-project/books/smallBooks.sqlite3");
+      b = new BookDatabase("/home/jchen/course/cs032-project/db/smallBooks.sqlite3");
+      a = new AssetManager(b);
+      //System.out.println(b.getBooksOfAttribute(ImmutableSet.of("Poetry")));
+      //System.out.println(b.getBooksOfAttribute(ImmutableSet.of("Poetry", "Mythology")));
       System.out.println(Arrays.toString(a.getFilesByAuthor("James Joyce")));
-    } catch (ClassNotFoundException |SQLException e) {
+    } catch (ClassNotFoundException | SQLException e) {
       // TODO Auto-generated catch block
       e.printStackTrace();
     }
