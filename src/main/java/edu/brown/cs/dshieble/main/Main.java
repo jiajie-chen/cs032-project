@@ -56,18 +56,7 @@ public class Main {
       String words = builder
            .toString();
       String[] books = new String[] {words};
-      MarkovManager man = new MarkovManager(books,
-          Arrays.copyOfRange(
-          args, 2, args.length));
-      GUIManager.makeGUI(man);
-//      for (int i = 0; i < 10; i++) {
-//        System.out.println(man.generateSentence(10));
-//      }
-      
-      
-      
-      
-      
+      GUIManager.makeGUI(books);
       //DATABASE STUFF FOR DEMO
     } else if (args[0].equals("3")) {
       System.out.println("DATABASE STUFF SHOULD BE HERE");
