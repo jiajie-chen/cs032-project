@@ -26,7 +26,7 @@ public class Parser {
 	private HashMap<String, Integer> _counts;
 	private HashMap[][] _tree;
 	private int _MAX_LENGTH = 25;
-	private HashSet<String> _clauseTags, _phraseTags, _verbTags, _prepTags, _subTags;
+	private HashSet<String> _clauseTags, _phraseTags, _verbTags, _prepTags, _subTags, _knownWords;
 	
 	public Parser() {
 		_rules = new HashMap<String, HashMap<String, Double>>();
@@ -41,6 +41,8 @@ public class Parser {
 		_subTags.addAll(_verbTags);
 		_subTags.addAll(_prepTags);
 		this.buildRules("src/main/java/edu/brown/cs/qc14/parser/wsj2-21.blt");
+		_knownWords = new HashSet<String>();
+		this.loadKnownWords("src/main/java/edu/brown/cs/qc14/parser/known_words.txt");
 	}
 	
 	public ArrayList<Pointers> partialParse(Pointers top) {
@@ -177,6 +179,7 @@ public class Parser {
 	
 	@SuppressWarnings("unchecked")
 	public ArrayList<ArrayList<String>> parseSentence(String[] terminals) {
+		terminals = this.preprocess(terminals);
 		ArrayList<ArrayList<String>> res = new ArrayList<ArrayList<String>>();
 		if (terminals.length > _MAX_LENGTH) {
 			res.add(new ArrayList<String>(Arrays.asList("*IGNORE*")));
@@ -222,51 +225,8 @@ public class Parser {
 			}
 		}
 	}
+
 	
-	/*
-	 * cell -- list of Symbols
-	 * parse tree -- [[C, C, C], [C, C], [C]]  a list of levels of cells
-	 * 
-	 */
-	@SuppressWarnings("unchecked")
-	public void parse(String filepath, String outputpath) throws FileNotFoundException, UnsupportedEncodingException {
-		PrintWriter writer = new PrintWriter(outputpath, "UTF-8");
-		BufferedReader reader;
-		Path path = FileSystems.getDefault().getPath(filepath, "");
-		try {
-			reader = Files.newBufferedReader(path);
-			String line = null;
-			while ((line = reader.readLine()) != null) {
-				String[] terminals = line.split(" ");
-				
-				// tree : {label: [left, right]}
-				// values : {label: mu}
-				if (terminals.length > 25) {
-					//System.out.println("*IGNORE*");
-					writer.println("*IGNORE*");
-				} else {
-					_tree = new HashMap[terminals.length][terminals.length];
-					for (int m=1; m <= terminals.length; m++) {
-						for (int n=0; n <= terminals.length-m; n++) {
-							this.fillCell(n, n+m, terminals);
-						}
-					}
-					
-					HashMap<String, Pointers> root = _tree[terminals.length-1][0];
-					
-					if (root.containsKey("TOP")) {
-						String result = this.debinarization(root.get("TOP"));
-						//System.out.println(result);
-						writer.println(result);
-					}
-				}
-			}
-			reader.close();
-		} catch (IOException e) {
-			System.err.println("ERROR: cannot open file");
-		}
-		writer.close();
-	}
 	
 	// cell(i,k)
 	@SuppressWarnings("unchecked")
@@ -410,5 +370,31 @@ public class Parser {
 		}
 		repr += ")";
 		return repr;
+	}
+	
+	public String[] preprocess(String[] sentence) {
+		for (int i=0; i<sentence.length; i ++) {
+			if (!_knownWords.contains(sentence[i])) {
+				sentence[i] = "*UNK*";
+			}
+		}
+		return sentence;
+	}
+	
+	public void loadKnownWords(String filepath) {
+		BufferedReader reader;
+		Path path = FileSystems.getDefault().getPath(filepath, "");
+		try {
+			reader = Files.newBufferedReader(path);
+			String line = null;
+			while ((line = reader.readLine()) != null) {
+				String[] words = line.split(" ");
+				if (words.length == 1) {
+					_knownWords.add(words[0]);
+				}
+			}
+		} catch (IOException e) {
+			System.err.println("ERROR: cannot open file");
+		}
 	}
 }

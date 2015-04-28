@@ -2,7 +2,13 @@ package edu.brown.cs.junit_tests;
 
 import static org.junit.Assert.*;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.nio.file.FileSystems;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.HashSet;
 
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -36,9 +42,37 @@ public class ParserTest {
 		res = _parser.pointerToStrings(A);
 		assertTrue(res.size() == 3);
 	}
+	
+	@Test
+	public void testPreprocess() {
+		String[] input = {"dfghkjdfg", ",", ".", "me", "it", "popopopo"};
+		input = _parser.preprocess(input);
+		String[] result = {"*UNK*", ",", ".", "me", "it", "*UNK*"};
+		for (int i=0; i<input.length; i++) {
+			assertTrue(input[i].equals(result[i]));
+		}
+	}
 
 	@Test
-	public void test() {
+	public void testSimpleSentences() {
+		
+		System.out.println(_parser.testParsing(_parser.preprocess("he believes that she thinks that i say that it is a bump .".split(" "))));
+		System.out.println(_parser.testParsing(_parser.preprocess("shake off this Downey sleepe , deaths counterfeit , and look on death it selfe .".split(" "))));
+		System.out.println(_parser.testParsing(_parser.preprocess("oops .".split(" "))));
+		System.out.println(_parser.testParsing(_parser.preprocess("i have it .".split(" "))));
+		System.out.println(_parser.parseSentence(_parser.preprocess("i have it .".split(" "))));
+		System.out.println(_parser.parseSentence(_parser.preprocess("he believes that she thinks that i say that it is a bump .".split(" "))));
+		System.out.println(_parser.parseSentence(_parser.preprocess("shake off this Downey sleepe , deaths counterfeit , and look on death it selfe .".split(" "))));
+		System.out.println(_parser.parseSentence(_parser.preprocess("oops .".split(" "))));
+	}
+	
+	@Test
+	public void testMoreComplicated() {
+		
+	}
+	
+	@Test
+	public void testShort() {
 		
 	}
 
