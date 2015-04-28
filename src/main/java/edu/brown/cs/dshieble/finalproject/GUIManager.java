@@ -1,6 +1,8 @@
 package edu.brown.cs.dshieble.finalproject;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 import com.google.common.collect.ImmutableMap;
@@ -24,6 +26,9 @@ import spark.template.freemarker.FreeMarkerEngine;
 public final class GUIManager {
 
   private static final Gson GSON = new Gson();
+  private static String[] text;
+  private static MarkovManager oldMan;
+
 
 
   /**
@@ -35,14 +40,11 @@ public final class GUIManager {
 
   /**
    * Initializes the GUI.
-   * @param t - the trie manager
-   * @param m - the markov manager
-   * @param p - the modifiers
-   * @param l - the modifiers
-   * @param w - the modifiers
-   * @param s - the modifiers
+   * @param m the markov manager
    */
-  public static void makeGUI() {
+  public static void makeGUI(String[] t) {
+    text = t;
+    oldMan = null;
     runSparkServer();
   }
 
@@ -50,7 +52,7 @@ public final class GUIManager {
    * Opens the GUI.
    */
   private static void runSparkServer() {
-    Spark.setPort(5678);
+    Spark.setPort(5679);
     Spark.externalStaticFileLocation("src/main/resources/static");
     Spark.get("/", new GetHandler(), new FreeMarkerEngine());
     Spark.post("/results", new ResultsHandler());
@@ -94,20 +96,36 @@ public final class GUIManager {
      */
     public Object handle(final Request req, final Response res) {
       QueryParamsMap qm = req.queryMap();
-      System.out.println(qm.value("author"));
-      System.out.println(qm.value("date_start"));
-      System.out.println(qm.value("date_end"));
-      int i = 0;
-      while (qm.value("l" + i) != null) {
-        System.out.println(qm.value("l" + i));
-        i++;
+      MarkovManager man = null;
+      if (qm.value("unchanged").equals("yes")) {
+        man = oldMan;
+        System.out.println("unchanged");
+      } else {
+        System.out.println("changed");
+        int i = 0;
+        List<String> priorityWords = new ArrayList<String>();
+        while (qm.value("f" + i) != null) {
+          priorityWords.add(qm.value("f" + i));
+          i++;
+        }
+        String[] pwArray = priorityWords
+            .toArray(new String[priorityWords.size()]);
+        man = new MarkovManager(text, pwArray);
+        oldMan = man;
       }
-      String str = "spark told me this!";
+      String str = man.generateSentence(10);
       Map<String, Object> variables = new ImmutableMap.Builder()
         .put("sentence", str)
         .build();
       return GSON.toJson(variables);
     }
   }
-
+  //      System.out.println(qm.value("author"));
+  //      System.out.println(qm.value("date_start"));
+  //      System.out.println(qm.value("date_end"));
+  //      while (qm.value("l" + i) != null) {
+  //System.out.println(qm.value("l" + i));
+//        i++;
+//      }
+//      i = 0;
 }

@@ -10,6 +10,7 @@
             //This array stores the unsimplified names of the location (unsimplified keys of location_dict) -> only locations that have books published in the current time period are included
             var names = [];
             var positions = [];
+            var sentenceFacets = [];
 
             var slider_min = -2000;
             var slider_max = 2000;
@@ -20,7 +21,9 @@
             var maker = undefined;
             var svg = undefined;
             var g = undefined;
-            
+            var unchanged = false;
+            var pending = false;
+
             //Load the JSON files
             d3.json(Json, function(locations) {
                 locations.rows.forEach(function(d,i) {
@@ -57,6 +60,7 @@
                 $( "#label_div" ).append($('<label id="leftLabel">'+(slider_min)+'</label>').css("float","left"));
                 $( "#label_div" ).append($('<label id="rightLabel">'+(slider_max)+'</label>').css("float","right"));
                 $("#slider").on( "slidechange", function(event,ui) {
+                    unchanged = false;
                     Minimum = $("#slider").slider("values",0);
                     Maximum = $("#slider").slider("values",1);
                     console.log(Minimum)
@@ -71,38 +75,64 @@
                 for (var i = 0; i < 5; i ++) {
                     document.getElementById("author_select").innerHTML += "<option value=\" author_"+ i +"\"> author_" +i+"</option>"
                 }
+            
+                //on author change, set unchanged to false
+                document.getElementById("author_select").onchange = function() {unchanged = false};
 
             });
 
             function submit() {
-                //TODO: Change this by adding AJAX, sending this data and getting a sentence in return
-                // if (document.getElementById("author_select").value == undefined) {
-                //     alert("Please select an author")
-                //     return
-                // } 
+                //TODO: add sentence facets as well
                 if (selected.length == 0) {
                     alert("Please select at least one location")
                     return
                 }
-    			var postParameters = { 
-    					author: document.getElementById("author_select").value,
-    					date_start: slider_start,
-    					date_end: slider_end
-    					//facets will go here next
-    			};
-    			for (var i = 0; i < selected.length; i++) {
-    				postParameters["l" + i] = selected[i];
-    			}
-    			console.log(postParameters)
-        		$.post("/results", postParameters, function(responseJSON){
-        			var responseObject = JSON.parse(responseJSON);
-                    results_div.innerHTML = responseObject.sentence;
-        		})
+                if (!pending) {
+                    pending = true;
+                    document.getElementById("submit_button").innerHTML = "waiting...";
+
+        			var postParameters = {
+                        unchanged: unchanged ? "yes" : "no",
+        				author: document.getElementById("author_select").value,
+        				date_start: slider_start,
+        				date_end: slider_end
+        			};
+                    //locations
+        			for (var i = 0; i < selected.length; i++) {
+        				postParameters["l" + i] = selected[i];
+        			}
+                    //sentence facets
+                    for (var i = 0; i < sentenceFacets.length; i++) {
+                        postParameters["f" + i] = sentenceFacets[i];
+                    }
+                    unchanged = true;
+            		$.post("/results", postParameters, function(responseJSON){
+            			var responseObject = JSON.parse(responseJSON);
+                        results_div.innerHTML = responseObject.sentence;
+                        pending = false;
+                        document.getElementById("submit_button").innerHTML = "Generate a Phrase!";
+            		})
+                }
+            }
+
+            //responds when a facet image is clicked
+            function imageClick(id) {
+                var index = sentenceFacets.indexOf(id);
+                if (index != -1) {
+                    sentenceFacets.splice(index, 1);
+                    document.getElementById(id).style["background"] = "white";
+                    console.log(document.getElementById(id));
+                } else {
+                    sentenceFacets.push(id);
+                    document.getElementById(id).style["background"] = "red";
+                    console.log(document.getElementById(id));
+                }
+                unchanged = false;
             }
 
 
             function reset_map() {
-                if (circles!=undefined) {
+                if (circles != undefined) {
                     maker.update();
                 } else {
                     console.log("Circles not initialized")
@@ -136,32 +166,6 @@
             //accepts the name of a location, returns number of inscriptions, privy to current settings
             function getSize(location) {
                 return 10;
-                // var simpName = simplify_string(location);
-                // var size = 0;
-                // for (var t in multiHash[simpName]) {
-                //     if (types[t] == true) {
-                //         for (var l in multiHash[simpName][t]) {
-                //             if (languages[l] == true) {
-                //                 for (var r in multiHash[simpName][t][l]) {
-                //                     if (religions[r] == true) {
-                //                         size += multiHash[simpName][t][l][r];
-                //                     }
-                //                 }
-                //             }
-                //         }
-                //     }
-                // }
-                // return num2size(size);
-            }
-
-            //writes the contents of the selected array to the selected div
-            function writeSelected() {
-                string = "The selected places are: </br>";
-                for (var i = 0; i < selected.length; i++) {
-                    string += selected[i] + "</br>"
-                }
-                selected_div.innerHTML = string;
-
             }
 
             //returns the color of the input circle id, based on the different factors involved
@@ -291,6 +295,7 @@
 
                 //responds when circle is clicked - add or remove a circle from selected
                 circle_click = function(e) {
+                    unchanged = false;
                     simp = e.id
                     var index = selected.indexOf(simp);
                     if (index != -1) {
