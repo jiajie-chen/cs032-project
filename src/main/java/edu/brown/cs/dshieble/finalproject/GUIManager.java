@@ -17,6 +17,7 @@ import spark.Spark;
 import spark.TemplateViewRoute;
 import spark.template.freemarker.FreeMarkerEngine;
 
+import edu.brown.cs.jc124.database.*;
 
 /**
  * This class generates the localhost GUI.
@@ -28,6 +29,7 @@ public final class GUIManager {
   private static final Gson GSON = new Gson();
   private static String[] text;
   private static MarkovManager oldMan;
+  private static AssetManager db;
 
 
 
@@ -44,6 +46,7 @@ public final class GUIManager {
    */
   public static void makeGUI(String[] t) {
     text = t;
+    db = new AssetManager();
     oldMan = null;
     runSparkServer();
   }
@@ -81,6 +84,30 @@ public final class GUIManager {
   }
 
   /**
+   * Handles the author Request.
+   * @author dshieble
+   *
+   */
+  private static class AuthorHandler implements Route {
+
+    @Override
+    /**
+     * Handles the author request
+     * @param req
+     * @param res
+     * @return
+     */
+    public Object handle(final Request req, final Response res) {
+      String[] authors = db.getAllAuthors();
+      Map<String, Object> variables = new ImmutableMap.Builder()
+        .put("authors", authors)
+        .build();
+      return GSON.toJson(variables);
+    }
+  }
+
+
+  /**
    * Handles the results Request.
    * @author dshieble
    *
@@ -105,11 +132,12 @@ public final class GUIManager {
         int i = 0;
         List<String> priorityWords = new ArrayList<String>();
         while (qm.value("f" + i) != null) {
-          priorityWords.add(qm.value("f" + i));
+          priorityWords.add(qm.value("f" + i)); //add synonyms here
           i++;
         }
         String[] pwArray = priorityWords
             .toArray(new String[priorityWords.size()]);
+        //get text here
         man = new MarkovManager(text, pwArray);
         oldMan = man;
       }

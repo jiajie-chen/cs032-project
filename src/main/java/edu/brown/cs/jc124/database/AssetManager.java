@@ -15,8 +15,8 @@ import java.util.Set;
 import com.google.common.collect.ImmutableSet;
 
 public final class AssetManager {
-  private static final String DEFAULT_DB_PATH = "db/books.sqlite3";
-  private static final String BOOK_PATH = "/home/jchen/course/temp/books/";
+  private static final String DEFAULT_DB_PATH = "db/smallBooks.sqlite3";
+  private static final String BOOK_PATH = "books/";
   private static final String FILE_TYPE = ".txt";
   private BookDatabase bd;
   

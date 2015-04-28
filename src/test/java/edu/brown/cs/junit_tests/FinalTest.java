@@ -22,11 +22,13 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import edu.brown.cs.dshieble.finalproject.*;
-import edu.brown.cs.qc14.parser.Parser;
 import static org.junit.Assert.*;
 
 import com.google.common.collect.HashMultiset;
+
+//import edu.brown.cs.dshieble.finalproject.MarkovChain;
+//import edu.brown.cs.dshieble.finalproject.MarkovManager;
+//import edu.brown.cs.qc14.parser.Parser;
 
 
 public class FinalTest {
@@ -40,7 +42,7 @@ public class FinalTest {
     System.out.println(Arrays.toString(c.toArray()));
 
   }
-
+//
 //  @Test
 //  public void testTest() {
 //    assertTrue(1 == 1);
@@ -201,12 +203,12 @@ public class FinalTest {
 //      indices2 = man.splitSentenceParse(sentenceArray2);
 ////      assertTrue(indices[0] == 0 || indices[0] == 3 || indices[0] == 6);
 ////      assertTrue(indices[1] == 2 || indices[1] == 5 || indices[1] == 8);
-//      System.out.println(man.recombineSentence(sentence1, -2));
+//     // System.out.println(man.recombineSentence(sentence1, -2));
 //
 //    }
-    
-    
-  //}
+//    
+//    
+//  }
   
   public String getSherlockText() {
     return "And thus was solved the mystery of the sinister house with the " +
