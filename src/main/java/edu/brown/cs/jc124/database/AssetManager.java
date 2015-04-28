@@ -78,19 +78,21 @@ public final class AssetManager implements Closeable, AutoCloseable {
     return new String[0];
   }
   
-  public String[] getFilesByAttributes(Set<String> facets, double lat, double lng, int startYear, int endYear) {
+  public String[] getFilesByAttributes(Set<String> facets, String locationName, int startYear, int endYear) {
     try {
-      Set<String> l = bd.getBooksAtLocation(lat, lng);
-      Set<String> y = bd.getBooksBetweenYears(startYear, endYear);
+      Set<String> names = new HashSet<>();
       
-      Set<String> f = new HashSet<>();
+      Set<String> l = bd.getBooksAtLocationName(locationName);
+      names.addAll(l);
+      
+      Set<String> y = bd.getBooksBetweenYears(startYear, endYear);
+      names.retainAll(y);
+      
       if(facets != null && facets.size() > 0) {
-        f = bd.getBooksWithFacets(facets);
+        Set<String> f = bd.getBooksWithFacets(facets);
+        names.retainAll(f);
       }
       
-      Set<String> names = new HashSet<>(f);
-      names.retainAll(l);
-      names.retainAll(y);
       return loadBooksByName(names);
     } catch (SQLException e) {
       System.err.println("GET ATTRIBUTES ERROR: " + e.getMessage());

@@ -79,22 +79,18 @@ public class BookDatabase implements Closeable {
     return toReturn;
   }
   
-  public Set<String> getBooksAtLocation(double lat, double lng) throws SQLException {
+  public Set<String> getBooksAtLocationName(String locationName) throws SQLException {
     String query = "SELECT"
         + " bl.book_id"
         + " FROM"
-        + " " + BOOK_LOCATION_TABLE + " AS bl,"
-        + " " + LOCATION_TABLE + " AS l"
+        + " " + BOOK_LOCATION_TABLE + " AS bl"
         + " WHERE"
-        + "  bl.region = l.region"
-        + "  AND l.latitude = ?"
-        + "  AND l.longitude = ?"
+        + "  bl.region = ?"
         + " GROUP BY bl.book_id;";
     
     Set<String> toReturn = new HashSet<>();
     try (PreparedStatement stat = conn.prepareStatement(query)) {
-      stat.setDouble(1, lat);
-      stat.setDouble(2, lng);
+      stat.setString(1, locationName);
       
       try (ResultSet rs = stat.executeQuery()) {
         while (rs.next()) {
