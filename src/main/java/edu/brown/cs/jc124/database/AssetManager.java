@@ -62,7 +62,7 @@ public class AssetManager {
   
   public String[] getFilesByAuthor(String author) {
     try {
-      Set<String> names = bd.getBooksOfAuthor(author);
+      Set<String> names = bd.getBooksByAuthor(author);
       return loadBooksByName(names);
     } catch (SQLException e) {
       System.err.println("LOAD BY AUTHOR ERROR: " + e.getMessage());
@@ -72,7 +72,7 @@ public class AssetManager {
   
   public String[] getFilesByFacet(Set<String> facets) {
     try {
-      Set<String> names = bd.getBooksOfAttribute(facets);
+      Set<String> names = bd.getBooksWithAttribute(facets);
       return loadBooksByName(names);
     } catch (SQLException e) {
       System.err.println("LOAD BY FACET ERROR: " + e.getMessage());
@@ -90,7 +90,6 @@ public class AssetManager {
       //System.out.println(b.getBooksOfAttribute(ImmutableSet.of("Poetry", "Mythology")));
       System.out.println(Arrays.toString(a.getFilesByAuthor("James Joyce")));
     } catch (ClassNotFoundException | SQLException e) {
-      // TODO Auto-generated catch block
       e.printStackTrace();
     }
     

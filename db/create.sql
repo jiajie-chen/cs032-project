@@ -37,6 +37,13 @@ CREATE TABLE book_location (
         REFERENCES location(region) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
+CREATE TABLE synonym (
+    word TEXT
+        NOT NULL ON CONFLICT IGNORE,
+    synonym TEXT
+        NOT NULL ON CONFLICT IGNORE
+);
+
 CREATE INDEX year_index ON book(year);
 CREATE INDEX title_index ON book(title);
 
@@ -52,9 +59,12 @@ CREATE INDEX longitude_index ON location(longitude);
 CREATE INDEX book_location_index ON book_location(book_id);
 CREATE INDEX location_book_index ON book_location(region);
 
+CREATE INDEX synonym_index ON synonym(word);
+
 .mode csv
 .import book.csv book
 .import book_author.csv book_author
 .import book_facet.csv book_facet
 .import location.csv location
 .import book_location.csv book_location
+.import synonym.csv synonym

@@ -40,7 +40,58 @@ public class BookDatabase implements Closeable {
    * @return
    * @throws SQLException if the SQl query fails when executing.
    */
-  public Set<String> getBooksOfAttribute(Set<String> facets) throws SQLException {
+  public Set<String> getBooksByAuthorWithAttributeInRange(String author, Set<String> facets, int startYear, int endYear) throws SQLException {
+    // build a dynamic query for all in the set of facets
+    StringBuilder facetQuery = new StringBuilder("(");
+    for (int i = 0; i < facets.size(); i++) {
+      facetQuery.append("?,");
+    }
+    facetQuery.deleteCharAt(facetQuery.length() - 1).append(")");
+    
+    String query = "SELECT"
+        + " b.file_id"
+        + " FROM"
+        + " " + BOOK_TABLE + " AS b, "
+        + " " + FACET_TABLE + " AS f,"
+        + " " + AUTHOR_TABLE + " AS a"
+        + " WHERE"
+        + "  b.file_id = f.book_id"
+        + "  AND b.file_id = a.book_id"
+        + "  AND f.facet IN " + facetQuery
+        + "  AND a.author = ?"
+        + "  AND b.year BETWEEN (?, ?)"
+        + " GROUP BY b.file_id"
+        + " HAVING Count(DISTINCT b.file_id) = ?;";
+    
+    Set<String> toReturn = new HashSet<>();
+    try (PreparedStatement stat = conn.prepareStatement(query)) {
+      int i = 1;
+      for (String f : facets) {
+        stat.setString(i, f);
+        i++;
+      }
+      
+      stat.setString(i, author);
+      stat.setInt(i + 1, startYear);
+      stat.setInt(i + 2, endYear);
+      stat.setInt(i + 3, i - 1);
+      
+      try (ResultSet rs = stat.executeQuery()) {
+        while (rs.next()) {
+          toReturn.add(rs.getString(1));
+        }
+      }
+    }
+    
+    return toReturn;
+  }
+  
+  /**
+   * @param facets
+   * @return
+   * @throws SQLException if the SQl query fails when executing.
+   */
+  public Set<String> getBooksWithAttribute(Set<String> facets) throws SQLException {
     // build a dynamic query for all in the set of facets
     StringBuilder facetQuery = new StringBuilder("(");
     for (int i = 0; i < facets.size(); i++) {
@@ -55,7 +106,8 @@ public class BookDatabase implements Closeable {
         + " WHERE"
         + "  b.file_id = f.book_id"
         + "  AND f.facet IN " + facetQuery
-        + " GROUP BY b.file_id;";
+        + " GROUP BY b.file_id"
+        + " HAVING Count(DISTINCT b.file_id) = ?;";
     
     Set<String> toReturn = new HashSet<>();
     try (PreparedStatement stat = conn.prepareStatement(query)) {
@@ -64,6 +116,8 @@ public class BookDatabase implements Closeable {
         stat.setString(i, f);
         i++;
       }
+      
+      stat.setInt(i, i - 1);
       
       try (ResultSet rs = stat.executeQuery()) {
         while (rs.next()) {
@@ -80,7 +134,7 @@ public class BookDatabase implements Closeable {
    * @return
    * @throws SQLException 
    */
-  public Set<String> getBooksOfAuthor(String author) throws SQLException {
+  public Set<String> getBooksByAuthor(String author) throws SQLException {
     String query = "SELECT"
         + " b.file_id"
         + " FROM"
@@ -104,7 +158,7 @@ public class BookDatabase implements Closeable {
     return toReturn;
   }
   
-  public Set<String> getBooksOfAuthorRange(String author, int startYear, int endYear) throws SQLException {
+  public Set<String> getBooksOfAuthorInRange(String author, int startYear, int endYear) throws SQLException {
     if (endYear < startYear) {
       throw new IllegalArgumentException("start year cannot be greater than end year");
     }
@@ -129,6 +183,25 @@ public class BookDatabase implements Closeable {
         while (rs.next()) {
           toReturn.add(rs.getString(1));
         }
+      }
+    }
+    
+    return toReturn;
+  }
+  
+  public Set<String> getAllAuthors() throws SQLException {
+    String query = "SELECT"
+        + " a.author"
+        + " FROM"
+        + " " + AUTHOR_TABLE + " AS a"
+        + " GROUP BY a.author;";
+    
+    Set<String> toReturn = new HashSet<>();
+    try (PreparedStatement stat = conn.prepareStatement(query)) {
+      try (ResultSet rs = stat.executeQuery()) {
+        while (rs.next()) {
+          toReturn.add(rs.getString(1));
+        } 
       }
     }
     
