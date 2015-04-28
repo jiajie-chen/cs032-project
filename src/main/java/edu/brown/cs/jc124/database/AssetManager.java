@@ -80,6 +80,24 @@ public class AssetManager {
     return new String[0];
   }
   
+  public String[] getAllAuthors() {
+    try {
+      return bd.getAllAuthors().toArray(new String[0]);
+    } catch (SQLException e) {
+      System.err.println("GET AUTHORS ERROR:" + e.getMessage());
+      return new String[0];
+    }
+  }
+  
+  public String[] getAllFacets() {
+    try {
+      return bd.getAllFacets().toArray(new String[0]);
+    } catch (SQLException e) {
+      System.err.println("GET FACETS ERROR:" + e.getMessage());
+      return new String[0];
+    }
+  }
+  
   public static void main(String[] args) {
     BookDatabase b;
     AssetManager a;
