@@ -1,7 +1,7 @@
 PRAGMA foreign_keys = ON;
 
 CREATE TABLE book (
-    file_id TEXT
+    book_id TEXT
         PRIMARY KEY ON CONFLICT IGNORE,
     title TEXT
         NOT NULL ON CONFLICT IGNORE,
@@ -10,7 +10,7 @@ CREATE TABLE book (
 
 CREATE TABLE book_author (
     book_id INT
-        REFERENCES book(file_id) ON DELETE CASCADE ON UPDATE CASCADE,
+        REFERENCES book(book_id) ON DELETE CASCADE ON UPDATE CASCADE,
     author TEXT
         NOT NULL ON CONFLICT IGNORE
         DEFAULT "Unknown"
@@ -18,7 +18,7 @@ CREATE TABLE book_author (
 
 CREATE TABLE book_facet (
     book_id INT
-        REFERENCES book(file_id) ON DELETE CASCADE ON UPDATE CASCADE,
+        REFERENCES book(book_id) ON DELETE CASCADE ON UPDATE CASCADE,
     facet TEXT
         NOT NULL ON CONFLICT IGNORE
 );
@@ -32,7 +32,7 @@ CREATE TABLE location (
 
 CREATE TABLE book_location (
     book_id INT
-        REFERENCES book(file_id) ON DELETE CASCADE ON UPDATE CASCADE,
+        REFERENCES book(book_id) ON DELETE CASCADE ON UPDATE CASCADE,
     region TEXT
         REFERENCES location(region) ON DELETE CASCADE ON UPDATE CASCADE
 );

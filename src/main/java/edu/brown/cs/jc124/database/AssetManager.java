@@ -1,5 +1,6 @@
 package edu.brown.cs.jc124.database;
 
+import java.io.Closeable;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -8,13 +9,14 @@ import java.io.UnsupportedEncodingException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
 import com.google.common.collect.ImmutableSet;
 
-public final class AssetManager {
+public final class AssetManager implements Closeable, AutoCloseable {
   private static final String DEFAULT_DB_PATH = "db/books.sqlite3";
   private static final String BOOK_PATH = "/home/jchen/course/temp/books/";
   private static final String FILE_TYPE = ".txt";
@@ -68,6 +70,7 @@ public final class AssetManager {
   public String[] getFilesByAuthor(String author) {
     try {
       Set<String> names = bd.getBooksByAuthor(author);
+      
       return loadBooksByName(names);
     } catch (SQLException e) {
       System.err.println("LOAD BY AUTHOR ERROR: " + e.getMessage());
@@ -75,12 +78,22 @@ public final class AssetManager {
     return new String[0];
   }
   
-  public String[] getFilesByFacet(Set<String> facets) {
+  public String[] getFilesByAttributes(Set<String> facets, double lat, double lng, int startYear, int endYear) {
     try {
-      Set<String> names = bd.getBooksWithAttribute(facets);
+      Set<String> l = bd.getBooksAtLocation(lat, lng);
+      Set<String> y = bd.getBooksBetweenYears(startYear, endYear);
+      
+      Set<String> f = new HashSet<>();
+      if(facets != null && facets.size() > 0) {
+        f = bd.getBooksWithFacets(facets);
+      }
+      
+      Set<String> names = new HashSet<>(f);
+      names.retainAll(l);
+      names.retainAll(y);
       return loadBooksByName(names);
     } catch (SQLException e) {
-      System.err.println("LOAD BY FACET ERROR: " + e.getMessage());
+      System.err.println("GET ATTRIBUTES ERROR: " + e.getMessage());
     }
     return new String[0];
   }
@@ -116,5 +129,10 @@ public final class AssetManager {
       e.printStackTrace();
     }
     
+  }
+
+  @Override
+  public void close() throws IOException {
+    bd.close();
   }
 }

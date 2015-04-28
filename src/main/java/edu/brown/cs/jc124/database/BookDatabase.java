@@ -19,8 +19,10 @@ import java.util.Set;
 public class BookDatabase implements Closeable {
   private Connection conn;
   private static final String BOOK_TABLE = "book";
-  private static final String FACET_TABLE = "book_facet";
-  private static final String AUTHOR_TABLE = "book_author";
+  private static final String BOOK_FACET_TABLE = "book_facet";
+  private static final String BOOK_AUTHOR_TABLE = "book_author";
+  private static final String LOCATION_TABLE = "location";
+  private static final String BOOK_LOCATION_TABLE = "book_location";
   
   /**
    * @param path
@@ -40,7 +42,7 @@ public class BookDatabase implements Closeable {
    * @return
    * @throws SQLException if the SQl query fails when executing.
    */
-  public Set<String> getBooksWithAttribute(Set<String> facets) throws SQLException {
+  public Set<String> getBooksWithFacets(Set<String> facets) throws SQLException {
     // build a dynamic query for all in the set of facets
     StringBuilder facetQuery = new StringBuilder("(");
     for (int i = 0; i < facets.size(); i++) {
@@ -49,14 +51,13 @@ public class BookDatabase implements Closeable {
     facetQuery.deleteCharAt(facetQuery.length() - 1).append(")");
     
     String query = "SELECT"
-        + " b.file_id"
+        + " f.book_id"
         + " FROM"
-        + " " + BOOK_TABLE + " AS b, " + FACET_TABLE + " AS f"
+        + " " + BOOK_FACET_TABLE + " AS f"
         + " WHERE"
-        + "  b.file_id = f.book_id"
-        + "  AND f.facet IN " + facetQuery
-        + " GROUP BY b.file_id"
-        + " HAVING count(DISTINCT b.file_id) = ?;";
+        + "  f.facet IN " + facetQuery
+        + " GROUP BY f.book_id"
+        + " HAVING count(DISTINCT f.book_id) = ?;";
     
     Set<String> toReturn = new HashSet<>();
     try (PreparedStatement stat = conn.prepareStatement(query)) {
@@ -77,6 +78,57 @@ public class BookDatabase implements Closeable {
     
     return toReturn;
   }
+  
+  public Set<String> getBooksAtLocation(double lat, double lng) throws SQLException {
+    String query = "SELECT"
+        + " bl.book_id"
+        + " FROM"
+        + " " + BOOK_LOCATION_TABLE + " AS bl,"
+        + " " + LOCATION_TABLE + " AS l"
+        + " WHERE"
+        + "  bl.region = l.region"
+        + "  AND l.latitude = ?"
+        + "  AND l.longitude = ?"
+        + " GROUP BY bl.book_id;";
+    
+    Set<String> toReturn = new HashSet<>();
+    try (PreparedStatement stat = conn.prepareStatement(query)) {
+      stat.setDouble(1, lat);
+      stat.setDouble(2, lng);
+      
+      try (ResultSet rs = stat.executeQuery()) {
+        while (rs.next()) {
+          toReturn.add(rs.getString(1));
+        }
+      }
+    }
+    
+    return toReturn;
+  }
+  
+  public Set<String> getBooksBetweenYears(int startYear, int endYear) throws SQLException {
+    String query = "SELECT"
+        + " b.book_id"
+        + " FROM"
+        + " " + BOOK_TABLE + " AS b"
+        + " WHERE"
+        + "  b.year BETWEEN (?, ?)"
+        + " GROUP BY b.book_id;";
+    
+    Set<String> toReturn = new HashSet<>();
+    try (PreparedStatement stat = conn.prepareStatement(query)) {
+      stat.setInt(1, startYear);
+      stat.setInt(2, endYear);
+      
+      try (ResultSet rs = stat.executeQuery()) {
+        while (rs.next()) {
+          toReturn.add(rs.getString(1));
+        }
+      }
+    }
+    
+    return toReturn;
+  }
 
   /**
    * @param author
@@ -85,13 +137,12 @@ public class BookDatabase implements Closeable {
    */
   public Set<String> getBooksByAuthor(String author) throws SQLException {
     String query = "SELECT"
-        + " b.file_id"
+        + " a.book_id"
         + " FROM"
-        + " " + BOOK_TABLE + " AS b, " + AUTHOR_TABLE + " AS a"
+        + " " + BOOK_AUTHOR_TABLE + " AS a"
         + " WHERE"
-        + "  b.file_id = a.book_id"
-        + "  AND a.author = ?"
-        + " GROUP BY b.file_id;";
+        + "  a.author = ?"
+        + " GROUP BY a.book_id;";
     
     Set<String> toReturn = new HashSet<>();
     try (PreparedStatement stat = conn.prepareStatement(query)) {
@@ -111,7 +162,7 @@ public class BookDatabase implements Closeable {
     String query = "SELECT"
         + " a.author"
         + " FROM"
-        + " " + AUTHOR_TABLE + " AS a"
+        + " " + BOOK_AUTHOR_TABLE + " AS a"
         + " GROUP BY a.author;";
     
     Set<String> toReturn = new HashSet<>();
@@ -130,7 +181,7 @@ public class BookDatabase implements Closeable {
     String query = "SELECT"
         + " f.facet"
         + " FROM"
-        + " " + FACET_TABLE + " AS f"
+        + " " + BOOK_FACET_TABLE + " AS f"
         + " GROUP BY f.facet;";
     
     Set<String> toReturn = new HashSet<>();
