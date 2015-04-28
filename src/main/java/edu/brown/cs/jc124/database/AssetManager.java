@@ -78,7 +78,7 @@ public final class AssetManager implements Closeable, AutoCloseable {
     return new String[0];
   }
   
-  public String[] getFilesByAttributes(Set<String> facets, String locationName, int startYear, int endYear) {
+  public String[] getFilesByAttributes(Set<String> facets, Set<String> locationName, int startYear, int endYear) {
     try {
       Set<String> names = new HashSet<>();
       
