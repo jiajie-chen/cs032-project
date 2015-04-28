@@ -14,7 +14,8 @@ import java.util.Set;
 
 import com.google.common.collect.ImmutableSet;
 
-public class AssetManager {
+public final class AssetManager {
+  private static final String DEFAULT_DB_PATH = "db/books.sqlite3";
   private static final String BOOK_PATH = "/home/jchen/course/temp/books/";
   private static final String FILE_TYPE = ".txt";
   private BookDatabase bd;
@@ -25,6 +26,10 @@ public class AssetManager {
   
   public AssetManager(BookDatabase bd) {
     this.bd = bd;
+  }
+  
+  public AssetManager() throws ClassNotFoundException, SQLException {
+    this.bd = new BookDatabase(DEFAULT_DB_PATH);
   }
   
   public String[] loadBooksByName(Set<String> filenames) {
