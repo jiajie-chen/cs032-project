@@ -61,7 +61,7 @@ public class BookDatabase implements Closeable {
         + "  AND a.author = ?"
         + "  AND b.year BETWEEN (?, ?)"
         + " GROUP BY b.file_id"
-        + " HAVING Count(DISTINCT b.file_id) = ?;";
+        + " HAVING count(DISTINCT b.file_id) = ?;";
     
     Set<String> toReturn = new HashSet<>();
     try (PreparedStatement stat = conn.prepareStatement(query)) {
@@ -107,7 +107,7 @@ public class BookDatabase implements Closeable {
         + "  b.file_id = f.book_id"
         + "  AND f.facet IN " + facetQuery
         + " GROUP BY b.file_id"
-        + " HAVING Count(DISTINCT b.file_id) = ?;";
+        + " HAVING count(DISTINCT b.file_id) = ?;";
     
     Set<String> toReturn = new HashSet<>();
     try (PreparedStatement stat = conn.prepareStatement(query)) {
@@ -201,19 +201,19 @@ public class BookDatabase implements Closeable {
       try (ResultSet rs = stat.executeQuery()) {
         while (rs.next()) {
           toReturn.add(rs.getString(1));
-        } 
+        }
       }
     }
     
     return toReturn;
   }
   
-  public Set<String> getAllAuthors() throws SQLException {
+  public Set<String> getAllFacets() throws SQLException {
     String query = "SELECT"
-        + " a.author"
+        + " f.facet"
         + " FROM"
-        + " " + AUTHOR_TABLE + " AS a"
-        + " GROUP BY a.author;";
+        + " " + FACET_TABLE + " AS f"
+        + " GROUP BY f.facet;";
     
     Set<String> toReturn = new HashSet<>();
     try (PreparedStatement stat = conn.prepareStatement(query)) {
