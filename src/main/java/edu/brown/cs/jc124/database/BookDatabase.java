@@ -207,6 +207,25 @@ public class BookDatabase implements Closeable {
     
     return toReturn;
   }
+  
+  public Set<String> getAllAuthors() throws SQLException {
+    String query = "SELECT"
+        + " a.author"
+        + " FROM"
+        + " " + AUTHOR_TABLE + " AS a"
+        + " GROUP BY a.author;";
+    
+    Set<String> toReturn = new HashSet<>();
+    try (PreparedStatement stat = conn.prepareStatement(query)) {
+      try (ResultSet rs = stat.executeQuery()) {
+        while (rs.next()) {
+          toReturn.add(rs.getString(1));
+        } 
+      }
+    }
+    
+    return toReturn;
+  }
 
   @Override
   public void close() throws IOException {
