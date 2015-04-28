@@ -14,9 +14,9 @@ import java.util.Set;
 
 /**
  * @author jchen
- *
+ * Manages the queries to the book SQLite database,
  */
-public class BookDatabase implements Closeable {
+public class BookDatabase implements Closeable, AutoCloseable {
   private Connection conn;
   private static final String BOOK_TABLE = "book";
   private static final String BOOK_FACET_TABLE = "book_facet";
@@ -25,9 +25,10 @@ public class BookDatabase implements Closeable {
   private static final String BOOK_LOCATION_TABLE = "book_location";
   
   /**
-   * @param path
-   * @throws ClassNotFoundException
-   * @throws SQLException
+   * Creates a BookDatabase that queries the SQLite database at the specified path.
+   * @param path the path to the SQLite table.
+   * @throws ClassNotFoundException if the SQLite adapter is not found.
+   * @throws SQLException if the connection to the given table cannot be made.
    */
   public BookDatabase(String path) throws ClassNotFoundException, SQLException {
     Class.forName("org.sqlite.JDBC");
@@ -38,8 +39,9 @@ public class BookDatabase implements Closeable {
   }
   
   /**
-   * @param facets
-   * @return
+   * Gets all books that contain the facets given. Each book has ALL of the facets given.
+   * @param facets the facets all the books must have.
+   * @return the filenames of all the books with all the facets.
    * @throws SQLException if the SQl query fails when executing.
    */
   public Set<String> getBooksWithFacets(Set<String> facets) throws SQLException {
@@ -79,6 +81,12 @@ public class BookDatabase implements Closeable {
     return toReturn;
   }
   
+  /**
+   * Gets all books that takes place in at least ONE of the locations given.
+   * @param locationName the names of the locations for the books to be in.
+   * @return the books where 
+   * @throws SQLException
+   */
   public Set<String> getBooksAtLocationName(Set<String> locationName) throws SQLException {
     // build a dynamic query for all in the set of locations
     StringBuilder locationQuery = new StringBuilder("(");
@@ -119,7 +127,7 @@ public class BookDatabase implements Closeable {
         + " FROM"
         + " " + BOOK_TABLE + " AS b"
         + " WHERE"
-        + "  b.year BETWEEN (?, ?)"
+        + "  b.year BETWEEN ? AND ?"
         + " GROUP BY b.book_id;";
     
     Set<String> toReturn = new HashSet<>();
