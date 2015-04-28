@@ -46,7 +46,11 @@ public final class GUIManager {
    */
   public static void makeGUI(String[] t) {
     text = t;
-    db = new AssetManager();
+    try {
+      db = new AssetManager();
+    } catch (Exception e) {
+      db = null;
+    }
     oldMan = null;
     runSparkServer();
   }
@@ -59,6 +63,8 @@ public final class GUIManager {
     Spark.externalStaticFileLocation("src/main/resources/static");
     Spark.get("/", new GetHandler(), new FreeMarkerEngine());
     Spark.post("/results", new ResultsHandler());
+    Spark.post("/author", new AuthorHandler());
+
   }
 
   /**
@@ -126,9 +132,7 @@ public final class GUIManager {
       MarkovManager man = null;
       if (qm.value("unchanged").equals("yes")) {
         man = oldMan;
-        System.out.println("unchanged");
       } else {
-        System.out.println("changed");
         int i = 0;
         List<String> priorityWords = new ArrayList<String>();
         while (qm.value("f" + i) != null) {
@@ -138,6 +142,7 @@ public final class GUIManager {
         String[] pwArray = priorityWords
             .toArray(new String[priorityWords.size()]);
         //get text here
+            System.out.println(Arrays.toString(pwArray));
         man = new MarkovManager(text, pwArray);
         oldMan = man;
       }

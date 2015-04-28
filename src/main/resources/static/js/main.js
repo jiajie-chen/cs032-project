@@ -63,21 +63,27 @@
                     unchanged = false;
                     Minimum = $("#slider").slider("values",0);
                     Maximum = $("#slider").slider("values",1);
-                    console.log(Minimum)
-                    console.log(Maximum)
                     slider_start = Math.min(Minimum,Maximum);
                     slider_end = Math.max(Minimum,Maximum);
                     document.getElementById("leftLabel").innerHTML = slider_start;
                     document.getElementById("rightLabel").innerHTML = slider_end;
                 });
-                //initializing the author slider
-                //TODO: Change this part to a get request of all author's names
-                for (var i = 0; i < 5; i ++) {
-                    document.getElementById("author_select").innerHTML += "<option value=\" author_"+ i +"\"> author_" +i+"</option>"
-                }
-            
-                //on author change, set unchanged to false
-                document.getElementById("author_select").onchange = function() {unchanged = false};
+
+
+
+                //fill author box
+                $.post("/author", {}, function(responseJSON) {
+                    var responseObject = JSON.parse(responseJSON);
+                    for (var i = 0; i < responseObject.authors.length; i ++) {
+                        var name = responseObject.authors[i];
+                        document.getElementById("author_select").innerHTML += "<option value=\" "+ name +"\"> " + name +"</option>"
+                    }
+                    //on author change, set unchanged to false
+                    document.getElementById("author_select").onchange = function() {unchanged = false};
+                })
+
+
+
 
             });
 

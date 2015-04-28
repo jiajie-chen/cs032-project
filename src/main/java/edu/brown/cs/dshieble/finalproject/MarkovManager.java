@@ -69,7 +69,12 @@ public class MarkovManager {
   /**
    * maximum sentence length
    */
-  private static final int maxLength = 8;
+  private static final int bigLength = 8;
+
+  /**
+   * maximum sentence length
+   */
+  private static final int maxLength = 25;
   
   /**
    * priority words, in order
@@ -106,7 +111,10 @@ public class MarkovManager {
       //System.out.println(Arrays.toString(sentences));
       //System.out.println(Arrays.toString(sentences));
       for (int j = 0; j < sentences.length; j++) {
-        String sentence = sentences[j].replaceAll(" +", " ");
+        //TODO: Also replace all !,?, . with empty
+        String sentence = sentences[j]
+          .replaceAll(" +", " ")
+          .replaceAll("\\.!?", "");
         String[] sentenceArray = sentence.split(" ");
         hasPriority = false;
         for (String word : pW) {
@@ -174,9 +182,12 @@ public class MarkovManager {
     //System.out.println("Begin ");
     //System.out.println(sentence);
     for (int i = 0; i < recombinations; i++) {
+      if (sentence.length() > maxLength && i > 5) {
+        break;
+      }
       if (sentence.length() <= minLength) {
         sentence = recombineSentence(sentence, 1);
-      } else if (sentence.length() > maxLength) {
+      } else if (sentence.length() > bigLength) {
         sentence = recombineSentence(sentence, -10);
       } else {
         sentence = recombineSentence(sentence, -2);
