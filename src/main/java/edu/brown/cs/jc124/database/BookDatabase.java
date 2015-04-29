@@ -243,8 +243,8 @@ public class BookDatabase implements Closeable, AutoCloseable {
     String query = "SELECT"
         + " l.region, l.latitude, l.longitude"
         + " FROM"
-        + "  $LOCATION_TABLE AS f"
-        + " GROUP BY f.facet;";
+        + "  $LOCATION_TABLE AS l"
+        + " GROUP BY l.region;";
     query = query.replace("$LOCATION_TABLE", LOCATION_TABLE);
     
     Set<BookLocation> toReturn = new HashSet<>();
