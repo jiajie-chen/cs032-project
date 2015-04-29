@@ -12,7 +12,7 @@
             var positions = [];
             var sentenceFacets = [];
 
-            var slider_min = -2000;
+            var slider_min = 1500;
             var slider_max = 2000;
             var slider_start = slider_min;
             var slider_end = slider_max;
@@ -76,7 +76,7 @@
                 $("#slider").slider({ values: [slider_min,slider_max]});
                 $("#slider").slider({ min: slider_min});
                 $("#slider").slider({ max: slider_max});
-                $( "#label_div" ).append($('<label id="leftLabel">'+(slider_min)+'</label>').css("float","left"));
+                $( "#label_div" ).append($('<label id="leftLabel">'+(slider_min + " or before" )+'</label>').css("float","left"));
                 $( "#label_div" ).append($('<label id="rightLabel">'+(slider_max)+'</label>').css("float","right"));
                 $("#slider").on( "slidechange", function(event,ui) {
                     unchanged = false;
@@ -84,7 +84,7 @@
                     Maximum = $("#slider").slider("values",1);
                     slider_start = Math.min(Minimum,Maximum);
                     slider_end = Math.max(Minimum,Maximum);
-                    document.getElementById("leftLabel").innerHTML = slider_start;
+                    document.getElementById("leftLabel").innerHTML = slider_start == slider_min ? 1500 + " or before" : slider_start;
                     document.getElementById("rightLabel").innerHTML = slider_end;
                 });
 
@@ -102,24 +102,43 @@
                 })
 
 
+                //fill facet box
+                $.post("/facet", {}, function(responseJSON) {
+                    var responseObject = JSON.parse(responseJSON);
+                    for (var i = 0; i < responseObject.facets.length; i ++) {
+                        var name = responseObject.facets[i];
+                        document.getElementById("facets_select").innerHTML += "<option value=\" "+ name +"\"> " + name +"</option>"
+                    }
+                    //on author change, set unchanged to false
+                    document.getElementById("facets_select").onchange = function() {unchanged = false};
+                })
 
 
             });
 
             function submit() {
-                //TODO: add sentence facets as well
-                if (selected.length == 0) {
-                    alert("Please select at least one location")
-                    return
-                }
+                // if (selected.length == 0) {
+                //     alert("Please select at least one location")
+                //     return
+                // }
                 if (!pending) {
-                    pending = true;
+                    var pending = true;
                     document.getElementById("results_div").innerHTML = "Generating Phrase...";
+                    //Get all selected facets from multiple select
+                    var options = document.getElementById("facets_select").options;
+                    //put all selected book facets into array
+                    var bookFacets = [];
+                    for (var i = 0; i < options.length; i++) {
+                        if (options[i].selected) {
+                            bookFacets.push(options[i].value)
+                        }
+                    }
 
         			var postParameters = {
+                        facets: bookFacets,
                         unchanged: unchanged ? "yes" : "no",
         				author: document.getElementById("author_select").value,
-        				date_start: slider_start,
+        				date_start: slider_start == slider_min ? -2000 : slider_start,
         				date_end: slider_end
         			};
                     //locations
@@ -130,11 +149,15 @@
                     for (var i = 0; i < sentenceFacets.length; i++) {
                         postParameters["f" + i] = sentenceFacets[i];
                     }
+                    //books facets
+                    for (var i = 0; i < bookFacets.length; i++) {
+                        postParameters["bf" + i] = bookFacets[i];
+                    }
                     unchanged = true;
             		$.post("/results", postParameters, function(responseJSON){
             			var responseObject = JSON.parse(responseJSON);
                         results_div.innerHTML = responseObject.sentence;
-                        document.getElementById("parse_div").innerHTML = responseObject.parsed;
+                        document.getElementById("parse_div").innerHTML = responseObject.tree;
 
                         pending = false;
             		})

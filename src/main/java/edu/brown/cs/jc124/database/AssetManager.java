@@ -22,7 +22,7 @@ public final class AssetManager implements Closeable, AutoCloseable {
   private static final String FILE_TYPE = ".txt";
   private static final int MAX_AUTHOR_BOOKS = 3;
   private static final int MAX_ATTRIBUTE_BOOKS = 3;
-  private static final int MAX_SENTENCES = 10;
+  private static final int MAX_SENTENCES = 50;
   
   private String BOOK_PATH;
   private BookDatabase bd;

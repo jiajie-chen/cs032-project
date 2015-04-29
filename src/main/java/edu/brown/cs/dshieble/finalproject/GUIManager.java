@@ -68,6 +68,7 @@ public final class GUIManager {
     Spark.get("/", new GetHandler(), new FreeMarkerEngine());
     Spark.post("/results", new ResultsHandler());
     Spark.post("/author", new AuthorHandler());
+    Spark.post("/facet", new FacetHandler());
     Spark.post("/location", new LocationHandler());
 
   }
@@ -113,6 +114,29 @@ public final class GUIManager {
       //System.out.println(Arrays.toString(locations));
       Map<String, Object> variables = new ImmutableMap.Builder()
         .put("locations", locations)
+        .build();
+      return GSON.toJson(variables);
+    }
+  }
+
+  /**
+   * Handles the facet Request.
+   * @author dshieble
+   *
+   */
+  private static class FacetHandler implements Route {
+
+    @Override
+    /**
+     * Handles the facet request
+     * @param req
+     * @param res
+     * @return
+     */
+    public Object handle(final Request req, final Response res) {
+      String[] facets = db.getAllFacets();
+      Map<String, Object> variables = new ImmutableMap.Builder()
+        .put("facets", facets)
         .build();
       return GSON.toJson(variables);
     }
@@ -166,10 +190,11 @@ public final class GUIManager {
         //priority words
         List<String> priorityWords = new ArrayList<String>();
         while (qm.value("f" + i) != null) {
-          String word = qm.value("f" + i);
+          String word = qm.value("f" + i).trim();
           String[] syns = db.getSynonyms(word);
           for (String s : syns) {
-            priorityWords.add(s);
+            System.out.println(s);
+            priorityWords.add(s.trim());
           }
           i++;
         }
@@ -177,25 +202,28 @@ public final class GUIManager {
         //locations
         Set<String> locationNames = new HashSet<String>();
         while (qm.value("l" + i) != null) {
-          locationNames.add(qm.value("l" + i));
+          locationNames.add(qm.value("l" + i).trim());
           i++;
         }
-
-
+        
+        i = 0;
+        //book facets
+        Set<String> bookFacets = new HashSet<String>();
+        while (qm.value("bf" + i) != null) {
+          bookFacets.add(qm.value("bf" + i).trim());
+          i++;
+        }
+        
         String[] pwArray = priorityWords
             .toArray(new String[priorityWords.size()]);
         //get text here
         List<String[]> text = new ArrayList<String[]>();
         text = db.loadBooksByAuthorOrAttributes(
           qm.value("author").trim(),
-          null,
+          bookFacets,
           locationNames,
           Integer.parseInt(qm.value("date_start")),
           Integer.parseInt(qm.value("date_end")));
-//        System.out.println(qm.value("author"));
-//        System.out.println(text.size());
-//        System.out.println(locationNames.size());
-        //System.out.println(man.getHash().size());
         man = new MarkovManager(text, pwArray);
         oldMan = man;
       }
@@ -203,15 +231,19 @@ public final class GUIManager {
       if (str == null) {
         str = "ERROR: No Sentence";
       }
-      List<ArrayList<String>> parsed = 
-        p.parseSentence(
-        str
+//      List<ArrayList<String>> parsed = 
+//        p.parseSentence(
+      String[] sentenceArray = str
         .toLowerCase()
-        .replaceAll("[^A-Za-z ]", "")
-        .split(" "));
+        .replaceAll("[^a-z ]", "")
+        .split(" ");
+      String parsed = p.testParsing(p.preprocess(sentenceArray));
+      //System.out.println(parsed);
+      
+      
       Map<String, Object> variables = new ImmutableMap.Builder()
         .put("sentence", str)
-        .put("tree", Arrays.toString(parsed.toArray()))
+        .put("tree", parsed)
         .build();
       return GSON.toJson(variables);
     }
@@ -224,4 +256,9 @@ public final class GUIManager {
 //        i++;
 //      }
 //      i = 0;
+  
+//System.out.println(qm.value("author"));
+//System.out.println(text.size());
+//System.out.println(locationNames.size());
+//System.out.println(man.getHash().size());
 }
