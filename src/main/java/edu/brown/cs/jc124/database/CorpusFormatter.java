@@ -43,7 +43,6 @@ public final class CorpusFormatter {
       }
     }
     
-    System.out.println(toReturn);
     return toReturn.toArray(new String[0]);
   }
   
