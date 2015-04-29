@@ -12,10 +12,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.ObjectArrays;
-
 /**
  * @author jchen
  * Manager class for handling book lookups and corpora loading, as well as metadata.
@@ -64,9 +60,11 @@ public final class AssetManager implements Closeable, AutoCloseable {
   /**
    * Given a set of filenames, loads the texts of each file into an array.
    * @param filenames the set of filenames.
+   * @param maxBooks the maximum amount of books to get
+   * @param maxSentences the maximum amount of sentences in each book to get
    * @return the array of corpora, each book a string array in the list.
    */
-  public List<String[]> loadBooksByFilename(Set<String> filenames, int maxBooks) {
+  public List<String[]> loadBooksByFilename(Set<String> filenames, int maxBooks, int maxSentences) {
     List<String[]> corpora = new ArrayList<>();
     
     List<String> subFiles = new ArrayList<>(filenames);
@@ -81,7 +79,7 @@ public final class AssetManager implements Closeable, AutoCloseable {
         fs.close();
         
         String[] sentences = CorpusFormatter.formatCorpus(new String(data, "UTF-8"));
-        corpora.add(subCorpus(sentences, MAX_SENTENCES));
+        corpora.add(subCorpus(sentences, maxSentences));
         
       } catch (FileNotFoundException e) {
         System.err.println("FILE LOAD ERROR: " + e.getMessage());
@@ -111,8 +109,8 @@ public final class AssetManager implements Closeable, AutoCloseable {
    * @return the corpora of files that satisfy all the facets, are in one of the locations, and published in the date range, or are by the author.
    */
   public List<String[]> loadBooksByAuthorOrAttributes(String author, Set<String> facets, Set<String> locationName, int startYear, int endYear) {
-    List<String[]> authors = loadBooksByFilename(getFilenamesByAuthor(author), MAX_AUTHOR_BOOKS);
-    List<String[]> attributes = loadBooksByFilename(getFilenamesByAttributes(facets, locationName, startYear, endYear), MAX_ATTRIBUTE_BOOKS);
+    List<String[]> authors = loadBooksByFilename(getFilenamesByAuthor(author), MAX_AUTHOR_BOOKS, MAX_SENTENCES);
+    List<String[]> attributes = loadBooksByFilename(getFilenamesByAttributes(facets, locationName, startYear, endYear), MAX_ATTRIBUTE_BOOKS, MAX_SENTENCES);
     
     List<String[]> toReturn = new ArrayList<>(authors);
     toReturn.addAll(attributes);
