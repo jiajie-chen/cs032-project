@@ -14,7 +14,7 @@ import java.util.Set;
 
 /**
  * @author jchen
- * Manages the queries to the book SQLite database,
+ * Manages the queries to the book SQLite database.
  */
 public class BookDatabase implements Closeable, AutoCloseable {
   private Connection conn;
@@ -59,7 +59,7 @@ public class BookDatabase implements Closeable, AutoCloseable {
         + " WHERE"
         + "  f.facet IN " + facetQuery
         + " GROUP BY f.book_id"
-        + " HAVING count(DISTINCT f.book_id) = ?;";
+        + " HAVING count(f.book_id) = ?;";
     
     Set<String> toReturn = new HashSet<>();
     try (PreparedStatement stat = conn.prepareStatement(query)) {
@@ -84,8 +84,8 @@ public class BookDatabase implements Closeable, AutoCloseable {
   /**
    * Gets all books that takes place in at least ONE of the locations given.
    * @param locationName the names of the locations for the books to be in.
-   * @return the books where 
-   * @throws SQLException
+   * @return the books that are in at least one of the locations.
+   * @throws SQLException if the SQl query fails when executing.
    */
   public Set<String> getBooksAtLocationName(Set<String> locationName) throws SQLException {
     // build a dynamic query for all in the set of locations
@@ -121,6 +121,13 @@ public class BookDatabase implements Closeable, AutoCloseable {
     return toReturn;
   }
   
+  /**
+   * Gets all books written between the start year and end year.
+   * @param startYear the starting year, inclusive.
+   * @param endYear the ending year, inclusive.
+   * @return the books written between the start year and end year.
+   * @throws SQLException if the SQl query fails when executing.
+   */
   public Set<String> getBooksBetweenYears(int startYear, int endYear) throws SQLException {
     String query = "SELECT"
         + " b.book_id"
@@ -146,9 +153,10 @@ public class BookDatabase implements Closeable, AutoCloseable {
   }
 
   /**
-   * @param author
-   * @return
-   * @throws SQLException 
+   * Gets all the books authored by the given author.
+   * @param author the author of the book.
+   * @return all the books authored by the given author.
+   * @throws SQLException if the SQl query fails when executing.
    */
   public Set<String> getBooksByAuthor(String author) throws SQLException {
     String query = "SELECT"
@@ -173,6 +181,11 @@ public class BookDatabase implements Closeable, AutoCloseable {
     return toReturn;
   }
   
+  /**
+   * Gets all the authors in the database.
+   * @return all the authors in the database.
+   * @throws SQLException if the SQl query fails when executing.
+   */
   public Set<String> getAllAuthors() throws SQLException {
     String query = "SELECT"
         + " a.author"
@@ -192,6 +205,11 @@ public class BookDatabase implements Closeable, AutoCloseable {
     return toReturn;
   }
   
+  /**
+   * Gets all the possible facets in the database.
+   * @return all the facets in the database.
+   * @throws SQLException  if the SQl query fails when executing.
+   */
   public Set<String> getAllFacets() throws SQLException {
     String query = "SELECT"
         + " f.facet"
