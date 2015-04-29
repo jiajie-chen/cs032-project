@@ -3,7 +3,14 @@ package edu.brown.cs.dshieble.finalproject;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
+import java.util.HashSet;
 import java.util.Map;
+
+import java.sql.SQLException;
+
+import java.io.IOException;
+
 
 import com.google.common.collect.ImmutableMap;
 import com.google.gson.Gson;
@@ -16,7 +23,6 @@ import spark.Route;
 import spark.Spark;
 import spark.TemplateViewRoute;
 import spark.template.freemarker.FreeMarkerEngine;
-
 import edu.brown.cs.jc124.database.*;
 
 /**
@@ -27,7 +33,6 @@ import edu.brown.cs.jc124.database.*;
 public final class GUIManager {
 
   private static final Gson GSON = new Gson();
-  private static String[] text;
   private static MarkovManager oldMan;
   private static AssetManager db;
 
@@ -44,11 +49,10 @@ public final class GUIManager {
    * Initializes the GUI.
    * @param m the markov manager
    */
-  public static void makeGUI(String[] t) {
-    text = t;
+  public static void makeGUI() {
     try {
       db = new AssetManager();
-    } catch (Exception e) {
+    } catch (ClassNotFoundException|SQLException e) {
       db = null;
     }
     oldMan = null;
@@ -134,19 +138,39 @@ public final class GUIManager {
         man = oldMan;
       } else {
         int i = 0;
+        //priority words
         List<String> priorityWords = new ArrayList<String>();
         while (qm.value("f" + i) != null) {
           priorityWords.add(qm.value("f" + i)); //add synonyms here
           i++;
         }
+        i = 0;
+        //locations
+        Set<String> locationNames = new HashSet<String>();
+        while (qm.value("l" + i) != null) {
+          locationNames.add(qm.value("l" + i));
+          i++;
+        }
+
+
         String[] pwArray = priorityWords
             .toArray(new String[priorityWords.size()]);
         //get text here
-            System.out.println(Arrays.toString(pwArray));
+        List<String[]> text = new ArrayList<String[]>();
+        text = db.loadBooksByAuthorOrAttributes(
+          qm.value("author").trim(),
+          null,
+          locationNames,
+          Integer.parseInt(qm.value("date_start")),
+          Integer.parseInt(qm.value("date_end")));
+//        System.out.println(qm.value("author"));
+//        System.out.println(text.size());
+//        System.out.println(locationNames.size());
+        //System.out.println(man.getHash().size());
         man = new MarkovManager(text, pwArray);
         oldMan = man;
       }
-      String str = man.generateSentence(10);
+      String str = man.generateSentence(8);
       Map<String, Object> variables = new ImmutableMap.Builder()
         .put("sentence", str)
         .build();

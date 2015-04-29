@@ -55,15 +55,15 @@ public class ParserTest {
 
 	@Test
 	public void testSimpleSentences() {
-		
-		System.out.println(_parser.testParsing(_parser.preprocess("he believes that she thinks that i say that it is a bump .".split(" "))));
-		System.out.println(_parser.testParsing(_parser.preprocess("shake off this Downey sleepe , deaths counterfeit , and look on death it selfe .".split(" "))));
-		System.out.println(_parser.testParsing(_parser.preprocess("oops .".split(" "))));
-		System.out.println(_parser.testParsing(_parser.preprocess("i have it .".split(" "))));
-		System.out.println(_parser.parseSentence(_parser.preprocess("i have it .".split(" "))));
-		System.out.println(_parser.parseSentence(_parser.preprocess("he believes that she thinks that i say that it is a bump .".split(" "))));
-		System.out.println(_parser.parseSentence(_parser.preprocess("shake off this Downey sleepe , deaths counterfeit , and look on death it selfe .".split(" "))));
-		System.out.println(_parser.parseSentence(_parser.preprocess("oops .".split(" "))));
+//		
+//		System.out.println(_parser.testParsing(_parser.preprocess("he believes that she thinks that i say that it is a bump .".split(" "))));
+//		System.out.println(_parser.testParsing(_parser.preprocess("shake off this Downey sleepe , deaths counterfeit , and look on death it selfe .".split(" "))));
+//		System.out.println(_parser.testParsing(_parser.preprocess("oops .".split(" "))));
+//		System.out.println(_parser.testParsing(_parser.preprocess("i have it .".split(" "))));
+//		System.out.println(_parser.parseSentence(_parser.preprocess("i have it .".split(" "))));
+//		System.out.println(_parser.parseSentence(_parser.preprocess("he believes that she thinks that i say that it is a bump .".split(" "))));
+//		System.out.println(_parser.parseSentence(_parser.preprocess("shake off this Downey sleepe , deaths counterfeit , and look on death it selfe .".split(" "))));
+//		System.out.println(_parser.parseSentence(_parser.preprocess("oops .".split(" "))));
 	}
 	
 	@Test

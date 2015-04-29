@@ -1,5 +1,5 @@
 body {
-    background-image: background_image.gif;
+    /*background-image: url(../images/picture.jpg);*/
 }
 
 #circles circle {
@@ -39,6 +39,7 @@ body {
 }
 
 #slider_div{
+    /*background-color: red;*/
     height:50%;
     width:20%;
     position:fixed;
@@ -88,6 +89,9 @@ body {
 }
 
 #results_div {
+    /*color: white;
+
+    background-color: blue;*/
     height:30%;
     width:30%;
     position:fixed;

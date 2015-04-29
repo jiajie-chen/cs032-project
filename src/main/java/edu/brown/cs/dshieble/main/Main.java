@@ -39,24 +39,24 @@ public class Main {
       //MARKOV STUFF FOR DEMO
     } else if (args[0].equals("2")) {
       //./run 2 faust.txt crime keys lamp thunder spirits be me the
-      assert args.length >= 3;
-      String filename = args[1];
-      StringBuilder builder = new StringBuilder();
-      try (BufferedReader fileReader = new BufferedReader(
-        new FileReader(filename))) {
-        String line = null;
-        while ((line = fileReader.readLine()) != null) {
-          builder.append(line);
-          builder.append(" ");
-        }
-      } catch (IOException e) {
-        System.out.println("ERROR: File IO Error");
-        return;
-      }
-      String words = builder
-           .toString();
-      String[] books = new String[] {words};
-      GUIManager.makeGUI(books);
+      // assert args.length >= 3;
+      // String filename = args[1];
+      // StringBuilder builder = new StringBuilder();
+      // try (BufferedReader fileReader = new BufferedReader(
+      //   new FileReader(filename))) {
+      //   String line = null;
+      //   while ((line = fileReader.readLine()) != null) {
+      //     builder.append(line);
+      //     builder.append(" ");
+      //   }
+      // } catch (IOException e) {
+      //   System.out.println("ERROR: File IO Error");
+      //   return;
+      // }
+      // String words = builder
+      //      .toString();
+      // String[] books = new String[] {words};
+      GUIManager.makeGUI();
       //DATABASE STUFF FOR DEMO
     } else if (args[0].equals("3")) {
       System.out.println("DATABASE STUFF SHOULD BE HERE");
