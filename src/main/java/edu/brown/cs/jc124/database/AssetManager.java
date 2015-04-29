@@ -64,7 +64,9 @@ public final class AssetManager implements Closeable, AutoCloseable {
   public String[] loadBooksByName(Set<String> filenames) {
     List<String> corpora = new ArrayList<>();
     
-    for (String name : filenames) {
+    List<String> subFiles = new ArrayList<>(filenames);
+    subFiles = subFiles.subList(0, Math.min(subFiles.size(), 6));
+    for (String name : subFiles) {
       File f = new File(BOOK_PATH + name + FILE_TYPE);
       try (FileInputStream fs = new FileInputStream(f)) {
         byte[] data = new byte[(int) f.length()];
