@@ -1,12 +1,15 @@
 package edu.brown.cs.jc124.database;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @author jchen
  * Utility class for formatting book texts into an appropriate format.
  */
 public final class CorpusFormatter {
-  private static final String SENTENCE_SPLITTER = "(?<!\\w\\.\\w.)(?<![A-Z][a-z]\\.)(?<=\\.|\\?|!)(\"|\\s)";
-  private static final String SENTENCE_TRIMMER = "^[^a-zA-Z0-9\\.\\?!]*|[^a-zA-Z0-9\\.\\?!]*$";
+  private static final String SENTENCE_CLEANER = "[^a-zA-Z0-9;,.?!\\s]";
+  private static final String SENTENCE_SPLITTER = "(?<!\\w\\.\\w.)(?<![A-Z][a-z]\\.)(?<=\\.|\\?|!)(\\s)";
   
   private static final String[] SENTENCE_WHITELIST = {
     
@@ -23,21 +26,25 @@ public final class CorpusFormatter {
    * @param raw the raw text to format.
    * @return the formatted corpus, split into sentences for each line, with noise data removed.
    */
-  public static String formatCorpus(String raw) {
-    String sentences = raw.replaceAll(SENTENCE_SPLITTER, "\n");
+  public static String[] formatCorpus(String raw) {
+    String sentences = raw.replaceAll(SENTENCE_CLEANER, "").replaceAll(SENTENCE_SPLITTER, "\n");
     String[] lines = sentences.split("\n");
     
-    StringBuilder sb = new StringBuilder();
+    List<String> toReturn = new ArrayList<>();
+    String sentence = "";
     for (String l : lines) {
-      String sentence = l.trim().replaceAll(SENTENCE_TRIMMER, "");
-      if (validSentence(sentence)) {
-        sb.append(sentence);
-        sb.append("\n");
+      String trimmed = l.trim();
+      if (validSentence(trimmed)) {
+        sentence += " " + trimmed;
+        if (sentence.matches("^[\\s\\S]*[.?!]$")) {
+          toReturn.add(sentence.trim());
+          sentence = "";
+        }
       }
     }
     
-    sb.deleteCharAt(sb.length() - 1);
-    return sb.toString();
+    System.out.println(toReturn);
+    return toReturn.toArray(new String[0]);
   }
   
   /**

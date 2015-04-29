@@ -32,23 +32,19 @@ public class CorpusFormatterTest {
   @Test
   public void sentenceSplitTest() {
     String sentenceSame =
-        "blah\n"
-        + "These are words.\n"
+        "These are words.\n"
         + "Words are cool!\n"
         + "Where are the words?";
-    assertTrue(sentenceSame.equals(CorpusFormatter.formatCorpus(sentenceSame)));
+    assertArrayEquals(sentenceSame.split("\n"), CorpusFormatter.formatCorpus(sentenceSame));
     
-    String sentenceSplit =
-        "blah\n"
-        + "These are words. Words are cool! Where are the words?";
-    assertTrue(sentenceSame.equals(CorpusFormatter.formatCorpus(sentenceSplit)));
+    String sentenceSplit = "These are words. Words are cool! Where are the words?";
+    assertArrayEquals(sentenceSame.split("\n"), CorpusFormatter.formatCorpus(sentenceSplit));
     
-    String sentenceJunk = 
-        "blah\n"
-        + "JJJJJJJJJ\n"
+    String sentenceJunk =
+        "JJJJJJJJJ\n"
         + "*&*@\n"
         + "\n"
         + "These are words. Words are cool! &&&&&&** Where are the words?";
-    assertTrue(sentenceSame.equals(CorpusFormatter.formatCorpus(sentenceJunk)));
+    assertArrayEquals(sentenceSame.split("\n"), CorpusFormatter.formatCorpus(sentenceJunk));
   }
 }

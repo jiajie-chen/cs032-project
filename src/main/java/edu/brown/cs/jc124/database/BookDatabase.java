@@ -1,7 +1,6 @@
 package edu.brown.cs.jc124.database;
 
 import java.io.Closeable;
-import java.io.File;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -213,7 +212,7 @@ public class BookDatabase implements Closeable, AutoCloseable {
   /**
    * Gets all the possible facets in the database.
    * @return all the facets in the database.
-   * @throws SQLException  if the SQl query fails when executing.
+   * @throws SQLException if the SQl query fails when executing.
    */
   public Set<String> getAllFacets() throws SQLException {
     String query = "SELECT"
@@ -228,6 +227,32 @@ public class BookDatabase implements Closeable, AutoCloseable {
       try (ResultSet rs = stat.executeQuery()) {
         while (rs.next()) {
           toReturn.add(rs.getString(1));
+        }
+      }
+    }
+    
+    return toReturn;
+  }
+  
+  /**
+   * Gets all the book locations in the database.
+   * @return all the locations in the database.
+   * @throws SQLException if the SQl query fails when executing.
+   */
+  public Set<BookLocation> getAllLocations() throws SQLException {
+    String query = "SELECT"
+        + " l.region, l.latitude, l.longitude"
+        + " FROM"
+        + "  $LOCATION_TABLE AS f"
+        + " GROUP BY f.facet;";
+    query = query.replace("$LOCATION_TABLE", LOCATION_TABLE);
+    
+    Set<BookLocation> toReturn = new HashSet<>();
+    try (PreparedStatement stat = conn.prepareStatement(query)) {
+      try (ResultSet rs = stat.executeQuery()) {
+        while (rs.next()) {
+          BookLocation loc = new BookLocation(rs.getString(1), rs.getDouble(2), rs.getDouble(3));
+          toReturn.add(loc);
         }
       }
     }

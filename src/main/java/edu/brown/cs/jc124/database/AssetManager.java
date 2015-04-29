@@ -12,6 +12,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.ObjectArrays;
 
@@ -25,6 +26,7 @@ public final class AssetManager implements Closeable, AutoCloseable {
   private static final String FILE_TYPE = ".txt";
   private static final int MAX_AUTHOR_BOOKS = 3;
   private static final int MAX_ATTRIBUTE_BOOKS = 3;
+  private static final int MAX_SENTENCES = 10;
   
   private String BOOK_PATH;
   private BookDatabase bd;
@@ -62,10 +64,10 @@ public final class AssetManager implements Closeable, AutoCloseable {
   /**
    * Given a set of filenames, loads the texts of each file into an array.
    * @param filenames the set of filenames.
-   * @return the array of corpora, each book a string in the array.
+   * @return the array of corpora, each book a string array in the list.
    */
-  public String[] loadBooksByFilename(Set<String> filenames, int maxBooks) {
-    List<String> corpora = new ArrayList<>();
+  public List<String[]> loadBooksByFilename(Set<String> filenames, int maxBooks) {
+    List<String[]> corpora = new ArrayList<>();
     
     List<String> subFiles = new ArrayList<>(filenames);
     subFiles = subFiles.subList(0, Math.min(subFiles.size(), maxBooks));
@@ -78,7 +80,8 @@ public final class AssetManager implements Closeable, AutoCloseable {
         fs.read(data);
         fs.close();
         
-        corpora.add(CorpusFormatter.formatCorpus(new String(data, "UTF-8")));
+        String[] sentences = CorpusFormatter.formatCorpus(new String(data, "UTF-8"));
+        corpora.add(subCorpus(sentences, MAX_SENTENCES));
         
       } catch (FileNotFoundException e) {
         System.err.println("FILE LOAD ERROR: " + e.getMessage());
@@ -87,7 +90,15 @@ public final class AssetManager implements Closeable, AutoCloseable {
       }
     }
     
-    return corpora.toArray(new String[0]);
+    return corpora;
+  }
+  
+  private String[] subCorpus(String[] corpus, int maxSentences) {
+    int start = (int)(Math.random() * (corpus.length - maxSentences));
+    start = Math.max(0, start);
+    int end = Math.min(corpus.length, start + maxSentences);
+    
+    return Arrays.copyOfRange(corpus, start, end);
   }
   
   /**
@@ -97,13 +108,15 @@ public final class AssetManager implements Closeable, AutoCloseable {
    * @param locationName the set of locations the books can be set in.
    * @param startYear the starting year for the books to be published in.
    * @param endYear the end year for the book to be published in.
-   * @return the corpora of files that satisfy all the facets, are in one of the locations, and published in the date range.
+   * @return the corpora of files that satisfy all the facets, are in one of the locations, and published in the date range, or are by the author.
    */
-  public String[] loadBooksByAuthorOrAttributes(String author, Set<String> facets, Set<String> locationName, int startYear, int endYear) {
-    String[] authors = loadBooksByFilename(getFilenamesByAuthor(author), MAX_AUTHOR_BOOKS);
-    String[] attributes = loadBooksByFilename(getFilenamesByAttributes(facets, locationName, startYear, endYear), MAX_ATTRIBUTE_BOOKS);
+  public List<String[]> loadBooksByAuthorOrAttributes(String author, Set<String> facets, Set<String> locationName, int startYear, int endYear) {
+    List<String[]> authors = loadBooksByFilename(getFilenamesByAuthor(author), MAX_AUTHOR_BOOKS);
+    List<String[]> attributes = loadBooksByFilename(getFilenamesByAttributes(facets, locationName, startYear, endYear), MAX_ATTRIBUTE_BOOKS);
     
-    return ObjectArrays.concat(authors, attributes, String.class);
+    List<String[]> toReturn = new ArrayList<>(authors);
+    toReturn.addAll(attributes);
+    return toReturn;
   }
   
   /**
@@ -158,7 +171,7 @@ public final class AssetManager implements Closeable, AutoCloseable {
     try {
       return bd.getAllAuthors().toArray(new String[0]);
     } catch (SQLException e) {
-      System.err.println("GET AUTHORS ERROR:" + e.getMessage());
+      System.err.println("GET AUTHORS ERROR: " + e.getMessage());
       return new String[0];
     }
   }
@@ -171,8 +184,21 @@ public final class AssetManager implements Closeable, AutoCloseable {
     try {
       return bd.getAllFacets().toArray(new String[0]);
     } catch (SQLException e) {
-      System.err.println("GET FACETS ERROR:" + e.getMessage());
+      System.err.println("GET FACETS ERROR: " + e.getMessage());
       return new String[0];
+    }
+  }
+  
+  /**
+   * Gets all the locations stored in the database.
+   * @return all the locations in the database.
+   */
+  public BookLocation[] getAllLocations() {
+    try {
+      return bd.getAllLocations().toArray(new BookLocation[0]);
+    } catch (SQLException e) {
+      System.err.println("GET LOCATIONS ERROR: " + e.getMessage());
+      return new BookLocation[0];
     }
   }
 
