@@ -20,7 +20,6 @@ import edu.brown.cs.qc14.parser.Parser;
  * --generate a hashtable that maps the word to a unigram hash built from
  * sentences that contain that word
  * -generate a list of sentences of appropriate length
-
  *
  * Algorithm: 
  * -Pick a random sentence that does not contain any priority words
@@ -131,7 +130,7 @@ public class MarkovManager {
             wordToMarkov.get(word).addSentence(sentenceArray);
           } else {
             //" " chain contains 50% of sentences
-            if (rand.nextInt(100) > 50 || true) {
+            if (rand.nextInt(100) > 50) {
               if (!wordToMarkov.containsKey(" ")) {
                 wordToMarkov.put(" ", new MarkovChain());
               }
@@ -203,16 +202,17 @@ public class MarkovManager {
     //System.out.println(sentence);
     for (int i = 0; i < recombinations; i++) {
       //System.out.println(sentence);
-      if (sentence.length() > maxLength && i > (recombinations / 2)) {
+      if (sentence.length() > maxLength && i > (((double) recombinations) / 2)) {
         break;
       }
-      if (sentence.length() <= minLength) {
-        sentence = recombineSentence(sentence, 1);
-      } else if (sentence.length() > bigLength) {
-        sentence = recombineSentence(sentence, -10);
-      } else {
-        sentence = recombineSentence(sentence, -2);
-      }
+      sentence = recombineSentence(sentence, -5);
+      // if (sentence.length() <= minLength) {
+      //   sentence = recombineSentence(sentence, );
+      // } else if (sentence.length() > bigLength) {
+      //   sentence = recombineSentence(sentence, -10);
+      // } else {
+        
+      // }
       if (sentence == null) {
         sentence = recombineSentence(getRandomSentence(), 1);
       }
@@ -243,7 +243,8 @@ public class MarkovManager {
       return null;
     }
     int[] startEnd = null;
-    if (sentenceArray.length < 25) {
+    Random rand = new Random();
+    if (sentenceArray.length < 25 && rand.nextInt() > 0.5) {
       startEnd = splitSentenceParse(sentenceArray.clone());
     } else {
       startEnd = splitSentenceNaive(sentenceArray.clone());
@@ -268,7 +269,6 @@ public class MarkovManager {
           Math.max(1, len + minAdder),
           Math.min(len + 5, sentenceArray.length),
           startWord, endWord, numTries);
-      String outputSentence = combine(startPart, frag, endPart);
     }
     String outputSentence = null;
     if (frag.size() != 0) {
@@ -364,6 +364,7 @@ public class MarkovManager {
 //        ObjectArrays.concat(startPart, frag, String.class),
 //        endPart, String.class);
     StringBuilder builder = new StringBuilder();
+    builder.append(" ");
     for (String s : start) {
       builder.append(s + " ");
     }
