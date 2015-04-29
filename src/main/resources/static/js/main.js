@@ -134,6 +134,8 @@
             		$.post("/results", postParameters, function(responseJSON){
             			var responseObject = JSON.parse(responseJSON);
                         results_div.innerHTML = responseObject.sentence;
+                        document.getElementById("parse_div").innerHTML = responseObject.parsed;
+
                         pending = false;
             		})
                 }

@@ -43,10 +43,10 @@ public class FinalTest {
 
   }
 
- @Test
- public void testTest() {
-   assertTrue(1 == 1);
- }
+//  @Test
+//  public void testTest() {
+//    assertTrue(1 == 1);
+//  }
 
 //  @Test
 //  public void markovTest1() {
@@ -188,8 +188,6 @@ public class FinalTest {
 //      assertTrue(indices[1] == 2 || indices[1] == 5 || indices[1] == 8);
 //      //System.out.println(man.recombineSentence(sentence1, -2));
 //    }
-
-   
 //  }
   
   public List<String[]> getSherlockText() {

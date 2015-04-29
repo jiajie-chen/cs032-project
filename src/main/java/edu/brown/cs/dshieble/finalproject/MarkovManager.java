@@ -201,7 +201,7 @@ public class MarkovManager {
     //System.out.println("Begin ");
     //System.out.println(sentence);
     for (int i = 0; i < recombinations; i++) {
-      System.out.println(sentence);
+      //System.out.println(sentence);
       if (sentence.length() > maxLength && i > (((double) recombinations) / 2)) {
         break;
       }
@@ -269,7 +269,6 @@ public class MarkovManager {
           Math.max(1, len + minAdder),
           Math.min(len + 5, sentenceArray.length),
           startWord, endWord, numTries);
-      String outputSentence = combine(startPart, frag, endPart);
     }
     String outputSentence = null;
     if (frag.size() != 0) {
@@ -365,6 +364,7 @@ public class MarkovManager {
 //        ObjectArrays.concat(startPart, frag, String.class),
 //        endPart, String.class);
     StringBuilder builder = new StringBuilder();
+    builder.append(" ");
     for (String s : start) {
       builder.append(s + " ");
     }

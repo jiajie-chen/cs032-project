@@ -116,7 +116,6 @@ public class MarkovChain {
           output.add(n);
         }
       }
-      //System.out.println(Arrays.toString(output.toArray()));
     }
 
     for (int i = 0; i < numTries; i ++) {
@@ -133,10 +132,20 @@ public class MarkovChain {
         }
         output.add(n);
       }
-      //System.out.println(Arrays.toString(output.toArray()));
     } 
 
-
+    Random r = new Random();
+    if (r.nextInt(100) > 30) {
+      output = new ArrayList<String>();
+      output.add(getNextWord(start));
+      while (output.size() <= max) {
+        String n = getNextWord(output.get(output.size() - 1));
+        if (output.size() >= min) { 
+          return output;
+        }
+        output.add(n);
+      }
+    }
     return new ArrayList<String>();
   }
 

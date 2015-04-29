@@ -21,6 +21,7 @@ import spark.Spark;
 import spark.TemplateViewRoute;
 import spark.template.freemarker.FreeMarkerEngine;
 import edu.brown.cs.jc124.database.*;
+import edu.brown.cs.qc14.parser.Parser;
 
 /**
  * This class generates the localhost GUI.
@@ -32,6 +33,7 @@ public final class GUIManager {
   private static final Gson GSON = new Gson();
   private static MarkovManager oldMan;
   private static AssetManager db;
+  private static Parser p;
 
 
 
@@ -53,6 +55,7 @@ public final class GUIManager {
       db = null;
     }
     oldMan = null;
+    p = new Parser();
     runSparkServer();
   }
 
@@ -163,7 +166,11 @@ public final class GUIManager {
         //priority words
         List<String> priorityWords = new ArrayList<String>();
         while (qm.value("f" + i) != null) {
-          priorityWords.add(qm.value("f" + i)); //add synonyms here
+          String word = qm.value("f" + i);
+          String[] syns = db.getSynonyms(word);
+          for (String s : syns) {
+            priorityWords.add(s);
+          }
           i++;
         }
         i = 0;
@@ -196,8 +203,15 @@ public final class GUIManager {
       if (str == null) {
         str = "ERROR: No Sentence";
       }
+      List<ArrayList<String>> parsed = 
+        p.parseSentence(
+        str
+        .toLowerCase()
+        .replaceAll("[^A-Za-z ]", "")
+        .split(" "));
       Map<String, Object> variables = new ImmutableMap.Builder()
         .put("sentence", str)
+        .put("tree", Arrays.toString(parsed.toArray()))
         .build();
       return GSON.toJson(variables);
     }

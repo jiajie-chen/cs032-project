@@ -80,9 +80,8 @@
                 </div>
             </div> 
 
-<!--             <div id="submit_div"> 
-                <button id = "submit_button" onclick="submit()"> Generate a Phrase! </button>
-            </div> -->
+            <div id="parse_div"> 
+            </div>
 
             <div onclick="submit()" id="results_div">
                 Click here to generate a sentence
