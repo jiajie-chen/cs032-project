@@ -26,8 +26,12 @@
 
             <div id="author">
                 <div id="author_title"> Select an Author</div>
-                <select id="author_select">        
-                </select>
+                <select id="author_select"> </select>
+                </br>
+                </br>
+                <div id="facet_title"> Select Facets (hold control to select multiple facets)</div>
+                <select id="facets_select" multiple> </select>
+
             </div>
 
             <div id="map" ></div>
