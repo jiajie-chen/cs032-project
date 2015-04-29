@@ -199,6 +199,17 @@ public final class AssetManager implements Closeable, AutoCloseable {
       return new BookLocation[0];
     }
   }
+  
+  public String[] getSynonyms(String word) {
+    try {
+      Set<String> syn = bd.getSynonyms(word);
+      syn.add(word);
+      return syn.toArray(new String[0]);
+    } catch (SQLException e) {
+      System.err.println("GET SYNONYMS ERROR: " + e.getMessage());
+      return new String[] {word};
+    }
+  }
 
   @Override
   public void close() throws IOException {

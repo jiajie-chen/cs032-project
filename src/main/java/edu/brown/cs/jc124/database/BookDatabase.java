@@ -22,6 +22,7 @@ public class BookDatabase implements Closeable, AutoCloseable {
   private static final String BOOK_AUTHOR_TABLE = "book_author";
   private static final String LOCATION_TABLE = "location";
   private static final String BOOK_LOCATION_TABLE = "book_location";
+  private static final String SYNONYM_TABLE = "synonym";
   
   /**
    * Creates a BookDatabase that queries the SQLite database at the specified path.
@@ -253,6 +254,26 @@ public class BookDatabase implements Closeable, AutoCloseable {
         while (rs.next()) {
           BookLocation loc = new BookLocation(rs.getString(1), rs.getDouble(2), rs.getDouble(3));
           toReturn.add(loc);
+        }
+      }
+    }
+    
+    return toReturn;
+  }
+  
+  public Set<String> getSynonyms(String word) throws SQLException {
+    String query = "SELECT"
+        + " s.synonym"
+        + " FROM"
+        + "  $SYNONYM_TABLE AS s"
+        + " GROUP BY s.synonym;";
+    query = query.replace("$SYNONYM_TABLE", SYNONYM_TABLE);
+    
+    Set<String> toReturn = new HashSet<>();
+    try (PreparedStatement stat = conn.prepareStatement(query)) {
+      try (ResultSet rs = stat.executeQuery()) {
+        while (rs.next()) {
+          toReturn.add(rs.getString(1));
         }
       }
     }
