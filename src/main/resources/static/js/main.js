@@ -25,6 +25,11 @@
             var pending = false;
 
             //Load the JSON files
+
+
+
+
+
             d3.json(Json, function(locations) {
                 locations.rows.forEach(function(d,i) {
                     location_dict[d.name] = d;
@@ -37,6 +42,20 @@
                 updateSizes();
             });
             
+            $.post("/location", {}, function(responseJSON) {
+                var responseObject = JSON.parse(responseJSON);
+                console.log(responseObject)
+
+
+                // for (var i = 0; i < responseObject.authors.length; i ++) {
+                //     var name = responseObject.authors[i];
+                //     document.getElementById("author_select").innerHTML += "<option value=\" "+ name +"\"> " + name +"</option>"
+                // }
+                // //on author change, set unchanged to false
+                // document.getElementById("author_select").onchange = function() {unchanged = false};
+            })
+
+
             $(document).ready(function(){
                 //Draw the Map using the MapBox Tiling
                 tiles = ['http://{s}.tile.stamen.com/watercolor/{z}/{x}/{y}.jpg',

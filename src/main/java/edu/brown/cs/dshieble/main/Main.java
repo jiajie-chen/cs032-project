@@ -14,57 +14,60 @@ import edu.brown.cs.qc14.parser.Parser;
 public class Main {
   // passing "wsj2-21.blt" as args[0]
   public static void main(String[] args) {
-
-    //PARSER STUFF FOR DEMO
-    if (args[0].equals("1")) {
-      Parser parser = new Parser();
-      //parser.buildRules("src/main/java/edu/brown/cs/qc14/parser/wsj2-21.blt");
-      String[] terminals = 
-          "i believe that she had met with considerable success .".split(" ");
-      System.out.println("****  " + parser.parseSentence(terminals));
-      System.out.println(parser.testParsing(terminals));
-      // parseSentence method takes a string of sentence (punctuations and words separated by space)
-      // returns its parsing in String
-      // in Parser.java, I set max_length of input sentence as 25. you may change it.
-      //String parsing = parser.parseSentence("replace this with whatever string");
-      /*try {
-        parser.parse(args[1], args[2]);
-      } catch (FileNotFoundException e) {
-        e.printStackTrace();
-      } catch (UnsupportedEncodingException e) {
-        e.printStackTrace();
-      }*/
-      
-      
-      //MARKOV STUFF FOR DEMO
-    } else if (args[0].equals("2")) {
-      //./run 2 faust.txt crime keys lamp thunder spirits be me the
-      assert args.length >= 3;
-      String filename = args[1];
-      StringBuilder builder = new StringBuilder();
-      try (BufferedReader fileReader = new BufferedReader(
-        new FileReader(filename))) {
-        String line = null;
-        while ((line = fileReader.readLine()) != null) {
-          builder.append(line);
-          builder.append(" ");
-        }
-      } catch (IOException e) {
-        System.out.println("ERROR: File IO Error");
-        return;
-      }
-      String words = builder
-           .toString();
-      String[] books = new String[] {words};
-      GUIManager.makeGUI(books);
-      //DATABASE STUFF FOR DEMO
-    } else if (args[0].equals("3")) {
-      System.out.println("DATABASE STUFF SHOULD BE HERE");
-    } else {
-      System.out.println("args[0] should be 1, 2 or 3");
-    }
+    GUIManager.makeGUI();
   }
 }
+//
+//    
+//    //PARSER STUFF FOR DEMO
+//    if (args[0].equals("1")) {
+//      Parser parser = new Parser();
+//      //parser.buildRules("src/main/java/edu/brown/cs/qc14/parser/wsj2-21.blt");
+//      String[] terminals = 
+//          "i believe that she had met with considerable success .".split(" ");
+//      System.out.println("****  " + parser.parseSentence(terminals));
+//      System.out.println(parser.testParsing(terminals));
+//      // parseSentence method takes a string of sentence (punctuations and words separated by space)
+//      // returns its parsing in String
+//      // in Parser.java, I set max_length of input sentence as 25. you may change it.
+//      //String parsing = parser.parseSentence("replace this with whatever string");
+//      /*try {
+//        parser.parse(args[1], args[2]);
+//      } catch (FileNotFoundException e) {
+//        e.printStackTrace();
+//      } catch (UnsupportedEncodingException e) {
+//        e.printStackTrace();
+//      }*/
+//      
+//      
+//      //MARKOV STUFF FOR DEMO
+//    } else if (args[0].equals("2")) {
+//      //./run 2 faust.txt crime keys lamp thunder spirits be me the
+//      // assert args.length >= 3;
+//      // String filename = args[1];
+//      // StringBuilder builder = new StringBuilder();
+//      // try (BufferedReader fileReader = new BufferedReader(
+//      //   new FileReader(filename))) {
+//      //   String line = null;
+//      //   while ((line = fileReader.readLine()) != null) {
+//      //     builder.append(line);
+//      //     builder.append(" ");
+//      //   }
+//      // } catch (IOException e) {
+//      //   System.out.println("ERROR: File IO Error");
+//      //   return;
+//      // }
+//      // String words = builder
+//      //      .toString();
+//      // String[] books = new String[] {words};
+//      GUIManager.makeGUI();
+//      //DATABASE STUFF FOR DEMO
+//    } else if (args[0].equals("3")) {
+//      System.out.println("DATABASE STUFF SHOULD BE HERE");
+//    } else {
+//      System.out.println("args[0] should be 1, 2 or 3");
+//    }
+
 
 
 ////Dan's mainline
