@@ -17,7 +17,7 @@ import java.util.Set;
  * Manager class for handling book lookups and corpora loading, as well as metadata.
  */
 public final class AssetManager implements Closeable, AutoCloseable {
-  private static final String DEFAULT_DB_PATH = "db/smallBooks.sqlite3";
+  private static final String DEFAULT_DB_PATH = "db/books.sqlite3";
   private static final String DEFAULT_BOOK_PATH = "books/";
   private static final String FILE_TYPE = ".txt";
   private static final int MAX_AUTHOR_BOOKS = 3;
