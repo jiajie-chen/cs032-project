@@ -55,11 +55,12 @@ public class BookDatabase implements Closeable, AutoCloseable {
     String query = "SELECT"
         + " f.book_id"
         + " FROM"
-        + " " + BOOK_FACET_TABLE + " AS f"
+        + "  $BOOK_FACET_TABLE AS f"
         + " WHERE"
         + "  f.facet IN " + facetQuery
         + " GROUP BY f.book_id"
         + " HAVING count(f.book_id) = ?;";
+    query = query.replace("$BOOK_FACET_TABLE", BOOK_FACET_TABLE);
     
     Set<String> toReturn = new HashSet<>();
     try (PreparedStatement stat = conn.prepareStatement(query)) {
@@ -98,10 +99,11 @@ public class BookDatabase implements Closeable, AutoCloseable {
     String query = "SELECT"
         + " bl.book_id"
         + " FROM"
-        + " " + BOOK_LOCATION_TABLE + " AS bl"
+        + "  $BOOK_LOCATION_TABLE AS bl"
         + " WHERE"
         + "  bl.region IN " + locationQuery
         + " GROUP BY bl.book_id;";
+    query = query.replace("$BOOK_LOCATION_TABLE", BOOK_LOCATION_TABLE);
     
     Set<String> toReturn = new HashSet<>();
     try (PreparedStatement stat = conn.prepareStatement(query)) {
@@ -132,10 +134,11 @@ public class BookDatabase implements Closeable, AutoCloseable {
     String query = "SELECT"
         + " b.book_id"
         + " FROM"
-        + " " + BOOK_TABLE + " AS b"
+        + "  $BOOK_TABLE AS b"
         + " WHERE"
         + "  b.year BETWEEN ? AND ?"
         + " GROUP BY b.book_id;";
+    query = query.replace("$BOOK_TABLE", BOOK_TABLE);
     
     Set<String> toReturn = new HashSet<>();
     try (PreparedStatement stat = conn.prepareStatement(query)) {
@@ -162,10 +165,11 @@ public class BookDatabase implements Closeable, AutoCloseable {
     String query = "SELECT"
         + " a.book_id"
         + " FROM"
-        + " " + BOOK_AUTHOR_TABLE + " AS a"
+        + "  $BOOK_AUTHOR_TABLE AS a"
         + " WHERE"
         + "  a.author = ?"
         + " GROUP BY a.book_id;";
+    query = query.replace("$BOOK_AUTHOR_TABLE", BOOK_AUTHOR_TABLE);
     
     Set<String> toReturn = new HashSet<>();
     try (PreparedStatement stat = conn.prepareStatement(query)) {
@@ -190,8 +194,9 @@ public class BookDatabase implements Closeable, AutoCloseable {
     String query = "SELECT"
         + " a.author"
         + " FROM"
-        + " " + BOOK_AUTHOR_TABLE + " AS a"
+        + "  $BOOK_AUTHOR_TABLE AS a"
         + " GROUP BY a.author;";
+    query = query.replace("$BOOK_AUTHOR_TABLE", BOOK_AUTHOR_TABLE);
     
     Set<String> toReturn = new HashSet<>();
     try (PreparedStatement stat = conn.prepareStatement(query)) {
@@ -214,15 +219,16 @@ public class BookDatabase implements Closeable, AutoCloseable {
     String query = "SELECT"
         + " f.facet"
         + " FROM"
-        + " " + BOOK_FACET_TABLE + " AS f"
+        + "  $BOOK_FACET_TABLE AS f"
         + " GROUP BY f.facet;";
+    query = query.replace("$BOOK_FACET_TABLE", BOOK_FACET_TABLE);
     
     Set<String> toReturn = new HashSet<>();
     try (PreparedStatement stat = conn.prepareStatement(query)) {
       try (ResultSet rs = stat.executeQuery()) {
         while (rs.next()) {
           toReturn.add(rs.getString(1));
-        } 
+        }
       }
     }
     

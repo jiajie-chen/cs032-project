@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Set;
 
 import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.ObjectArrays;
 
 /**
  * @author jchen
@@ -22,6 +23,8 @@ public final class AssetManager implements Closeable, AutoCloseable {
   private static final String DEFAULT_DB_PATH = "db/smallBooks.sqlite3";
   private static final String DEFAULT_BOOK_PATH = "books/";
   private static final String FILE_TYPE = ".txt";
+  private static final int MAX_AUTHOR_BOOKS = 3;
+  private static final int MAX_ATTRIBUTE_BOOKS = 3;
   
   private String BOOK_PATH;
   private BookDatabase bd;
@@ -61,19 +64,22 @@ public final class AssetManager implements Closeable, AutoCloseable {
    * @param filenames the set of filenames.
    * @return the array of corpora, each book a string in the array.
    */
-  public String[] loadBooksByName(Set<String> filenames) {
+  public String[] loadBooksByFilename(Set<String> filenames, int maxBooks) {
     List<String> corpora = new ArrayList<>();
     
     List<String> subFiles = new ArrayList<>(filenames);
-    subFiles = subFiles.subList(0, Math.min(subFiles.size(), 6));
+    subFiles = subFiles.subList(0, Math.min(subFiles.size(), maxBooks));
+    
     for (String name : subFiles) {
       File f = new File(BOOK_PATH + name + FILE_TYPE);
       try (FileInputStream fs = new FileInputStream(f)) {
+        
         byte[] data = new byte[(int) f.length()];
         fs.read(data);
         fs.close();
         
         corpora.add(CorpusFormatter.formatCorpus(new String(data, "UTF-8")));
+        
       } catch (FileNotFoundException e) {
         System.err.println("FILE LOAD ERROR: " + e.getMessage());
       } catch (IOException e) {
@@ -85,30 +91,44 @@ public final class AssetManager implements Closeable, AutoCloseable {
   }
   
   /**
-   * Gets the corpora of the files by the given author.
-   * @param author the name of the author.
-   * @return the corpora of books written by the author.
-   */
-  public String[] getFilesByAuthor(String author) {
-    try {
-      Set<String> names = bd.getBooksByAuthor(author);
-      
-      return loadBooksByName(names);
-    } catch (SQLException e) {
-      System.err.println("LOAD BY AUTHOR ERROR: " + e.getMessage());
-    }
-    return new String[0];
-  }
-  
-  /**
    * Gets the corpora of the files by the given attributes of the books.
+   * @param author the name of the author.
    * @param facets the set of facets each book must have; if empty or null, this is ignored.
    * @param locationName the set of locations the books can be set in.
    * @param startYear the starting year for the books to be published in.
    * @param endYear the end year for the book to be published in.
    * @return the corpora of files that satisfy all the facets, are in one of the locations, and published in the date range.
    */
-  public String[] getFilesByAttributes(Set<String> facets, Set<String> locationName, int startYear, int endYear) {
+  public String[] loadBooksByAuthorOrAttributes(String author, Set<String> facets, Set<String> locationName, int startYear, int endYear) {
+    String[] authors = loadBooksByFilename(getFilenamesByAuthor(author), MAX_AUTHOR_BOOKS);
+    String[] attributes = loadBooksByFilename(getFilenamesByAttributes(facets, locationName, startYear, endYear), MAX_ATTRIBUTE_BOOKS);
+    
+    return ObjectArrays.concat(authors, attributes, String.class);
+  }
+  
+  /**
+   * Gets the name of the files by the given author.
+   * @param author the name of the author.
+   * @return the name of books written by the author.
+   */
+  public Set<String> getFilenamesByAuthor(String author) {
+    try {
+      return bd.getBooksByAuthor(author);
+    } catch (SQLException e) {
+      System.err.println("LOAD BY AUTHOR ERROR: " + e.getMessage());
+    }
+    return new HashSet<>();
+  }
+  
+  /**
+   * Gets the names of the files by the given attributes of the books, or by the given author.
+   * @param facets the set of facets each book must have; if empty or null, this is ignored.
+   * @param locationName the set of locations the books can be set in.
+   * @param startYear the starting year for the books to be published in.
+   * @param endYear the end year for the book to be published in.
+   * @return the names of files that satisfy all the facets, are in one of the locations, and published in the date range.
+   */
+  public Set<String> getFilenamesByAttributes(Set<String> facets, Set<String> locationName, int startYear, int endYear) {
     try {
       Set<String> names = new HashSet<>();
       
@@ -123,11 +143,11 @@ public final class AssetManager implements Closeable, AutoCloseable {
         names.retainAll(f);
       }
       
-      return loadBooksByName(names);
+      return names;
     } catch (SQLException e) {
       System.err.println("GET ATTRIBUTES ERROR: " + e.getMessage());
     }
-    return new String[0];
+    return new HashSet<>();
   }
   
   /**
