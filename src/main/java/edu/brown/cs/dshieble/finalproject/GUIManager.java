@@ -6,11 +6,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.HashSet;
 import java.util.Map;
-
 import java.sql.SQLException;
-
 import java.io.IOException;
-
 
 import com.google.common.collect.ImmutableMap;
 import com.google.gson.Gson;
@@ -68,6 +65,7 @@ public final class GUIManager {
     Spark.get("/", new GetHandler(), new FreeMarkerEngine());
     Spark.post("/results", new ResultsHandler());
     Spark.post("/author", new AuthorHandler());
+    Spark.post("/location", new LocationHandler());
 
   }
 
@@ -90,6 +88,30 @@ public final class GUIManager {
       variables =  ImmutableMap.of(
           "title", "autocorrect");
       return new ModelAndView(variables, "main.ftl");
+    }
+  }
+
+  /**
+   * Handles the author Request.
+   * @author dshieble
+   *
+   */
+  private static class LocationHandler implements Route {
+
+    @Override
+    /**
+     * Handles the author request
+     * @param req
+     * @param res
+     * @return
+     */
+    public Object handle(final Request req, final Response res) {
+      BookLocation[] locations = db.getAllLocations();
+      System.out.println(Arrays.toString(locations));
+      Map<String, Object> variables = new ImmutableMap.Builder()
+        .put("locations", locations)
+        .build();
+      return GSON.toJson(locations);
     }
   }
 

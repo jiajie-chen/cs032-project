@@ -119,7 +119,8 @@ public class MarkovManager {
           .replaceAll("[^A-Za-z0-9,;: -]", "")
           .trim();
         String[] sentenceArray = sentence.split(" ");
-        if (sentenceArray.length >= 4) {
+        if (sentenceArray.length >= minLength
+            && sentenceArray.length <= maxLength) {
           candidateSentences.add(sentence);
         }
         for (String word : pW) {
