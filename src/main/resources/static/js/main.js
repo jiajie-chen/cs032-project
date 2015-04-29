@@ -30,8 +30,21 @@
 
 
 
-            d3.json(Json, function(locations) {
-                locations.rows.forEach(function(d,i) {
+            // d3.json(Json, function(locations) {
+            //     locations.rows.forEach(function(d,i) {
+            //         location_dict[d.name] = d;
+            //         multiHash[d.name] = {};
+            //         names[i] = d.name;
+            //         layer_point = map.latLngToLayerPoint(d.coordinates);
+            //         positions[i] = [layer_point.x, layer_point.y];
+            //     });
+            //     maker = new circleManager();
+            //     updateSizes();
+            // });
+            
+            $.post("/location", {}, function(responseJSON) {
+                var responseObject = JSON.parse(responseJSON);
+                responseObject.locations.forEach(function(d,i) {
                     location_dict[d.name] = d;
                     multiHash[d.name] = {};
                     names[i] = d.name;
@@ -41,19 +54,6 @@
                 maker = new circleManager();
                 updateSizes();
             });
-            
-            $.post("/location", {}, function(responseJSON) {
-                var responseObject = JSON.parse(responseJSON);
-                console.log(responseObject)
-
-
-                // for (var i = 0; i < responseObject.authors.length; i ++) {
-                //     var name = responseObject.authors[i];
-                //     document.getElementById("author_select").innerHTML += "<option value=\" "+ name +"\"> " + name +"</option>"
-                // }
-                // //on author change, set unchanged to false
-                // document.getElementById("author_select").onchange = function() {unchanged = false};
-            })
 
 
             $(document).ready(function(){

@@ -107,11 +107,11 @@ public final class GUIManager {
      */
     public Object handle(final Request req, final Response res) {
       BookLocation[] locations = db.getAllLocations();
-      System.out.println(Arrays.toString(locations));
+      //System.out.println(Arrays.toString(locations));
       Map<String, Object> variables = new ImmutableMap.Builder()
         .put("locations", locations)
         .build();
-      return GSON.toJson(locations);
+      return GSON.toJson(variables);
     }
   }
 
@@ -192,7 +192,7 @@ public final class GUIManager {
         man = new MarkovManager(text, pwArray);
         oldMan = man;
       }
-      String str = man.generateSentence(8);
+      String str = man.generateSentence(5);
       Map<String, Object> variables = new ImmutableMap.Builder()
         .put("sentence", str)
         .build();

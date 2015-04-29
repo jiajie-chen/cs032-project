@@ -131,7 +131,7 @@ public class MarkovManager {
             wordToMarkov.get(word).addSentence(sentenceArray);
           } else {
             //" " chain contains 50% of sentences
-            if (rand.nextInt(100) > 50 || true) {
+            if (rand.nextInt(100) > 50) {
               if (!wordToMarkov.containsKey(" ")) {
                 wordToMarkov.put(" ", new MarkovChain());
               }
@@ -243,7 +243,8 @@ public class MarkovManager {
       return null;
     }
     int[] startEnd = null;
-    if (sentenceArray.length < 25) {
+    Random rand = new Random();
+    if (sentenceArray.length < 25) {// && rand.nextInt() > 0.) {
       startEnd = splitSentenceParse(sentenceArray.clone());
     } else {
       startEnd = splitSentenceNaive(sentenceArray.clone());
