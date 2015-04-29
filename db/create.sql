@@ -13,35 +13,45 @@ CREATE TABLE book_author (
         REFERENCES book(book_id) ON DELETE CASCADE ON UPDATE CASCADE,
     author TEXT
         NOT NULL ON CONFLICT IGNORE
-        DEFAULT "Unknown"
+        DEFAULT "Unknown",
+
+    UNIQUE (book_id, author) ON CONFLICT IGNORE
 );
 
 CREATE TABLE book_facet (
     book_id INT
         REFERENCES book(book_id) ON DELETE CASCADE ON UPDATE CASCADE,
     facet TEXT
-        NOT NULL ON CONFLICT IGNORE
+        NOT NULL ON CONFLICT IGNORE,
+
+    UNIQUE (book_id, facet) ON CONFLICT IGNORE
 );
 
 CREATE TABLE location (
     region TEXT
         PRIMARY KEY ON CONFLICT IGNORE,
     latitude REAL,
-    longitude REAL
+    longitude REAL,
+
+    UNIQUE (latitude, longitude) ON CONFLICT IGNORE
 );
 
 CREATE TABLE book_location (
     book_id INT
         REFERENCES book(book_id) ON DELETE CASCADE ON UPDATE CASCADE,
     region TEXT
-        REFERENCES location(region) ON DELETE CASCADE ON UPDATE CASCADE
+        REFERENCES location(region) ON DELETE CASCADE ON UPDATE CASCADE,
+
+    UNIQUE (book_id, region) ON CONFLICT IGNORE
 );
 
 CREATE TABLE synonym (
     word TEXT
         NOT NULL ON CONFLICT IGNORE,
     synonym TEXT
-        NOT NULL ON CONFLICT IGNORE
+        NOT NULL ON CONFLICT IGNORE,
+
+    UNIQUE (word, synonym) ON CONFLICT IGNORE
 );
 
 CREATE INDEX year_index ON book(year);
