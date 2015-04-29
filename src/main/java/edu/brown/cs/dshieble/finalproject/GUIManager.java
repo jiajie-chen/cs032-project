@@ -192,7 +192,10 @@ public final class GUIManager {
         man = new MarkovManager(text, pwArray);
         oldMan = man;
       }
-      String str = man.generateSentence(5);
+      String str = man.generateSentence(4);
+      if (str == null) {
+        str = "ERROR: No Sentence";
+      }
       Map<String, Object> variables = new ImmutableMap.Builder()
         .put("sentence", str)
         .build();

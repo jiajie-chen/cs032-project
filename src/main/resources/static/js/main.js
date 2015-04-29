@@ -114,7 +114,7 @@
                 }
                 if (!pending) {
                     pending = true;
-                    document.getElementById("submit_button").innerHTML = "waiting...";
+                    document.getElementById("results_div").innerHTML = "Generating Phrase...";
 
         			var postParameters = {
                         unchanged: unchanged ? "yes" : "no",
@@ -135,7 +135,6 @@
             			var responseObject = JSON.parse(responseJSON);
                         results_div.innerHTML = responseObject.sentence;
                         pending = false;
-                        document.getElementById("submit_button").innerHTML = "Generate a Phrase!";
             		})
                 }
             }
