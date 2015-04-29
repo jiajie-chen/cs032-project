@@ -17,7 +17,7 @@ import java.util.Set;
  * Manager class for handling book lookups and corpora loading, as well as metadata.
  */
 public final class AssetManager implements Closeable, AutoCloseable {
-  private static final String DEFAULT_DB_PATH = "db/smallBooks.sqlite3";
+  private static final String DEFAULT_DB_PATH = "db/books.sqlite3";
   private static final String DEFAULT_BOOK_PATH = "books/";
   private static final String FILE_TYPE = ".txt";
   private static final int MAX_AUTHOR_BOOKS = 3;
@@ -103,7 +103,7 @@ public final class AssetManager implements Closeable, AutoCloseable {
    * Gets the corpora of the files by the given attributes of the books.
    * @param author the name of the author.
    * @param facets the set of facets each book must have; if empty or null, this is ignored.
-   * @param locationName the set of locations the books can be set in.
+   * @param locationName the set of locations the books can be set in; if empty or null, this is ignored.
    * @param startYear the starting year for the books to be published in.
    * @param endYear the end year for the book to be published in.
    * @return the corpora of files that satisfy all the facets, are in one of the locations, and published in the date range, or are by the author.
@@ -134,7 +134,7 @@ public final class AssetManager implements Closeable, AutoCloseable {
   /**
    * Gets the names of the files by the given attributes of the books, or by the given author.
    * @param facets the set of facets each book must have; if empty or null, this is ignored.
-   * @param locationName the set of locations the books can be set in.
+   * @param locationName the set of locations the books can be set in; if empty or null, this is ignored.
    * @param startYear the starting year for the books to be published in.
    * @param endYear the end year for the book to be published in.
    * @return the names of files that satisfy all the facets, are in one of the locations, and published in the date range.
@@ -143,11 +143,13 @@ public final class AssetManager implements Closeable, AutoCloseable {
     try {
       Set<String> names = new HashSet<>();
       
-      Set<String> l = bd.getBooksAtLocationName(locationName);
-      names.addAll(l);
-      
       Set<String> y = bd.getBooksBetweenYears(startYear, endYear);
-      names.retainAll(y);
+      names.addAll(y);
+      
+      if(locationName != null && locationName.size() > 0) {
+        Set<String> l = bd.getBooksAtLocationName(locationName);
+        names.retainAll(l);
+      }
       
       if(facets != null && facets.size() > 0) {
         Set<String> f = bd.getBooksWithFacets(facets);

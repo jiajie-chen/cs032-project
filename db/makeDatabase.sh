@@ -1,4 +1,4 @@
 #! /bin/bash
 
-rm smallBooks.sqlite3
-sqlite3 smallBooks.sqlite3 < create.sql
+rm books.sqlite3
+sqlite3 books.sqlite3 < create.sql

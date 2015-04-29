@@ -1,6 +1,6 @@
-king_james_bible,King James Bible,
-koran,Koran,
-talmud,Talmud,
+king_james_bible,King James Bible,-2000
+koran,Koran,-2000
+talmud,Talmud,-2000
 pride_and_prejudice,Pride and Prejudice,1813
 alice_in_wonderland,Alice in Wonderland,1865
 the_yellow_wallpaper,The Yellow Wallpaper,1892
@@ -10,14 +10,14 @@ three_men_boat,Three Men Boat,1889
 sketch_book_crayon,Sketch Book Crayon,1819
 heart_darkness,Heart of Darkness,1899
 oliver_twist,Oliver Twist,1838
-ancient_greek_legends,Ancient Greek Legends,
+ancient_greek_legends,Ancient Greek Legends,-2000
 siddhartha,Siddhartha,1922
 hound_baskervilles,Hound of Baskervilles,1902
 crime_and_punishment,Crime and Punishment,1866
 leviathan,Leviathan,1651
 peter_pan,Peter Pan,1901
-iliad,Iliad,
-beowulf,Beowulf,
+iliad,Iliad,-2000
+beowulf,Beowulf,-2000
 wuthering_heights,Wuthering Heights,1847
 the_divine_comedy,The Divine Comedy,1308
 great_expectations,Great Expectations,1861
@@ -30,21 +30,77 @@ brothers_karamazov,Brothers Karamazov,1880
 origin_species,Origin of Species,1859
 guide_health,Guide to Health,1921
 faust,Faust,1808
-odyssey,Odyssey,
+odyssey,Odyssey,-2000
 return_sherlock_holmes,Return of Sherlock Holmes,1903
 sorrows_young_werther,Sorrows Young Werther,1774
 emerson,Emerson,1841
-aesop_fables,Aesop Fables,
+aesop_fables,Aesop Fables,-2000
 discourse_method,Discourse Method,1637
 canterbury_tales,Canterbury Tales,1450
 tarzan_apes,Tarzan Apes,1912
 poems_dickenson,Poems by Dickenson,1924
-medieval_legends,Medieval Legends,
+medieval_legends,Medieval Legends,-2000
 room_with_view,Room with a View,1908
 dream_psychology,Dream Psychology,1921
 amusements_mathematics,Amusements Mathematics,1958
-thousand_one_nights,Thousand and One Nights,
+thousand_one_nights,Thousand and One Nights,-2000
 the_waste_land,The Waste Land,1922
-poetics,Poetics,
-works_aristotle,Works Aristotle,
-sindbad_sailor,Sindbad Sailor,
+poetics,Poetics,-2000
+works_aristotle,Works Aristotle,-2000
+sindbad_sailor,Sindbad Sailor,-2000
+revolt_of_the_tartars,Revolt of the Tartars,1837
+the_fair_penitent,The Fair Penitent,1714
+the_ambitious_step-mother,The Ambitious Step-Mother,1701
+the_carolina_housewife,The Carolina Housewife,1847
+the_antiquary,The Antiquary,1816
+the_tragedy_of_romeo_and_ivliet,The Tragedy of Romeo and Ivliet,1623
+the_tragedy_of_macbeth,The Tragedy of Macbeth,1623
+the_tragedy_of_king_lear,The Tragedy of King Lear,1623
+as_you_like_it,As You Like It,1623
+the_law_of_retribution,The Law of Retribution,1776
+a_treatise_of_incurable_diseases,A Treatise of Incurable Diseases,1723
+ethics_in_service,Ethics in Service,1909
+the_blissylvania_post_office,The Blissylvania Post Office,1897
+creative_unity,Creative Unity,1941
+the_home_and_the_world,The Home and the World,1916
+the_children's_hour,The Children's Hour,1890
+the_flying_mercury,The Flying Mercury,1910
+a_dolls_house,A Doll's House,1879
+the_lady_from_the_sea,The Lady from the Sea,1888
+the_legend_of_sleepy_hollow,The Legend of Sleepy Hollow,1820
+little_britain,Little Britain,1820
+georgina_of_the_rainbows,Georgina of the Rainbows,1916
+the_little_colonel,The Little Colonel,1895
+state_of_the_union_addresses,State of the Union Addresses,1829
+a_counter-blaste_to_tobacco,A Counter-Blaste to Tobacco,1604
+the_woman_beautiful,The Woman Beautiful,1899
+state_of_the_union_addresses,State of the Union Addresses,1961
+the_world_i_live_in,The World I Live In,1904
+optimism_an_essay,Optimism: An Essay,1903
+old_jack,Old Jack,1870
+the_ego_machine,The Ego Machine,1952
+the_white_peacock,The White Peacock,1911
+bohemian_society,Bohemian Society,1898
+the_emancipation_proclamation,The Emancipation Proclamation,1862
+state_of_the_union_addresses,State of the Union Addresses,1861
+second_treatise_of_government,Second Treatise of Government,1690
+white_fang,White Fang,1906
+the_call_of_the_wild,The Call of the Wild,1903
+the_shunned_house,The Shunned House,1961
+malcolm,Malcolm,1875
+salted_with_fire,Salted with Fire,1896
+the_duchess_of_trajetto,The Duchess of Trajetto,1863
+the_communist_manifesto,The Communist Manifesto,1848
+secret_diplomatic_history_of_the_eighteenth_century,Secret Diplomatic History of the Eighteenth Century,1857
+moby_dick,Moby Dick,1851
+i_and_my_chimney,I and my Chimney,1856
+paradise_lost,Paradise Lost,1667
+paradise_regained,Paradise Regained,1671
+the_beloved_woman,The Beloved Woman,1921
+beyond_good_and_evil,Beyond Good and Evil,1886
+the_dawn_of_day,The Dawn of Day,1881
+note_on_nursing,Note on Nursing,1859
+inaugural_presidential_address,Inaugural Presidential Address,2009
+the_governors,The Governors,1909
+the_fall_of_the_house_of_usher,The Fall of the House of Usher,1839
+the_raven,The Raven,1845
