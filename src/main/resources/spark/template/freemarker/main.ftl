@@ -34,8 +34,7 @@
     <body>
 
         <div id="wrapper" >
-            <div id="label"> Click a Circle to Select a Location </div>
-
+            
             <div id="author">
                 <div id="author_title"> Select an Author</div>
                 <select id="author_select"> </select>
@@ -46,6 +45,7 @@
 
             </div>
 
+            <div id="label"> Click a Circle to Select a Location </div>
             <div id="map" ></div>
 
             <div id="slider_div"> 
