@@ -1,0 +1,74 @@
+.ideo {
+	list-style: none;
+	overflow: hidden;
+	color: white;
+	font: 11px Helvetica, clean, sans-serif;
+	background: #fff;
+}
+.ideo li {
+	float: left;
+	line-height: 10px;
+}
+.ideo li a {
+	color: #fff;
+	text-decoration: none;
+	padding: 35px 25px 35px 25px;
+	background: #aaa;
+	display: block;
+	float: left;
+	border-right: 5px solid white;
+}
+.ideo li a::after {
+	position: right;
+	display: block;
+	margin-top: -5px;
+	margin-left: auto;
+	margin-right: -32px;
+	height: 5px;
+	width: 15px;
+	content: " ";
+	-webkit-transform: skew(-45deg);
+	background: #aaa;
+	border-right: 5px solid white;
+	-moz-transform: skew(-45deg);
+	-o-transform: skew(-45deg);
+	transform: skew(-45deg);
+}
+.ideo li a::before {
+	float: right;
+	display: block;
+	margin-bottom: -5px;
+	margin-left: auto;
+	margin-right: -32px;
+	height: 5px;
+	width: 15px;
+	content: " ";
+	-webkit-transform: skew(45deg);
+	background: #aaa;
+	border-right: 5px solid white;
+	-moz-transform: skew(45deg);
+	-o-transform: skew(45deg);
+	transform: skew(45deg);
+}
+.ideo li:first-child a,
+.ideo li:first-child a::before,
+.ideo li:first-child a::after {background: #aaa;}
+.ideo li:nth-child(2) a,
+.ideo li:nth-child(2) a::before,
+.ideo li:nth-child(2) a::after {background: #555;}
+.ideo li:nth-child(3) a,
+.ideo li:nth-child(3) a::before,
+.ideo li:nth-child(3) a::after {background: #000;}
+.ideo li:nth-last-child(2) a::before,
+.ideo li:nth-last-child(2) a::after {display: none;}
+.ideo li:last-child {
+	padding: 35px 25px 35px 25px;
+	background: transparent !important;
+	color: black;
+	font-size: 40px;
+	font-weight: 900;
+	text-shadow: 0 0 2px rgba(0,0,0,0.6);
+}
+.ideo li a:hover,
+.ideo li a:hover::before,
+.ideo li a:hover::after {background: #f33;}
