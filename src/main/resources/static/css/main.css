@@ -2,13 +2,35 @@ body {
     /*background-image: url(../images/picture.jpg);*/
 }
 
+h1 {
+    color:blue;
+}
+
+.description {
+    width: 200px;
+}
+
+.big_child {
+    width:  25%;
+    height: 30%;
+    display: inline-block;
+    margin: 1em;
+}
+
 .stacked {
     width: 100%;
     height: 500px;
 }
 
 #big_0 {
+    /*background-image: url(../images/wordCloud.png);*/
+    background-size: cover;
     text-align: center;
+}
+
+#big_0 img {
+    /*background-image: url(../images/wordCloud.png);*/
+    width: 100%;
 }
 
 #circles circle {
@@ -22,9 +44,9 @@ body {
 }
 
 #author{
-    height:50%;
+    /*height:50%;
     width:20%;
-    /*position:fixed;
+    position:fixed;
     left: 2%;
     top: 8%;*/
 }
@@ -32,51 +54,48 @@ body {
 
 #label{
     text-align: center;
-    height:5%;
+    /*height:5%;
     width:45%;
-    /*position:fixed;
+    position:fixed;
     left: 30%;
     top: 2%;*/
 }
 
 #map{
-    height:50%;
-    width:45%;
-    /*position:fixed;
-    left: 30%;
-    top: 8%;*/
+    width:100%;
+    height:100%;
 }
 
 #slider_div{
     /*background-color: red;*/
-    height:50%;
+    /*height:50%;
     width:20%;
-    /*position:fixed;
+    position:fixed;
     left: 75%;
     top: 8%;*/
 }
 
 #slider_title {
     text-align: center;
-    height:4%;
+    /*height:4%;
     width:18%;
-    /*position:fixed;
+    position:fixed;
     left: 77%;
     top: 14%;*/
 }
 
 #slider{
-    height:2%;
+    /*height:2%;
     width:18%;
-    /*position:fixed;
+    position:fixed;
     left: 77%;
     top: 18%;*/
 }
 
 #label_div {
-    height:10%;
+    /*height:10%;
     width:18%;
-    /*position:fixed;
+    position:fixed;
     left: 77%;
     top: 22%;*/
 }
@@ -90,9 +109,9 @@ body {
 }
 
 #parse_div {
-    height:30%;
+    /*height:30%;
     width:30%;
-    /*position:fixed;
+    position:fixed;
     left: 40%;
     top: 70%;*/
 }
@@ -101,10 +120,10 @@ body {
     /*color: white;
 
     background-color: blue;*/
-    margin-right: 5%;
+    /*margin-right: 5%;
     height:30%;
     width:30%;
-    /*position:fixed;
+    position:fixed;
     left: 70%;
     top: 70%;*/
 }
