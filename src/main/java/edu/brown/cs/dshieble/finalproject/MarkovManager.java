@@ -54,7 +54,7 @@ public class MarkovManager {
    * possible sentences
    */
   private List<String> candidateSentences;
-
+  
   /**
    * priority words, in order
    */
@@ -106,6 +106,7 @@ public class MarkovManager {
     candidateSentencesPriority = new ArrayList<String>();
 
     wordToMarkov = new Hashtable<String, MarkovChain>();
+    wordToMarkov.put(" ", new MarkovChain());
     p = new Parser();
 
     if (books.size() == 0) {
@@ -128,20 +129,21 @@ public class MarkovManager {
         String[] sentenceArray = sentence.split(" ");
         boolean isPriority = false;
         for (String word : pW) {
-          if (sentence.toLowerCase().contains(word)) {
+          boolean contains = false;
+          for (String s : sentenceArray) {
+            if (s.toLowerCase().equals(word)) {
+              contains = true;
+              break;
+            }
+          }
+          if (contains) {
             isPriority = true;
             if (!wordToMarkov.containsKey(word)) {
               wordToMarkov.put(word, new MarkovChain());
             }
             wordToMarkov.get(word).addSentence(sentenceArray);
           } else {
-            //" " chain contains 50% of sentences
-            if (rand.nextInt(100) > 50) {
-              if (!wordToMarkov.containsKey(" ")) {
-                wordToMarkov.put(" ", new MarkovChain());
-              }
-              wordToMarkov.get(" ").addSentence(sentenceArray);
-            }
+            wordToMarkov.get(" ").addSentence(sentenceArray);
           }
         }
         if (sentenceArray.length >= minLength
@@ -157,9 +159,6 @@ public class MarkovManager {
     if (candidateSentences.size() == 0 && candidateSentencesPriority.size() == 0) {
       System.out.println("WARNING: NO CANDIDATE SENTENCES");
       //System.out.println(Arrays.toString(books.get(0)));
-    }
-    for (String s : candidateSentencesPriority) {
-      //System.out.println(s);
     }
     //System.out.println(candidateSentencesPriority.size());
     List<String> usedWords = new ArrayList<String>();
@@ -183,19 +182,28 @@ public class MarkovManager {
       String start, String end, int numTries) {
     assert min > 0;
     assert max >= min;
-    for (String word : usedPW) {
-      List<String> sentence =
-          wordToMarkov.get(word)
-          .makeSentenceFragment(min, max, start, end, numTries);
-      if (sentence.size() > 0) {
-        return sentence;
+    if (usedPW.length > 0) {
+      Random r = new Random();
+      int i = r.nextInt(usedPW.length);
+      int I = i;
+      boolean go = true;
+      while (i != I || go) {
+        go = false;
+        String word = usedPW[i];
+        List<String> sentence =
+            wordToMarkov.get(word)
+            .makeSentenceFragment(min, max, start, end, numTries);
+        if (sentence.size() > 0) {
+          return sentence;
+        }
+        i = (i + 1) % (usedPW.length);
       }
-      sentence =
-          wordToMarkov.get(" ")
-          .makeSentenceFragment(min, max, start, end, numTries);
-      if (sentence.size() > 0) {
-        return sentence;
-      }
+    }
+    List<String> sentence =
+        wordToMarkov.get(" ")
+        .makeSentenceFragment(min, max, start, end, numTries);
+    if (sentence.size() > 0) {
+      return sentence;
     }
     return new ArrayList<String>();
   }
@@ -212,38 +220,47 @@ public class MarkovManager {
     } else {
       //System.out.println(candidateSentences.size());
     }
-    String sentence = getRandomSentence();
-    //System.out.println(sentence);
-
-    //System.out.println("Begin ");
-    //System.out.println(sentence);
+    String originalSentence = getRandomSentence();
+    String sentence = originalSentence;
     for (int i = 0; i < recombinations; i++) {
-      //System.out.println(sentence);
-      if (sentence.length() > maxLength && i > (((double) recombinations) / 2)) {
-        break;
-      }
-      sentence = recombineSentence(sentence, -5);
-      // if (sentence.length() <= minLength) {
-      //   sentence = recombineSentence(sentence, );
-      // } else if (sentence.length() > bigLength) {
-      //   sentence = recombineSentence(sentence, -10);
-      // } else {
-        
-      // }
+      System.out.println(sentence);
+//      if (sentence.length() > maxLength && i > (((double) recombinations) / 2)) {
+//        break;
+//      }
+      sentence = recombineSentence(sentence);
       if (sentence == null) {
-        sentence = recombineSentence(getRandomSentence(), 1);
+        sentence = recombineSentence(getRandomSentence());
       }
     }
-//    int tries = 0;
-//    while (sentence.length() < minLength || tries < maxTries) {
-//      sentence = recombineSentence(sentence);
-//      tries++;
-//    }
-    //System.out.println(sentence.split(" ").length);
-    //sentence = sentence.toLowerCase();
-    sentence = sentence.replaceAll("([a-z])([A-Z])", "$1 $2");
+    if (sentence.toLowerCase().equals(originalSentence.toLowerCase())) {
+      String first = getRandomSentence().split(" ")[0];
+      if (usedPW.length > 0) {
+        Random r = new Random();
+        int i = r.nextInt(usedPW.length);
+        int I = i;
+        boolean go = true;
+        while (i != I || go) {
+          go = false;
+          String word = usedPW[i];
+          if (wordToMarkov.size() > 20) {
+            sentence = wordToMarkov.get(word)
+                .makeRandomString(10, first);
+            break;
+          }
+          i = (i + 1) % (usedPW.length);
+        }
+      }
+    }
+    
+    
+    
+    sentence = sentence
+        .trim()
+        .replaceAll("([a-z])([A-Z])", "$1 $2")
+        //.replaceAll("( [A-Z][a-z]+)", "$1,")
+        .replaceAll(",+", ",");
     return sentence.substring(0, 1).toUpperCase()
-        + sentence.substring(1)
+        + sentence.substring(1).toLowerCase()
         + ".";
   }
 
@@ -254,7 +271,7 @@ public class MarkovManager {
    * minimum value for sentence length
    * @return a sentence that matches all of the facets.
    */
-  public String recombineSentence(String sentence, int minAdder) {
+  public String recombineSentence(String sentence) {
     String[] sentenceArray = sentence.split(" ");
     if (sentenceArray.length <= 1) {
       return null;
@@ -283,8 +300,8 @@ public class MarkovManager {
       endPart = Arrays.copyOfRange(
           sentenceArray, startEnd[1], sentenceArray.length);
       frag = makeSentenceFragment(
-          Math.max(1, len + minAdder),
-          Math.min(len + 5, sentenceArray.length),
+          Math.max(1, len - 2),
+          Math.min(len + 2, sentenceArray.length),
           startWord, endWord, numTries);
     }
     String outputSentence = null;
@@ -423,9 +440,12 @@ public class MarkovManager {
     return wordToMarkov;
   }
   
+  /**
+   * convenient debugging method,
+   * @param c collection to print
+   */
   public void print(Collection c) {
     System.out.println(Arrays.toString(c.toArray()));
-
   }
   
 }
