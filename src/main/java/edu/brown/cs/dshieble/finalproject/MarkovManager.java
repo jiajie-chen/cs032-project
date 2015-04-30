@@ -48,6 +48,11 @@ public class MarkovManager {
   /**
    * possible sentences
    */
+  private List<String> candidateSentencesPriority;
+  
+  /**
+   * possible sentences
+   */
   private List<String> candidateSentences;
 
   /**
@@ -98,6 +103,8 @@ public class MarkovManager {
    */
   public MarkovManager(List<String[]> books, String[] priorityWords) {
     candidateSentences = new ArrayList<String>();
+    candidateSentencesPriority = new ArrayList<String>();
+
     wordToMarkov = new Hashtable<String, MarkovChain>();
     p = new Parser();
 
@@ -108,6 +115,7 @@ public class MarkovManager {
     String[] pW = priorityWords;
     for (int i = 0; i < pW.length; i++) {
       pW[i] = pW[i].toLowerCase();
+      
     }
     Random rand = new Random();
     for (int i = 0; i < books.size(); i++) {
@@ -118,12 +126,10 @@ public class MarkovManager {
           .replaceAll("[^A-Za-z0-9,;: -]", "")
           .trim();
         String[] sentenceArray = sentence.split(" ");
-        if (sentenceArray.length >= minLength
-            && sentenceArray.length <= maxLength) {
-          candidateSentences.add(sentence);
-        }
+        boolean isPriority = false;
         for (String word : pW) {
           if (sentence.toLowerCase().contains(word)) {
+            isPriority = true;
             if (!wordToMarkov.containsKey(word)) {
               wordToMarkov.put(word, new MarkovChain());
             }
@@ -138,13 +144,24 @@ public class MarkovManager {
             }
           }
         }
-
+        if (sentenceArray.length >= minLength
+            && sentenceArray.length <= maxLength) {
+          if (isPriority) {
+            candidateSentencesPriority.add(sentence);
+          } else {
+            candidateSentences.add(sentence);
+          }
+        }
       }
     }
-    if (candidateSentences.size() == 0) {
+    if (candidateSentences.size() == 0 && candidateSentencesPriority.size() == 0) {
       System.out.println("WARNING: NO CANDIDATE SENTENCES");
       //System.out.println(Arrays.toString(books.get(0)));
     }
+    for (String s : candidateSentencesPriority) {
+      //System.out.println(s);
+    }
+    //System.out.println(candidateSentencesPriority.size());
     List<String> usedWords = new ArrayList<String>();
     for (String word : pW) {
       if (wordToMarkov.containsKey(word)) {
@@ -383,6 +400,10 @@ public class MarkovManager {
    */
   public String getRandomSentence() {
     Random rand = new Random();
+    if (candidateSentencesPriority.size() > 0) {
+      return candidateSentencesPriority.get(
+          rand.nextInt(candidateSentencesPriority.size()));
+    }
     return candidateSentences.get(rand.nextInt(candidateSentences.size()));
   }
 

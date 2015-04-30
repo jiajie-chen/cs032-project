@@ -191,6 +191,8 @@ public final class GUIManager {
         List<String> priorityWords = new ArrayList<String>();
         while (qm.value("f" + i) != null) {
           String word = qm.value("f" + i).trim();
+          //System.out.println(word);
+
           String[] syns = db.getSynonyms(word);
           for (String s : syns) {
             System.out.println(s);
@@ -213,7 +215,6 @@ public final class GUIManager {
           bookFacets.add(qm.value("bf" + i).trim());
           i++;
         }
-        
         String[] pwArray = priorityWords
             .toArray(new String[priorityWords.size()]);
         //get text here
@@ -239,8 +240,6 @@ public final class GUIManager {
         .split(" ");
       String parsed = p.testParsing(p.preprocess(sentenceArray));
       //System.out.println(parsed);
-      
-      
       Map<String, Object> variables = new ImmutableMap.Builder()
         .put("sentence", str)
         .put("tree", parsed)

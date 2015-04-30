@@ -266,11 +266,13 @@ public class BookDatabase implements Closeable, AutoCloseable {
         + " s.synonym"
         + " FROM"
         + "  $SYNONYM_TABLE AS s"
+        + " WHERE s.word = ?"
         + " GROUP BY s.synonym;";
     query = query.replace("$SYNONYM_TABLE", SYNONYM_TABLE);
     
     Set<String> toReturn = new HashSet<>();
     try (PreparedStatement stat = conn.prepareStatement(query)) {
+      stat.setString(1, word);
       try (ResultSet rs = stat.executeQuery()) {
         while (rs.next()) {
           toReturn.add(rs.getString(1));
