@@ -1,5 +1,9 @@
+/*http://paletton.com/#uid=7491I0kiCFn8GVde7NVmtwSqXtg*/
 body {
     /*background-image: url(../images/picture.jpg);*/
+}
+#wrapper {
+    padding: 0;
 }
 
 h1 {
@@ -26,6 +30,19 @@ h1 {
     /*background-image: url(../images/wordCloud.png);*/
     background-size: cover;
     text-align: center;
+    background-color: #35404F;
+}
+
+#big_1 {
+    background-color: #4AAAA5;
+}
+
+#big_2, #big_3 {
+    background-color: #4AAAA5;
+}
+
+#big_4 {
+    background-color: #A3D39C;
 }
 
 #big_0 img {

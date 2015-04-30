@@ -1,24 +1,60 @@
+.step,
+.step * {
+	box-sizing: border-box;
+    margin: 0;
+}
 .step {
+	padding: 0;
 	list-style: none;
 	overflow: hidden;
 	color: white;
-	font: 11px Helvetica, clean, sans-serif;
 	background: #fff;
 }
 .step li {
-	
+	width: 100%;
 	line-height: 10px;
-}
-.step li a {
-	color: #fff;
 	text-decoration: none;
-	padding: 35px 25px 35px 25px;
+	padding: 0px;
 	background: #aaa;
 	display: block;
-	float: left;
-	border-right: 5px solid white;
+	text-decoration: none;
+    position: relative;
+    overflow: visible;
+    vertical-align: middle;
+    text-align: center;
+	border-bottom: 5px solid #7ACCC8;
 }
-.step li a::after {
+.step li:last-child {
+	border-bottom: 15px solid red;
+}
+.step li:not(:last-child):after {
+    content: '';
+    width: 0;
+    height: 0;
+    position: absolute;
+    z-index: 2;
+    bottom: -20px;
+    left: 50%;
+    margin-left: -20px;
+    border-style: solid;
+    border-width: 20px 20px 0 20px;
+    border-color: #aaa transparent transparent transparent;
+}
+.step li:not(:last-child):before {
+    content: '';
+    width: 0;
+    height: 0;
+    position: absolute;
+    z-index: 1;
+    bottom: -26px;
+    left: 50%;
+    margin-left: -25px;
+    border-style: solid;
+    border-width: 25px 25px 0 25px;
+    border-color: #7ACCC8 transparent transparent transparent;
+}
+/*
+.step li:not(:last-child) a:after {
 	position: right;
 	display: block;
 	margin-top: -5px;
@@ -34,7 +70,7 @@
 	-o-transform: skew(-45deg);
 	transform: skew(-45deg);
 }
-.step li a::before {
+.step li::before {
 	float: right;
 	display: block;
 	margin-bottom: -5px;
@@ -50,17 +86,17 @@
 	-o-transform: skew(45deg);
 	transform: skew(45deg);
 }
-.step li:first-child a,
-.step li:first-child a::before,
-.step li:first-child a::after {background: #aaa;}
-.step li:nth-child(2) a,
-.step li:nth-child(2) a::before,
-.step li:nth-child(2) a::after {background: #555;}
-.step li:nth-child(3) a,
-.step li:nth-child(3) a::before,
-.step li:nth-child(3) a::after {background: #000;}
-.step li:nth-last-child(2) a::before,
-.step li:nth-last-child(2) a::after {display: none;}
+.step li:first-child,
+.step li:first-child::before,
+.step li:first-child::after {background: #aaa;}
+.step li:nth-child(2),
+.step li:nth-child(2)::before,
+.step li:nth-child(2)::after {background: #555;}
+.step li:nth-child(3),
+.step li:nth-child(3)::before,
+.step li:nth-child(3)::after {background: #000;}
+.step li:nth-last-child(2)::before,
+.step li:nth-last-child(2)::after {display: none;}
 .step li:last-child {
 	padding: 35px 25px 35px 25px;
 	background: transparent !important;
@@ -69,6 +105,4 @@
 	font-weight: 900;
 	text-shadow: 0 0 2px rgba(0,0,0,0.6);
 }
-.step li a:hover,
-.step li a:hover::before,
-.step li a:hover::after {background: #f33;}
+*/

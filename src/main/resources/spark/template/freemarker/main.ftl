@@ -1,21 +1,9 @@
 <!DOCTYPE html>
-
-<!--
-<div id="ideo">
-<ol class="ideo">
-<li><a href="#">IDEO</a></li>
-<li><a href="#">NEWS</a></li>
-<li><a href="#">PUBS</a></li>
-<li>ARTICLES</li>
-</ol>
-</div>
--->
-
     <head>
         <meta charset="utf-8">
     
         <meta http-equiv="Content-Type" content="text/html;charset=utf-8"></meta>
-        <title>Project</title>
+        <title>Stilyagi</title>
         <script type="text/javascript" src="http://d3js.org/d3.v3.min.js"></script>
         <script type="text/javascript" src="https://www.google.com/jsapi"></script>
         
@@ -25,6 +13,8 @@
 
         <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
         <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
+
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
 
     	<link rel="stylesheet" href="css/main.css">
         <link rel="stylesheet" href="css/ui.css">
@@ -36,12 +26,12 @@
         <div id="wrapper" >
         <ol class="step">
 
-            <div id="big_0" class="stacked">
+            <li><div id="big_0" class="stacked">
                 <img id="wordCloud" src="images/wordCloud.png" alt="wordCloud">
                 <h1> Follow the instructions below to select your facets and craft a custom phrase. </h1>
-            </div>
+            </div></li>
 
-            <div id="big_1" class="stacked">
+            <li><div id="big_1" class="stacked">
                 <div id="big_1_description" class="big_child description">
                     <h1> Step 1 </h1> 
                     </br>
@@ -51,15 +41,14 @@
                     <div id="author_title"> Select an Author</div>
                     <select id="author_select"> </select>
                 </div>
-            </div>
+            </div></li>
 
-            <div id="big_2" class="stacked">
+            <li><div id="big_2" class="stacked">
                 <div id="big_2_description" class="big_child description">
                     <h1> Step 2 </h1> 
                     </br>
                     <h4> In this step, you have the option to add the style of a particular type of text or from a particular location or time period. Use the radio buttons to select your choice of facet, and then follow the prompt. </h4>
                 </div>
-
                 <div id="radioButtonDiv" class="big_child">
                     <input type="radio" name="facets" value="location" checked="checked">Facet by Location<br>
                     <input type="radio" name="facets" value="time">Facet by Time Period<br>
@@ -82,9 +71,9 @@
                         <div id="label_div"></div>
                     </div>
                 </div>
-            </div>
+            </div></li>
 
-            <div id="big_3" class="stacked">
+            <li><div id="big_3" class="stacked">
                 <div id="big_3_description" class="big_child description">
                     <h1> Step 3 </h1> 
                     </br>
@@ -134,15 +123,15 @@
                         </div>
                     </div> 
                 </div>
-            </div>
+            </div></li>
 
-            <div id="big_4" class="stacked">
+            <li><div id="big_4" class="stacked">
                 <div id="parse_div"> </div>
 
                 <div onclick="submit()" id="results_div">
                     Click here to generate a sentence
                 </div>
-            </div>
+            </div></li>
             
         </ol>
         </div>
