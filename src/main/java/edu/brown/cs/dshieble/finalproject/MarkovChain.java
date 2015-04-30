@@ -51,9 +51,10 @@ public class MarkovChain {
   * @return a random selection of next word, weighted by bigram
   */
  public String getNextWord(String word) {
+   Set<String> keys = unigram.elementSet();
+   assert keys.size() > 0;
    Random rand = new Random();
    if (!bigram.containsKey(word)) {
-     Set<String> keys = unigram.elementSet();
      return keys.toArray(new String[keys.size()])[rand.nextInt(keys.size())];
    } else {
 
@@ -102,7 +103,11 @@ public class MarkovChain {
       String start, String end, int numTries) {
     assert min > 0;
     assert max >= min;
-    List<String> output;
+    //make the string starting at first word and ending at last
+    List<String> output = new ArrayList<String>();
+    if (unigram.elementSet().size() == 0) {
+      return output;
+    }
     for (int i = 0; i < numTries; i ++) {
       output = new ArrayList<String>();
       output.add(getNextWord(start));
@@ -117,7 +122,7 @@ public class MarkovChain {
         }
       }
     }
-
+    //make the string starting at first word
     for (int i = 0; i < numTries; i ++) {
       output = new ArrayList<String>();
       output.add(getNextWord(start));
@@ -133,31 +138,19 @@ public class MarkovChain {
         output.add(n);
       }
     } 
-
-    Random r = new Random();
-    if (r.nextInt(100) > 30) {
-      output = new ArrayList<String>();
-      output.add(getNextWord(start));
-      while (output.size() <= max) {
-        String n = getNextWord(output.get(output.size() - 1));
-        if (output.size() >= min) { 
-          return output;
-        }
-        output.add(n);
-      }
-    }
-    return new ArrayList<String>();
+    output = new ArrayList<String>();
+    //output.add(makeRandomString(min));
+    return output;
   }
 
   /**
   * @param n the length of the string that we are making
   * @return A random, awesome, string of words
   */
-  public String makeRandomString(int n) {
+  public String makeRandomString(int n, String word) {
     String[] output = new String[n];
-    output[0] = "I";
-    for (int i = 1; i < n; i++) {
-      output[i] =  getNextWord(output[i - 1].toLowerCase());
+    for (int i = 0; i < n; i++) {
+      output[i] =  getNextWord(word);
       String prev = output[i - 1];
       int l = prev.length();
       if (output[i].length() > 0
@@ -172,12 +165,10 @@ public class MarkovChain {
     StringBuilder b = new StringBuilder();
     for (int i = 0; i < output.length; i++) {
       String str = output[i];
-      if (!str.matches(".':;, ")) {
-        b.append(" ");
-      }
+      b.append(" ");
       b.append(str);
     }
-    return b.toString();
+    return b.toString().trim();
   }
 
 
@@ -202,4 +193,7 @@ public class MarkovChain {
 
  }
 
+ public int size() {
+   return unigram.elementSet().size();
+ }
 }

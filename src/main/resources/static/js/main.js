@@ -25,23 +25,6 @@
             var pending = false;
 
             //Load the JSON files
-
-
-
-
-
-            // d3.json(Json, function(locations) {
-            //     locations.rows.forEach(function(d,i) {
-            //         location_dict[d.name] = d;
-            //         multiHash[d.name] = {};
-            //         names[i] = d.name;
-            //         layer_point = map.latLngToLayerPoint(d.coordinates);
-            //         positions[i] = [layer_point.x, layer_point.y];
-            //     });
-            //     maker = new circleManager();
-            //     updateSizes();
-            // });
-            
             $.post("/location", {}, function(responseJSON) {
                 var responseObject = JSON.parse(responseJSON);
                 responseObject.locations.forEach(function(d,i) {
@@ -51,25 +34,35 @@
                     layer_point = map.latLngToLayerPoint(d.coordinates);
                     positions[i] = [layer_point.x, layer_point.y];
                 });
-                maker = new circleManager();
-                updateSizes();
+                makeCircles();
             });
 
 
             $(document).ready(function(){
-                //Draw the Map using the MapBox Tiling
-                tiles = ['http://{s}.tile.stamen.com/watercolor/{z}/{x}/{y}.jpg',
-                         'http://{s}.tiles.mapbox.com/v3/danshiebler.lfa46a3b/{z}/{x}/{y}.png',
-                         'http://{s}.tiles.mapbox.com/v3/danshiebler.jc7h07lm/{z}/{x}/{y}.png',
-                         'http://{s}.tiles.mapbox.com/v3/danshiebler.ip7j62mf/{z}/{x}/{y}.png']
-
+                //Draw the Map using the MapBox Tiling - ZOOMING IS DISABLED
+                tile = 'http://{s}.tile.stamen.com/watercolor/{z}/{x}/{y}.jpg'
                 map = L.map('map').setView([31, 15], 2);
-                L.tileLayer(tiles[0], {
+                L.tileLayer(tile, {
                     attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
-                    maxZoom: 18
+                    maxZoom: 2,
+                    minZoom: 2
                 }).addTo(map);
+
+                map.dragging.disable();
+                map.touchZoom.disable();
+                map.doubleClickZoom.disable();
+                map.scrollWheelZoom.disable();
+
+                // Disable tap handler, if present.
+                if (map.tap) map.tap.disable();
+
                 //SVG Object that D3 circles lie on top of
                 map._initPathRoot();
+
+
+
+
+
                 svg = d3.select("#map").select("svg")
                 g = svg.append("g");
                 //initializing the slider
@@ -180,15 +173,6 @@
             }
 
 
-            function reset_map() {
-                if (circles != undefined) {
-                    maker.update();
-                } else {
-                    console.log("Circles not initialized")
-                }
-            };
-
-
             //Check membership in an array
             function contains(a, obj) {
                 for (var i = 0; i < a.length; i++) {
@@ -207,181 +191,74 @@
                 return count;
             }
 
-            //converts a number of inscriptions to a circle size
-            function num2size(num) {
-                return num <= 0 ? 2 : Math.ceil(Math.log((num+1)*2),2)*2 + 1
-            }
-
-            //accepts the name of a location, returns number of inscriptions, privy to current settings
-            function getSize(location) {
-                return 10;
-            }
-
             //returns the color of the input circle id, based on the different factors involved
             function get_color(id) {
                 return contains(selected, id) ? "red" : "blue";
             }
 
-            function updateSizes() {
-                for (var i = 0; i < names.length; i++) {
-                    name = names[i];
-                    sizes[name] = getSize(name);
-                }
+            makeCircles = function() {
+                circles = g.selectAll("circle")
+                    .data(names
+                        //the circles' locations are determined here
+                        .sort(function(a, b) {
+                            return b.size - a.size; 
+                        })
+                    )
+                    .enter()
+                    .append("circle")
+                    .attr("transform", function(d,i) { 
+                        return "translate(" + positions[i] + ")"; 
+                    })
+                    //Here we assign a class to the circle, which allows us to select it and change its color on mouseover later
+                    .attr('id',function(n,i){
+                        //Assign an id. 
+                        var id = n;
+                        return id;
+                    })
+                    .attr("r",0)
+                    .on('click',function(d) {circle_click(this)})
+                    .on('mouseover',function(d) {circle_mouseover(this)})//this.voronoi_mouseover)
+                    .on("mouseleave", function(d) {circle_mouseleave(this)})
+                    .style("opacity", .6)
+                    .style("stroke", 0)
+                    .style("stroke-width", 0)
+                circles.transition()
+                    //The transition takes one second
+                    .duration(500)
+                    .attr("r", function(n) { 
+                        return 10;
+                    });
+                circles.style("fill", function(d) {return get_color(d)})
             }
 
-            /*
-                circle manager object prototype - handles voronoi and circles stuff
-            */
 
-            function circleManager(){
-
-                //only call this once
-                this.build = function() {
-                    this.makeCircles();
-                    map.on("viewreset", this.update);      
-                }
-
-                //tied to the build function
-                this.update = function() {
-                    updateSizes();
-                    circles.attr("transform", function(n) { 
-                            layer_point = map.latLngToLayerPoint(location_dict[n].coordinates);
-                            return "translate(" +
-                            layer_point.x +"," +
-                            layer_point.y +")";
-                    });
-
-                    text.attr("transform", function(n) { 
-                            layer_point = map.latLngToLayerPoint(location_dict[n].coordinates);
-                            return "translate(" +
-                            layer_point.x +"," +
-                            layer_point.y +")";
-                    });
-
-                    circles.transition()
-                        //The transition takes one second
-                        .duration(1000)
-                        //Here we set the radius of the circle element
-                        .attr("r", function(n) { 
-                            //if there are no books at that place in the current parameter window - radius is 0
-                            return sizes[n];
-                        });
-                    circles.style("fill", function(d) {return get_color(d)})
-
-                    if (map.getZoom() > 9) {
-                        text.style("opacity", 1)
-                    } else {
-                        text.style("opacity", 0)
-                    }
-                }
-
-                this.makeCircles = function() {
-                    updateSizes();
-
-                    text = g.selectAll("text")
-                            .data(names)
-                            .enter()
-                            .append("text")
-                            .text(function(d) {return d})
-                            .style("opacity", 0)
-                            .attr("transform", function(d,i) { 
-                                return "translate(" + positions[i] + ")"; 
-                            });
-
-
-
-                    circles = g.selectAll("circle")
-                        .data(names
-                            //the circles' locations are determined here
-                            .sort(function(a, b) {
-                                return b.size - a.size; 
-                            })
-                        )
-                        .enter()
-                        .append("circle")
-                        .attr("transform", function(d,i) { 
-                            return "translate(" + positions[i] + ")"; 
-                        })
-                        //Here we assign a class to the circle, which allows us to select it and change its color on mouseover later
-                        .attr('id',function(n,i){
-                            //Assign an id. 
-                            var id = n;
-                            return id;
-                        })
-                        .attr("r",0)
-                        .on('click',function(d) {circle_click(this)})
-                        .on('mouseover',function(d) {circle_mouseover(this)})//this.voronoi_mouseover)
-                        .on("mouseleave", function(d) {circle_mouseleave(this)})
-                        .style("opacity", .6)
-                        .style("stroke", 0)
-                        .style("stroke-width", 0)
-                    circles.transition()
-                        //The transition takes one second
-                        .duration(500)
-                        //Here we set the radius of the circle element
-                        .attr("r", function(n) { 
-                            //if there are no books at that place in the current parameter window - radius is 0
-                            return sizes[n];
-                        });
-                    circles.style("fill", function(d) {return get_color(d)})
-                }
-
-                //Responds when voronoi is moused over
-                circle_mouseleave = function (e) {
-                    color = get_color(e.id);
-                    d3.select(e)
-                        .style("fill", color)
-                    label.innerHTML = "Click a Circle to Select a Location";
-                }
-
-                //Responds when voronoi is moused over
-                circle_mouseover = function (e) {
-                    d3.select(e)
-                        .style("fill", "red");
-                    var n = e.id;
-                    label.innerHTML = e.id;
-                }
-
-                //responds when circle is clicked - add or remove a circle from selected
-                circle_click = function(e) {
-                    unchanged = false;
-                    simp = e.id
-                    var index = selected.indexOf(simp);
-                    if (index != -1) {
-                        selected.splice(index, 1);
-                    } else {
-                        selected.push(simp);
-                    }
-                    //writeSelected();
-                    d3.select(e)
-                        .style("fill", get_color(e.id))
-                }
-
-                //Mainline
-                this.build();
-
+            //Responds when voronoi is moused over
+            circle_mouseleave = function (e) {
+                color = get_color(e.id);
+                d3.select(e)
+                    .style("fill", color)
+                label.innerHTML = "Click a Circle to Select a Location";
             }
-//             .book_box_buttons { 
-//     background:none;
-//     border:none; 
 
-// }
+            //Responds when voronoi is moused over
+            circle_mouseover = function (e) {
+                d3.select(e)
+                    .style("fill", "red");
+                var n = e.id;
+                label.innerHTML = e.id;
+            }
 
-// #facet_div {
-//     position: fixed;
-//     left: 10%;
-// }
-
-// #button_div {
-//     position: fixed;
-//     top:50%;
-//     right: 5%;
-// }
-
-// #selected_div {
-//     height: 200px;
-//     overflow: scroll;
-//     position: fixed;
-//     top:55%;
-//     right: 5%;
-// }
+            //responds when circle is clicked - add or remove a circle from selected
+            circle_click = function(e) {
+                unchanged = false;
+                simp = e.id
+                var index = selected.indexOf(simp);
+                if (index != -1) {
+                    selected.splice(index, 1);
+                } else {
+                    selected.push(simp);
+                }
+                //writeSelected();
+                d3.select(e)
+                    .style("fill", get_color(e.id))
+            }
