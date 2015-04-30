@@ -54,10 +54,6 @@
             </div>
 
             <div id="big_2" class="stacked">
-<<<<<<< HEAD
-                <div id="label"> Click a Circle to Select a Location </div>
-                <div id="map" ></div>
-=======
                 <div id="big_2_description" class="big_child description">
                     <h1> Step 2 </h1> 
                     </br>
@@ -86,8 +82,6 @@
                         <div id="label_div"></div>
                     </div>
                 </div>
-
->>>>>>> 8360ab3fcbb4c29119aeaf24af8948aa76054250
             </div>
 
             <div id="big_3" class="stacked">
