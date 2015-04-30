@@ -48,10 +48,10 @@
                     minZoom: 2
                 }).addTo(map);
 
-                map.dragging.disable();
-                map.touchZoom.disable();
-                map.doubleClickZoom.disable();
-                map.scrollWheelZoom.disable();
+                // map.dragging.disable();
+                // map.touchZoom.disable();
+                // map.doubleClickZoom.disable();
+                // map.scrollWheelZoom.disable();
 
                 // Disable tap handler, if present.
                 if (map.tap) map.tap.disable();
