@@ -16,8 +16,8 @@
 
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
 
-    	<link rel="stylesheet" href="css/main.css">
         <link rel="stylesheet" href="css/ui.css">
+    	<link rel="stylesheet" href="css/main.css">
       	<script src = "js/main.js"></script>
       	
     </head>
@@ -33,7 +33,7 @@
 
             <li><div id="big_1" class="stacked">
                 <div id="big_1_description" class="big_child description">
-                    <h1> Step 1 </h1> 
+                    <h1> Step 1 </h1>
                     </br>
                     <h4> In this step, select an author whose style you would like to emulate. </h4>
                 </div>
