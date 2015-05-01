@@ -1,10 +1,8 @@
 package edu.brown.cs.qc14.parser;
 
+import edu.brown.cs.qc14.parser.Node;
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -15,18 +13,19 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.ListIterator;
 import java.util.Set;
+import com.google.gson.Gson;
 
 /*
  * taking in a sentence, returning parsing result
  */
 public class Parser {
 
-
 	private HashMap<String, HashMap<String, Double>> _rules;
 	private HashMap<String, Integer> _counts;
 	private HashMap[][] _tree;
 	private int _MAX_LENGTH = 25;
 	private HashSet<String> _clauseTags, _phraseTags, _verbTags, _prepTags, _subTags, _knownWords;
+	private Pointers _lastParsing;
 	
 	public Parser() {
 		_rules = new HashMap<String, HashMap<String, Double>>();
@@ -194,6 +193,7 @@ public class Parser {
 			}
 			HashMap<String, Pointers> root = _tree[terminals.length-1][0];
 			if (root.containsKey("TOP")) {
+				_lastParsing = root.get("TOP");
 				return this.decodePartialParse(this.partialParse(root.get("TOP")));
 				//return this.debinarization(root.get("TOP"));
 			} else {
@@ -395,6 +395,25 @@ public class Parser {
 			}
 		} catch (IOException e) {
 			System.err.println("ERROR: cannot open file");
+		}
+	}
+	
+	public String toTreeData() {
+		Gson gson = new Gson();
+		String json = gson.toJson(this.pointersToNode(_lastParsing, null));
+		return json;
+	}
+	
+	public Node pointersToNode(Pointers pointer, String parent) {
+		if (pointer.isTerminal()) {
+			return new Node(pointer.getLabel(), parent);
+		} else if (pointer.isUnary()) {
+			return new Node(pointer.getLabel(), parent, 
+					this.pointersToNode(pointer.getLeft(), pointer.getLabel()));
+		} else {
+			return new Node(pointer.getLabel(), parent, 
+					this.pointersToNode(pointer.getLeft(), pointer.getLabel()), 
+					this.pointersToNode(pointer.getRight(),  pointer.getLabel()));
 		}
 	}
 }

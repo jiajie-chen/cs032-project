@@ -14,31 +14,40 @@ import edu.brown.cs.qc14.parser.Parser;
 public class Main {
   // passing "wsj2-21.blt" as args[0]
   public static void main(String[] args) {
-    GUIManager.makeGUI();
+    //GUIManager.makeGUI();
+	
+
+    
+    //PARSER STUFF FOR DEMO
+    
+      Parser parser = new Parser();
+      String[] terminals = "i have".split(" ");
+          //"i believe that she had met with considerable success .".split(" ");
+      System.out.println("parse into parts: " + parser.parseSentence(terminals));
+      System.out.println("JSON string: " + parser.toTreeData());
+      System.out.println("regular parsing " + parser.testParsing(terminals));
+      
+      /*
+       * parseSentence method takes a string of sentence (punctuations and words separated by space)
+       * returns its parsing in String
+       * in Parser.java, I set max_length of input sentence as 25. you may change it.
+       * String parsing = parser.parseSentence("replace this with whatever string");
+       * 
+       * parse.toTreeData() will return the Json string of the latest parsing.
+       * it must be called immediately after parse.parseSentence().
+      **/
+      
+      /*
+      try {
+        parser.parse(args[1], args[2]);
+      } catch (FileNotFoundException e) {
+        e.printStackTrace();
+      } catch (UnsupportedEncodingException e) {
+        e.printStackTrace();
+      }*/
+    
   }
 }
-//
-//    
-//    //PARSER STUFF FOR DEMO
-//    if (args[0].equals("1")) {
-//      Parser parser = new Parser();
-//      //parser.buildRules("src/main/java/edu/brown/cs/qc14/parser/wsj2-21.blt");
-//      String[] terminals = 
-//          "i believe that she had met with considerable success .".split(" ");
-//      System.out.println("****  " + parser.parseSentence(terminals));
-//      System.out.println(parser.testParsing(terminals));
-//      // parseSentence method takes a string of sentence (punctuations and words separated by space)
-//      // returns its parsing in String
-//      // in Parser.java, I set max_length of input sentence as 25. you may change it.
-//      //String parsing = parser.parseSentence("replace this with whatever string");
-//      /*try {
-//        parser.parse(args[1], args[2]);
-//      } catch (FileNotFoundException e) {
-//        e.printStackTrace();
-//      } catch (UnsupportedEncodingException e) {
-//        e.printStackTrace();
-//      }*/
-//      
 //      
 //      //MARKOV STUFF FOR DEMO
 //    } else if (args[0].equals("2")) {
