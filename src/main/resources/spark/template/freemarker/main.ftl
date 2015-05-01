@@ -19,7 +19,9 @@
         <link rel="stylesheet" href="css/ui.css">
     	<link rel="stylesheet" href="css/main.css">
       	<script src = "js/main.js"></script>
-      	
+      	<script src="js/circleArtist.js"></script>
+        <script src="js/circleArtistMulti.js"></script>
+
     </head>
     <body>
 
@@ -35,11 +37,14 @@
                 <div id="big_1_description" class="big_child description">
                     <h1> Step 1 </h1>
                     </br>
-                    <h4> In this step, select an author whose style you would like to emulate. </h4>
+                    <h4> In this step, select an author whose style you would like to emulate. Mouseover a bubble to see the author's full name and click on a bubble to choose an author. </h4>
                 </div>
                 <div id="author" class="big_child">
-                    <div id="author_title"> Select an Author</div>
-                    <select id="author_select"> </select>
+<!--                     <select id="author_select"> </select>
+ -->            
+<!--                     <div id="author_bubbles"> </div>
+ -->
+
                 </div>
             </div></li>
 
@@ -48,29 +53,33 @@
                     <h1> Step 2 </h1> 
                     </br>
                     <h4> In this step, you have the option to add the style of a particular type of text or from a particular location or time period. Use the radio buttons to select your choice of facet, and then follow the prompt. </h4>
-                </div>
-                <div id="radioButtonDiv" class="big_child">
-                    <input type="radio" name="facets" value="location" checked="checked">Facet by Location<br>
-                    <input type="radio" name="facets" value="time">Facet by Time Period<br>
-                    <input type="radio" name="facets" value="type">Facet by Text Type<br>
-                    <input type="radio" name="facets" value="none">I don't want to add any more texts
+                    <div id="radioButtonDiv">
+                        <input id = "location_check" type="radio" name="facets" value="location" checked="checked"  onchange="changeFacetType()">Facet by Location<br>
+                        <input id = "time_check" type="radio" name="facets" value="time"  onchange="changeFacetType()">Facet by Time Period<br>
+                        <input id = "type_check" type="radio" name="facets" value="type"  onchange="changeFacetType()">Facet by Text Type<br>
+                        <input id = "none_check" type="radio" name="facets" value="none"  onchange="changeFacetType()">I don't want to add any more texts
+                    </div>
                 </div>
 
-                <div class="big_child">
-                    <div id="label"> Click a Circle to Select a Location </div>
+
+                <div class="invisible_div big_child" id="location_child">
+                    <div id="label"> Click on the circles to select locations. Select no circles if you would like to see all locations. </br> </div>
                     <div  id="map" ></div>
                 </div>
-                <div class="big_child">
-                    <div id="facet_title"> Select Facets (hold control to select multiple facets)</div>
-                    <select id="facets_select" multiple> </select>
-                </div>
-                <div class="big_child">
+
+                <div class="invisible_div big_child" id = "time_child">
                     <div id="slider_div"> 
-                        <div id="slider_title"> Select the Range of dates</br></div>
+                        <div id="slider_title"> Move the slider to select a range of dates. </br></div>
                         <div id="slider"></div>
                         <div id="label_div"></div>
                     </div>
                 </div>
+
+                <div class="invisible_div big_child" id = "type_child">
+                    click the bubbles to select facets. Select no facets if you would like to see all facets.
+<!--                     <select id="facets_select" multiple> </select>
+ -->                </div>
+
             </div></li>
 
             <li><div id="big_3" class="stacked">

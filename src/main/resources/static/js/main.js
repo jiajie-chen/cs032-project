@@ -1,16 +1,13 @@
+//TODO: Select all emotions if not emotions are selected
 
-            var location_dict = {};
+
             //Stores a number of inscriptions in multiple hashes by city -> type -> language -> religion
-            var multiHash = {};
-            //stores sizes of location circles
-            var totalSizes = {};
-            var sizes = {};
-            //array of all currenty selected locations
+
             var selected = []
-            //This array stores the unsimplified names of the location (unsimplified keys of location_dict) -> only locations that have books published in the current time period are included
             var names = [];
             var positions = [];
             var sentenceFacets = [];
+            var bookFacets = [];
 
             var slider_min = 1500;
             var slider_max = 2000;
@@ -19,17 +16,18 @@
             var Json = "data/coordinateJSON.json"
             var circles = undefined;
             var maker = undefined;
-            var svg = undefined;
+            var svg_map = undefined;
             var g = undefined;
             var unchanged = false;
             var pending = false;
-
+            //var circle_artist = undefined;
+            var author = undefined;
+            var facetType = "location";
+            var bubbleSize = 400;//document.getElementById("author").offsetWidth*0.8;
             //Load the JSON files
             $.post("/location", {}, function(responseJSON) {
                 var responseObject = JSON.parse(responseJSON);
                 responseObject.locations.forEach(function(d,i) {
-                    location_dict[d.name] = d;
-                    multiHash[d.name] = {};
                     names[i] = d.name;
                     layer_point = map.latLngToLayerPoint(d.coordinates);
                     positions[i] = [layer_point.x, layer_point.y];
@@ -39,6 +37,10 @@
 
 
             $(document).ready(function(){
+
+                //handle shuffling the invisible divs
+                document.getElementById("location_child").style.display = "inline";
+
                 //Draw the Map using the MapBox Tiling - ZOOMING IS DISABLED
                 tile = 'http://{s}.tile.stamen.com/watercolor/{z}/{x}/{y}.jpg'
                 map = L.map('map').setView([31, 15], 2);
@@ -63,8 +65,8 @@
 
 
 
-                svg = d3.select("#map").select("svg")
-                g = svg.append("g");
+                svg_map = d3.select("#map").select("svg")
+                g = svg_map.append("g");
                 //initializing the slider
                 $("#slider").slider({ values: [slider_min,slider_max]});
                 $("#slider").slider({ min: slider_min});
@@ -83,27 +85,51 @@
 
 
 
-                //fill author box
+                //fill author box with circles
                 $.post("/author", {}, function(responseJSON) {
                     var responseObject = JSON.parse(responseJSON);
+
+                    newJSON = {"children" : []};
+
                     for (var i = 0; i < responseObject.authors.length; i ++) {
                         var name = responseObject.authors[i];
-                        document.getElementById("author_select").innerHTML += "<option value=\" "+ name +"\"> " + name +"</option>"
+                        var obj = {
+                            name: name,
+                            className: name,
+                            size: 100
+                        }
+                        newJSON["children"].push(obj);
                     }
                     //on author change, set unchanged to false
-                    document.getElementById("author_select").onchange = function() {unchanged = false};
+                    var circle_artist = new circleArtist(newJSON, "author", bubbleSize);
+                    author = circle_artist.get_selected();
+                    document.getElementById("author").onclick = function() {
+                        author = circle_artist.get_selected();
+                        unchanged = false
+                    };
+
+
                 })
 
 
-                //fill facet box
+                //fill facet box with circles
                 $.post("/facet", {}, function(responseJSON) {
                     var responseObject = JSON.parse(responseJSON);
+                    newJSON = {"children" : []};
                     for (var i = 0; i < responseObject.facets.length; i ++) {
                         var name = responseObject.facets[i];
-                        document.getElementById("facets_select").innerHTML += "<option value=\" "+ name +"\"> " + name +"</option>"
+                        var obj = {
+                            name: name,
+                            className: name,
+                            size: 100
+                        }
+                        newJSON["children"].push(obj);
                     }
-                    //on author change, set unchanged to false
-                    document.getElementById("facets_select").onchange = function() {unchanged = false};
+                    var circle_artist_facets = new circleArtistMulti(newJSON, "type_child", bubbleSize);
+                    document.getElementById("type_child").onclick = function() {
+                        bookFacets = circle_artist_facets.get_selected_facets();
+                        unchanged = false
+                    };
                 })
 
 
@@ -114,25 +140,22 @@
                 //     alert("Please select at least one location")
                 //     return
                 // }
+                if (author == undefined) {
+                    console.log("AUTHOR ERROR");
+                    return;
+                }
                 if (!pending) {
                     var pending = true;
                     document.getElementById("results_div").innerHTML = "Generating Phrase...";
                     //Get all selected facets from multiple select
-                    var options = document.getElementById("facets_select").options;
-                    //put all selected book facets into array
-                    var bookFacets = [];
-                    for (var i = 0; i < options.length; i++) {
-                        if (options[i].selected) {
-                            bookFacets.push(options[i].value)
-                        }
-                    }
 
         			var postParameters = {
-                        facets: bookFacets,
                         unchanged: unchanged ? "yes" : "no",
-        				author: document.getElementById("author_select").value,
-        				date_start: slider_start == slider_min ? -2000 : slider_start,
-        				date_end: slider_end
+        				author: author,//document.getElementById("author_select").value,
+                        //facets: bookFacets,
+                        type: facetType,
+        				date_start: (facetType != "time" || slider_start == slider_min) ? -2000 : slider_start,
+        				date_end: facetType == "time" ? slider_end : slider_max
         			};
                     //locations
         			for (var i = 0; i < selected.length; i++) {
@@ -172,6 +195,23 @@
                 unchanged = false;
             }
 
+            //responds when the radioButtonDiv is changed
+            function changeFacetType() {
+                unchanged = false;
+                var boxes = ["location", "time", "type", "none"];
+                for (var i = 0; i < boxes.length; i++) {
+                    if (document.getElementById(boxes[i] + "_check").checked) {
+                        if (facetType != "none") {
+                            document.getElementById(facetType + "_child").style.display = "none";
+                        }                        
+                        facetType = boxes[i];
+                        if (facetType != "none") {
+                            document.getElementById(facetType + "_child").style.display = "inline";
+                        }
+                        break
+                    }
+                }
+            }
 
             //Check membership in an array
             function contains(a, obj) {
@@ -196,8 +236,8 @@
                 return contains(selected, id) ? "red" : "blue";
             }
 
-            makeCircles = function() {
-                circles = g.selectAll("circle")
+             makeCircles = function() {
+                circles = svg_map.append("g").selectAll("circle")
                     .data(names
                         //the circles' locations are determined here
                         .sort(function(a, b) {
@@ -216,8 +256,8 @@
                         return id;
                     })
                     .attr("r",0)
-                    .on('click',function(d) {circle_click(this)})
-                    .on('mouseover',function(d) {circle_mouseover(this)})//this.voronoi_mouseover)
+                    .on('click',function(d) {console.log(555); circle_click_map(this)})
+                    .on('mouseover',function(d) {circle_mouseover(this)})
                     .on("mouseleave", function(d) {circle_mouseleave(this)})
                     .style("opacity", .6)
                     .style("stroke", 0)
@@ -242,6 +282,7 @@
 
             //Responds when voronoi is moused over
             circle_mouseover = function (e) {
+                console.log(e.id)
                 d3.select(e)
                     .style("fill", "red");
                 var n = e.id;
@@ -249,7 +290,7 @@
             }
 
             //responds when circle is clicked - add or remove a circle from selected
-            circle_click = function(e) {
+            circle_click_map = function(e) {
                 unchanged = false;
                 simp = e.id
                 var index = selected.indexOf(simp);
@@ -262,3 +303,13 @@
                 d3.select(e)
                     .style("fill", get_color(e.id))
             }
+
+
+
+
+                    //     document.getElementById("author_select").innerHTML += "<option value=\" "+ name +"\"> " + name +"</option>"
+                    // }
+                    // //on author change, set unchanged to false
+                    // //document.getElementById("author_select").onchange = function() {unchanged = false};
+
+

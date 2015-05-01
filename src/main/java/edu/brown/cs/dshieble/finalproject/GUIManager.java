@@ -63,7 +63,7 @@ public final class GUIManager {
    * Opens the GUI.
    */
   private static void runSparkServer() {
-    Spark.setPort(5679);
+    Spark.setPort(5678);
     Spark.externalStaticFileLocation("src/main/resources/static");
     Spark.get("/", new GetHandler(), new FreeMarkerEngine());
     Spark.post("/results", new ResultsHandler());
@@ -186,13 +186,12 @@ public final class GUIManager {
       if (qm.value("unchanged").equals("yes")) {
         man = oldMan;
       } else {
+
         int i = 0;
         //priority words
         List<String> priorityWords = new ArrayList<String>();
         while (qm.value("f" + i) != null) {
           String word = qm.value("f" + i).trim();
-          //System.out.println(word);
-
           String[] syns = db.getSynonyms(word);
           for (String s : syns) {
             System.out.println(s);
@@ -200,31 +199,49 @@ public final class GUIManager {
           }
           i++;
         }
+        String[] pwArray = priorityWords
+            .toArray(new String[priorityWords.size()]);
         i = 0;
         //locations
         Set<String> locationNames = new HashSet<String>();
-        while (qm.value("l" + i) != null) {
-          locationNames.add(qm.value("l" + i).trim());
-          i++;
+        if (qm.value("type").equals("location")) {
+          while (qm.value("l" + i) != null) {
+            locationNames.add(qm.value("l" + i).trim());
+            i++;
+          }
+          i = 0;
         }
         
-        i = 0;
         //book facets
         Set<String> bookFacets = new HashSet<String>();
-        while (qm.value("bf" + i) != null) {
-          bookFacets.add(qm.value("bf" + i).trim());
-          i++;
+        if (qm.value("type").equals("type")) {
+          while (qm.value("bf" + i) != null) {
+            bookFacets.add(qm.value("bf" + i).trim());
+            i++;
+          }
         }
-        String[] pwArray = priorityWords
-            .toArray(new String[priorityWords.size()]);
+
+        System.out.println(bookFacets.size());
+        System.out.println(locationNames.size());
+        System.out.println(Integer.parseInt(qm.value("date_start")));
+        System.out.println(Integer.parseInt(qm.value("date_end")));
         //get text here
         List<String[]> text = new ArrayList<String[]>();
-        text = db.loadBooksByAuthorOrAttributes(
-          qm.value("author").trim(),
-          bookFacets,
-          locationNames,
-          Integer.parseInt(qm.value("date_start")),
-          Integer.parseInt(qm.value("date_end")));
+        if (qm.value("type").equals("none")) {
+          text = db.loadBooksByAuthorOrAttributes(
+            qm.value("author").trim(),
+            bookFacets,
+            locationNames,
+            1399,
+            1399);
+        } else {
+          text = db.loadBooksByAuthorOrAttributes(
+            qm.value("author").trim(),
+            bookFacets,
+            locationNames,
+            Integer.parseInt(qm.value("date_start")),
+            Integer.parseInt(qm.value("date_end")));      
+        }
         man = new MarkovManager(text, pwArray);
         oldMan = man;
       }
@@ -232,14 +249,11 @@ public final class GUIManager {
       if (str == null) {
         str = "ERROR: No Sentence";
       }
-//      List<ArrayList<String>> parsed = 
-//        p.parseSentence(
       String[] sentenceArray = str
         .toLowerCase()
         .replaceAll("[^a-z ]", "")
         .split(" ");
       String parsed = p.testParsing(p.preprocess(sentenceArray));
-      //System.out.println(parsed);
       Map<String, Object> variables = new ImmutableMap.Builder()
         .put("sentence", str)
         .put("tree", parsed)
