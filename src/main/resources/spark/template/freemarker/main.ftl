@@ -141,6 +141,9 @@
                     <h1>Click here to generate a sentence</h1>
                 </div>
 
+                <div id="parse_rules" class="big_child"> 
+                    <h1>The tree will go here</h1>
+                </div>
             </div></li>
 
             <li> <div id="big_5" class="stacked">
