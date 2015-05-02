@@ -50,10 +50,10 @@
                     <h4> In this step, you have the option to add the style of a particular type of text or from a particular location or time period. Use the radio buttons to select your choice of facet, and then follow the prompt. </h4>
                 </div>
                 <div id="radioButtonDiv" class="big_child">
-                    <input type="radio" name="facets" value="location" checked="checked">Facet by Location<br>
-                    <input type="radio" name="facets" value="time">Facet by Time Period<br>
-                    <input type="radio" name="facets" value="type">Facet by Text Type<br>
-                    <input type="radio" name="facets" value="none">I don't want to add any more texts
+                    <button id="location" onclick="facetClick(this.id)">Facet by Location</button>
+                    <button id="time" onclick="facetClick(this.id)">Facet by Time Period</button>
+                    <button id="type" onclick="facetClick(this.id)">Facet by Text Type</button>
+                    <button id="none" onclick="facetClick(this.id)">I don't want to add any more texts</button>
                 </div>
 
                 <div class="big_child">
