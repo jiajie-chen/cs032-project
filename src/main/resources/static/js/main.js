@@ -14,7 +14,6 @@
             var slider_max = 2000;
             var slider_start = slider_min;
             var slider_end = slider_max;
-            var Json = "data/coordinateJSON.json"
             var circles = undefined;
             var maker = undefined;
             var svg_map = undefined;
@@ -24,13 +23,14 @@
             //var circle_artist = undefined;
             var author = undefined;
             var facetType = "location";
+            var oldFacetId = "location";
             var bubbleSize = 400;//document.getElementById("author").offsetWidth*0.8;
             //Load the JSON files
             $.post("/location", {}, function(responseJSON) {
                 var responseObject = JSON.parse(responseJSON);
                 responseObject.locations.forEach(function(d,i) {
                     names[i] = d.name;
-                    layer_point = map.latLngToLayerPoint(d.coordinates);
+                    var layer_point = map.latLngToLayerPoint(d.coordinates);
                     positions[i] = [layer_point.x, layer_point.y];
                 });
                 makeCircles();
@@ -40,7 +40,7 @@
             $(document).ready(function(){
 
                 //handle shuffling the invisible divs
-                document.getElementById("location_child").style.display = "inline";
+                document.getElementById(facetType + "_child").style.display = "inline";
 
                 //Draw the Map using the MapBox Tiling - ZOOMING IS DISABLED
                 tile = 'http://{s}.tile.stamen.com/watercolor/{z}/{x}/{y}.jpg'
@@ -191,7 +191,7 @@
                 var index = sentenceFacets.indexOf(id);
                 if (index != -1) {
                     sentenceFacets.splice(index, 1);
-                    document.getElementById(id).style["background"] = "none";
+                    document.getElementById(id).style["background"] = "";
                     console.log(document.getElementById(id));
                 } else {
                     sentenceFacets.push(id);
@@ -202,21 +202,14 @@
             }
 
             //responds when the radioButtonDiv is changed
-            function changeFacetType() {
+            function facetClick(id) {
                 unchanged = false;
-                var boxes = ["location", "time", "type", "none"];
-                for (var i = 0; i < boxes.length; i++) {
-                    if (document.getElementById(boxes[i] + "_check").checked) {
-                        if (facetType != "none") {
-                            document.getElementById(facetType + "_child").style.display = "none";
-                        }                        
-                        facetType = boxes[i];
-                        if (facetType != "none") {
-                            document.getElementById(facetType + "_child").style.display = "inline";
-                        }
-                        break
-                    }
-                }
+                document.getElementById(facetType + "_child").style.display = "";
+                document.getElementById(oldFacetId).style["background"] = "";
+                oldFacetId = id;
+                facetType = id;
+                document.getElementById(id).style["background"] = "red";
+                document.getElementById(facetType + "_child").style.display = "inline";
             }
 
             //Check membership in an array

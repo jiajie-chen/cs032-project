@@ -8,11 +8,11 @@ import java.util.List;
  * Utility class for formatting book texts into an appropriate format.
  */
 public final class CorpusFormatter {
-  private static final String SENTENCE_CLEANER = "[^a-zA-Z0-9;,.?!\\s]";
+  private static final String SENTENCE_CLEANER = "[^a-zA-Z0-9';,.?!\\s]+";
   private static final String SENTENCE_SPLITTER = "(?<!\\w\\.\\w.)(?<![A-Z][a-z]\\.)(?<=\\.|\\?|!)(\\s)";
   
   private static final String[] SENTENCE_WHITELIST = {
-    
+
   };
   
   private static final String[] SENTENCE_BLACKLIST = {
@@ -27,7 +27,7 @@ public final class CorpusFormatter {
    * @return the formatted corpus, split into sentences for each line, with noise data removed.
    */
   public static String[] formatCorpus(String raw) {
-    String sentences = raw.replaceAll(SENTENCE_CLEANER, "").replaceAll(SENTENCE_SPLITTER, "\n");
+    String sentences = raw.replaceAll(SENTENCE_CLEANER, " ").replaceAll(SENTENCE_SPLITTER, "\n");
     String[] lines = sentences.split("\n");
     
     List<String> toReturn = new ArrayList<>();

@@ -35,7 +35,7 @@
 
             <li><div id="big_1" class="stacked">
                 <div id="big_1_description" class="big_child description">
-                    <h1> Step 1 </h1>
+                    <h1> Step 1: Choose Style </h1>
                     </br>
                     <h4> In this step, select an author whose style you would like to emulate. Mouseover a bubble to see the author's full name and click on a bubble to choose an author. </h4>
                 </div>
@@ -50,21 +50,25 @@
 
             <li><div id="big_2" class="stacked">
                 <div id="big_2_description" class="big_child description">
-                    <h1> Step 2 </h1> 
+                    <h1> Step 2: Mix-ins </h1> 
                     </br>
                     <h4> In this step, you have the option to add the style of a particular type of text or from a particular location or time period. Use the radio buttons to select your choice of facet, and then follow the prompt. </h4>
-                </div>
-                <div id="radioButtonDiv" class="big_child">
-                    <button id="location" onclick="facetClick(this.id)">Facet by Location</button>
-                    <button id="time" onclick="facetClick(this.id)">Facet by Time Period</button>
-                    <button id="type" onclick="facetClick(this.id)">Facet by Text Type</button>
-                    <button id="none" onclick="facetClick(this.id)">I don't want to add any more texts</button>
+
+                    <ul id="facetList">
+                        <li><button class="btn" id="location" onclick="facetClick(this.id)">Facet by Location</button></li>
+                        <li><button class="btn" id="time" onclick="facetClick(this.id)">Facet by Time Period</button></li>
+                        <li><button class="btn" id="type" onclick="facetClick(this.id)">Facet by Themes</button></li>
+                        <li><button class="btn" id="none" onclick="facetClick(this.id)">I don't want to add any more texts</button></li>
+                    </ul>
                 </div>
 
+                <div class="invisible_div big_child" id = "none_child">
+                    <h3>No Facets</h3>
+                </div>
 
                 <div class="invisible_div big_child" id="location_child">
                     <div id="label"> Click on the circles to select locations. Select no circles if you would like to see all locations. </br> </div>
-                    <div  id="map" ></div>
+                    <div id="map" ></div>
                 </div>
 
                 <div class="invisible_div big_child" id = "time_child">
@@ -77,7 +81,7 @@
                 </div>
 
                 <div class="invisible_div big_child" id = "type_child">
-                    Click the bubbles to select what types of texts you would like to emulate. Hover over a bubble to see the full name of that type of text. Select no types if you would like to see all types.
+                    Click the bubbles to select what types of theme you would like to emulate. Hover over a bubble to see the full name of that type of theme. Select no types if you would like to see all types.
 <!--                     <select id="facets_select" multiple> </select>
  -->                </div>
 
@@ -85,7 +89,7 @@
 
             <li><div id="big_3" class="stacked">
                 <div id="big_3_description" class="big_child description">
-                    <h1> Step 3 </h1> 
+                    <h1> Step 3: Mood </h1> 
                     </br>
                     <h4> In this step, you can select emotions or themes that you want your phrase to invoke. Click on the emoticons to choose themes and emotions.</h4>
                 </div>
@@ -94,40 +98,49 @@
                     <div id="facet_div">
                         <div id="imgGrid">
 
-                            <button id="sad" onclick="imageClick(this.id)"> 
+                            <button class="btn" id="sad" onclick="imageClick(this.id)"> 
                                 <img id="img_sad" src="images/sad.png" alt="sad">
+                                <label>Sad</label>
                             </button>
 
-                            <button id="happy" onclick="imageClick(this.id)"> 
+                            <button class="btn" id="happy" onclick="imageClick(this.id)"> 
                                 <img id = "img_happy" src="images/happy.png" alt="happy">
+                                <label>Happy</label>
                             </button>
 
-                            <button id="stress" onclick="imageClick(this.id)"> 
+                            <button class="btn" id="stress" onclick="imageClick(this.id)"> 
                                 <img id = "img_stress" src="images/stress.png" alt="stress">
+                                <label>Stress</label>
                             </button>
 
-                            <button id="love" onclick="imageClick(this.id)"> 
+                            <button class="btn" id="love" onclick="imageClick(this.id)"> 
                                 <img id = "img_love" src="images/love.png" alt="love">
+                                <label>Love</label>
                             </button>
 
-                            <button id="war" onclick="imageClick(this.id)"> 
+                            <button class="btn" id="war" onclick="imageClick(this.id)"> 
                                 <img id = "img_war" src="images/war.png" alt="war">
+                                <label>War</label>
                             </button>
 
-                            <button id="fear" onclick="imageClick(this.id)"> 
+                            <button class="btn" id="fear" onclick="imageClick(this.id)"> 
                                 <img id = "img_fear" src="images/fear.png" alt="fear">
+                                <label>Fear</label>
                             </button>
 
-                            <button id="crime" onclick="imageClick(this.id)"> 
+                            <button class="btn" id="crime" onclick="imageClick(this.id)">
                                 <img id = "img_crime" src="images/crime.png" alt="crime">
+                                <label>Crime</label>
                             </button>
 
-                            <button id="angry" onclick="imageClick(this.id)"> 
+                            <button class="btn" id="angry" onclick="imageClick(this.id)"> 
                                 <img id = "img_angry" src="images/angry.png" alt="angry">
+                                <label>Angry</label>
                             </button>
 
-                            <button id="alcohol" onclick="imageClick(this.id)"> 
+                            <button class="btn" id="alcohol" onclick="imageClick(this.id)"> 
                                 <img id = "img_alcohol" src="images/alcohol.png" alt="alcohol">
+                                <label>Alcohol</label>
                             </button>
 
                         </div>

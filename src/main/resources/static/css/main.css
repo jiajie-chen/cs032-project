@@ -9,13 +9,11 @@ body {
 h1 {
     color:red;
 }
-
+*/
 .invisible_div {
-    width:400px;
-    height:400px;
     display: none;
 }
-*/
+
 .description {
     text-align: left;
     width: 200px;
@@ -51,6 +49,7 @@ h1 {
     /*background-image: url(../images/wordCloud.png);*/
     background-size: cover;
     text-align: center;
+    color: #ddd;
 }
 
 #big_0 img {
@@ -144,20 +143,30 @@ h1 {
     padding: 80px;
 }
 
+button {
+    background: #ddd;
+}
  
 #imgGrid {
-  width: 225px;
-  height: 225px;
+  text-align: center;
+  width: 260px;
+  height: 260px;
   margin: 0 auto;
 /*  display: table;
 */}
 
 #imgGrid button {
+  margin: 2px;
   display: block;
   float: left;
-  width: 75px;
-  height: 75px;
-  background: transparent;
+  width: 80px;
+  height: 80px;
+  /*background: transparent;*/
+}
+#imgGrid button label {
+  margin-left: auto;
+  margin-right: auto;
+  /*background: transparent;*/
 }
 /*
 #fear {
@@ -166,7 +175,20 @@ h1 {
 
 #imgGrid img {
   display: block;
-  float: left;
-  width: 60px;
-  height: 60px;
+  width: 50px;
+  height: 50px;
+  margin: auto;
+}
+
+#facetList {
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    padding: 0;
+    list-style: none;
+    overflow: hidden;
+}
+
+#facetList > li {
+    margin-top: 4px;
 }

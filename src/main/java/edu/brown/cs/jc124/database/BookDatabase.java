@@ -45,6 +45,9 @@ public class BookDatabase implements Closeable, AutoCloseable {
    * @throws SQLException if the SQl query fails when executing.
    */
   public Set<String> getBooksWithFacets(Set<String> facets) throws SQLException {
+    if (facets.size() <= 0) {
+      return new HashSet<>();
+    }
     // build a dynamic query for all in the set of facets
     StringBuilder facetQuery = new StringBuilder("(");
     for (int i = 0; i < facets.size(); i++) {
@@ -89,6 +92,9 @@ public class BookDatabase implements Closeable, AutoCloseable {
    * @throws SQLException if the SQl query fails when executing.
    */
   public Set<String> getBooksAtLocationName(Set<String> locationName) throws SQLException {
+    if (locationName.size() <= 0) {
+      return new HashSet<>();
+    }
     // build a dynamic query for all in the set of locations
     StringBuilder locationQuery = new StringBuilder("(");
     for (int i = 0; i < locationName.size(); i++) {
