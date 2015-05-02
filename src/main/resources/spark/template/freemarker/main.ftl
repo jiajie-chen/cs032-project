@@ -69,14 +69,15 @@
 
                 <div class="invisible_div big_child" id = "time_child">
                     <div id="slider_div"> 
-                        <div id="slider_title"> Move the slider to select a range of dates. </br></div>
+                        <div id="slider_title"> Move the slider to select a range of dates.</div>
+                        </br>
                         <div id="slider"></div>
                         <div id="label_div"></div>
                     </div>
                 </div>
 
                 <div class="invisible_div big_child" id = "type_child">
-                    click the bubbles to select facets. Select no facets if you would like to see all facets.
+                    Click the bubbles to select what types of texts you would like to emulate. Hover over a bubble to see the full name of that type of text. Select no types if you would like to see all types.
 <!--                     <select id="facets_select" multiple> </select>
  -->                </div>
 
@@ -90,7 +91,7 @@
                 </div>
                 <div class="big_child">
 
-                    <div id="facet_div"> Click on the themes that you want to appear in your phrase!
+                    <div id="facet_div">
                         <div id="imgGrid">
 
                             <button id="sad" onclick="imageClick(this.id)"> 

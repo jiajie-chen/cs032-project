@@ -69,15 +69,12 @@ public final class AssetManager implements Closeable, AutoCloseable {
     
     List<String> subFiles = new ArrayList<>(filenames);
     subFiles = subFiles.subList(0, Math.min(subFiles.size(), maxBooks));
-    
     for (String name : subFiles) {
       File f = new File(BOOK_PATH + name + FILE_TYPE);
       try (FileInputStream fs = new FileInputStream(f)) {
-        
         byte[] data = new byte[(int) f.length()];
         fs.read(data);
         fs.close();
-        
         String[] sentences = CorpusFormatter.formatCorpus(new String(data, "UTF-8"));
         corpora.add(subCorpus(sentences, maxSentences));
         
@@ -87,10 +84,9 @@ public final class AssetManager implements Closeable, AutoCloseable {
         System.err.println("FILE READ ERROR: " + e.getMessage());
       }
     }
-    
     return corpora;
   }
-  
+
   private String[] subCorpus(String[] corpus, int maxSentences) {
     int start = (int)(Math.random() * (corpus.length - maxSentences));
     start = Math.max(0, start);
@@ -98,7 +94,7 @@ public final class AssetManager implements Closeable, AutoCloseable {
     
     return Arrays.copyOfRange(corpus, start, end);
   }
-  
+
   /**
    * Gets the corpora of the files by the given attributes of the books.
    * @param author the name of the author.
@@ -110,13 +106,16 @@ public final class AssetManager implements Closeable, AutoCloseable {
    */
   public List<String[]> loadBooksByAuthorOrAttributes(String author, Set<String> facets, Set<String> locationName, int startYear, int endYear) {
     List<String[]> authors = loadBooksByFilename(getFilenamesByAuthor(author), MAX_AUTHOR_BOOKS, MAX_SENTENCES);
-    List<String[]> attributes = loadBooksByFilename(getFilenamesByAttributes(facets, locationName, startYear, endYear), MAX_ATTRIBUTE_BOOKS, MAX_SENTENCES);
-    
+    List<String[]> attributes = 
+        loadBooksByFilename(
+            getFilenamesByAttributes(
+                facets, locationName, startYear, endYear),
+                MAX_ATTRIBUTE_BOOKS, MAX_SENTENCES);
     List<String[]> toReturn = new ArrayList<>(authors);
     toReturn.addAll(attributes);
     return toReturn;
   }
-  
+
   /**
    * Gets the name of the files by the given author.
    * @param author the name of the author.
@@ -130,7 +129,7 @@ public final class AssetManager implements Closeable, AutoCloseable {
     }
     return new HashSet<>();
   }
-  
+
   /**
    * Gets the names of the files by the given attributes of the books, or by the given author.
    * @param facets the set of facets each book must have; if empty or null, this is ignored.

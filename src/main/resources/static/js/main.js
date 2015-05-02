@@ -7,6 +7,7 @@
             var names = [];
             var positions = [];
             var sentenceFacets = [];
+            var allSentenceFacets = ["sad", "happy", "stress", "fear", "war", "love", "crime", "angry", "alcohol"];
             var bookFacets = [];
 
             var slider_min = 1500;
@@ -162,8 +163,13 @@
         				postParameters["l" + i] = selected[i];
         			}
                     //sentence facets
-                    for (var i = 0; i < sentenceFacets.length; i++) {
-                        postParameters["f" + i] = sentenceFacets[i];
+                    if (sentenceFacets.length > 0) {
+                        F = sentenceFacets;
+                    } else {
+                        F = allSentenceFacets;
+                    }
+                    for (var i = 0; i < F.length; i++) {
+                        postParameters["f" + i] = F[i];
                     }
                     //books facets
                     for (var i = 0; i < bookFacets.length; i++) {
@@ -185,7 +191,7 @@
                 var index = sentenceFacets.indexOf(id);
                 if (index != -1) {
                     sentenceFacets.splice(index, 1);
-                    document.getElementById(id).style["background"] = "white";
+                    document.getElementById(id).style["background"] = "none";
                     console.log(document.getElementById(id));
                 } else {
                     sentenceFacets.push(id);

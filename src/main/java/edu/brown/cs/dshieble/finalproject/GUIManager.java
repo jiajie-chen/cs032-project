@@ -220,11 +220,11 @@ public final class GUIManager {
             i++;
           }
         }
-
-        System.out.println(bookFacets.size());
-        System.out.println(locationNames.size());
-        System.out.println(Integer.parseInt(qm.value("date_start")));
-        System.out.println(Integer.parseInt(qm.value("date_end")));
+//
+//        System.out.println(bookFacets.size());
+//        System.out.println(locationNames.size());
+//        System.out.println(Integer.parseInt(qm.value("date_start")));
+//        System.out.println(Integer.parseInt(qm.value("date_end")));
         //get text here
         List<String[]> text = new ArrayList<String[]>();
         if (qm.value("type").equals("none")) {
