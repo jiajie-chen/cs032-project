@@ -19,7 +19,9 @@
         <link rel="stylesheet" href="css/ui.css">
     	<link rel="stylesheet" href="css/main.css">
       	<script src = "js/main.js"></script>
-      	
+      	<script src="js/circleArtist.js"></script>
+        <script src="js/circleArtistMulti.js"></script>
+
     </head>
     <body>
 
@@ -35,11 +37,14 @@
                 <div id="big_1_description" class="big_child description">
                     <h1> Step 1 </h1>
                     </br>
-                    <h4> In this step, select an author whose style you would like to emulate. </h4>
+                    <h4> In this step, select an author whose style you would like to emulate. Mouseover a bubble to see the author's full name and click on a bubble to choose an author. </h4>
                 </div>
                 <div id="author" class="big_child">
-                    <div id="author_title"> Select an Author</div>
-                    <select id="author_select"> </select>
+<!--                     <select id="author_select"> </select>
+ -->            
+<!--                     <div id="author_bubbles"> </div>
+ -->
+
                 </div>
             </div></li>
 
@@ -56,21 +61,26 @@
                     <button id="none" onclick="facetClick(this.id)">I don't want to add any more texts</button>
                 </div>
 
-                <div class="big_child">
-                    <div id="label"> Click a Circle to Select a Location </div>
+
+                <div class="invisible_div big_child" id="location_child">
+                    <div id="label"> Click on the circles to select locations. Select no circles if you would like to see all locations. </br> </div>
                     <div  id="map" ></div>
                 </div>
-                <div class="big_child">
-                    <div id="facet_title"> Select Facets (hold control to select multiple facets)</div>
-                    <select id="facets_select" multiple> </select>
-                </div>
-                <div class="big_child">
+
+                <div class="invisible_div big_child" id = "time_child">
                     <div id="slider_div"> 
-                        <div id="slider_title"> Select the Range of dates</br></div>
+                        <div id="slider_title"> Move the slider to select a range of dates.</div>
+                        </br>
                         <div id="slider"></div>
                         <div id="label_div"></div>
                     </div>
                 </div>
+
+                <div class="invisible_div big_child" id = "type_child">
+                    Click the bubbles to select what types of texts you would like to emulate. Hover over a bubble to see the full name of that type of text. Select no types if you would like to see all types.
+<!--                     <select id="facets_select" multiple> </select>
+ -->                </div>
+
             </div></li>
 
             <li><div id="big_3" class="stacked">
@@ -81,7 +91,7 @@
                 </div>
                 <div class="big_child">
 
-                    <div id="facet_div"> Click on the themes that you want to appear in your phrase!
+                    <div id="facet_div">
                         <div id="imgGrid">
 
                             <button id="sad" onclick="imageClick(this.id)"> 

@@ -233,6 +233,7 @@ public class MarkovManager {
       }
     }
     if (sentence.toLowerCase().equals(originalSentence.toLowerCase())) {
+      System.out.println(4444);
       String first = getRandomSentence().split(" ")[0];
       if (usedPW.length > 0) {
         Random r = new Random();
@@ -242,7 +243,7 @@ public class MarkovManager {
         while (i != I || go) {
           go = false;
           String word = usedPW[i];
-          if (wordToMarkov.size() > 20) {
+          if (wordToMarkov.get(word).size() > 20) {
             sentence = wordToMarkov.get(word)
                 .makeRandomString(10, first);
             break;
@@ -251,9 +252,6 @@ public class MarkovManager {
         }
       }
     }
-    
-    
-    
     sentence = sentence
         .trim()
         .replaceAll("([a-z])([A-Z])", "$1 $2")
