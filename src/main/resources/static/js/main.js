@@ -241,7 +241,7 @@
             }
 
              makeCircles = function() {
-                circles = svg_map.append("g").selectAll("circle")
+                circles = svg_map.selectAll("circle")
                     .data(names)
                     .enter()
                     .append("circle")

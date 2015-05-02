@@ -151,19 +151,19 @@
 
             <li><div id="big_4" class="stacked">
                 <div class="big_child description" onclick="submit()" id="results_div">
-                    <h1>Click here to generate a sentence</h1>
+                    <h1>Click here to generate a phrase</h1>
                 </div>
 
-                <div id="parse_rules" class="big_child"> 
-                    <h1>The tree will go here</h1>
-                </div>
+
             </div></li>
 
             <li> <div id="big_5" class="stacked">
-
-                <div id="parse_div"> 
-                    <h1>The tree will go here</h1>
+                <div id="parse_rules"> 
+                    <h1>In order to understand the labels on the nodes below, please click <a href="http://web.mit.edu/6.863/www/PennTreebankTags.html"> here </a></h1>
                 </div>
+                <div id="parse_div"> 
+<!--                     <h1>The parse tree for your senten</h1>
+ -->                </div>
 
             </div> </li>
 
