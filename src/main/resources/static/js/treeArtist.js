@@ -1,45 +1,39 @@
 //Class function for the circle artist
-//inspired by - http://www.d3noob.org/2014/01/tree-diagrams-in-d3js_11.html
+//inspired by - http://www.d3noob.org/2014/01/this.tree-diagrams-in-d3js_11.html
 
 function treeArtist(json, divId, size) {
 
-var margin = {top: 20, right: 120, bottom: 20, left: 120},
- width = 960 - margin.right - margin.left,
- height = 500 - margin.top - margin.bottom;
+// var margin = {top: 20, right: 120, bottom: 20, left: 120},
+//  width = 960 - margin.right - margin.left,
+//  height = 500 - margin.top - margin.bottom;
  
 
 
 
-var i = 0;
+var counter = 0;
 
-var tree = d3.layout.tree()
- .size([height, width]);
+this.tree = d3.layout.tree()
+ .size([1000, 1500]);
 
-var diagonal = d3.svg.diagonal()
- .projection(function(d) { return [d.x, d.y]; });
-
-var svg = d3.select("#" + divId).append("svg")
- .attr("width", width + margin.right + margin.left)
- .attr("height", height + margin.top + margin.bottom)
-  .append("g")
- .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+this.svg = d3.select("#" + divId).append("svg")
+    .attr("width", 1000)
+    .attr("height", 1500)
+    .append("g")
+    .attr("transform", "translate(" + 0 + "," + 200 + ")");
 
 
 
-  // Compute the new tree layout.
-  var nodes = tree.nodes(json).reverse(),
-   links = tree.links(nodes);
-   console.log(json);
-   console.log(nodes);
-   console.log(links);
+  // Compute the new this.tree layout.
+this.nodes = this.tree.nodes(json).reverse(),
+this.links = this.tree.links(this.nodes);
   // Normalize for fixed-depth.
-  nodes.forEach(function(d) { d.y = d.depth * 59; });
+  this.nodes.forEach(function(d) { d.y = d.depth * 100; });
 
-  // Declare the nodesâ€¦
-  var node = svg.selectAll("g.node")
-   .data(nodes, function(d) { return d.id || (d.id = ++i); });
+  // Declare the this.nodesâ€¦
+  var node = this.svg.selectAll("g.node")
+   .data(this.nodes, function(d) { return d.id || (d.id = ++counter); });
 
-  // Enter the nodes.
+  // Enter the this.nodes.
   var nodeEnter = node.enter().append("g")
    .attr("class", "node")
    .attr("transform", function(d) { 
@@ -51,21 +45,23 @@ var svg = d3.select("#" + divId).append("svg")
 
   nodeEnter.append("text")
    .attr("y", function(d) { 
-    return d.children || d._children ? -13 : 13; })
-   .attr("dy", ".35em")
+        return d.children ? -15 : 15; 
+    })
+   //.attr("dy", ".35em")
    .attr("text-anchor", function(d) { 
     return d.children || d._children ? "end" : "start"; })
    .text(function(d) { return d.name; })
    .style("fill-opacity", 1);
 
-  // Declare the linksâ€¦
-  var link = svg.selectAll("path.link")
-   .data(links, function(d) { return d.target.id; });
+  // Declare the this.linksâ€¦
+  var link = this.svg.selectAll("path.link")
+   .data(this.links, function(d) { return d.target.id; });
 
-  // Enter the links.
+  // Enter the this.links.
   link.enter().insert("path", "g")
    .attr("class", "link")
-   .attr("d", diagonal);
+   .attr("d", d3.svg.diagonal()
+    .projection(function(d) { return [d.x, d.y]; }));
 
 
 
@@ -75,27 +71,27 @@ var svg = d3.select("#" + divId).append("svg")
 }
 
 
-//     this.tree = d3.layout.tree()
+//     this.this.tree = d3.layout.this.tree()
 //         .size([size, size]);
 
 
-//     this.nodes = this.tree.nodes(json);
-//     this.links = this.tree.links(this.nodes);
+//     this.this.nodes = this.this.tree.this.nodes(json);
+//     this.this.links = this.this.tree.this.links(this.this.nodes);
 //     console.log(json)
-//     console.log(this.nodes)
-//     console.log(this.links)
+//     console.log(this.this.nodes)
+//     console.log(this.this.links)
 
-//     this.svg = d3.select('#' + divId).append("svg:svg")
+//     this.this.svg = d3.select('#' + divId).append("this.svg:this.svg")
 //         .attr('width', size)
 //         .attr('height', size);
 
 
-//     this.display = this.svg.append("svg:g").attr("transform", "translate(" + 50 + "," + 50 + ")");
+//     this.display = this.this.svg.append("this.svg:g").attr("transform", "translate(" + 50 + "," + 50 + ")");
 
 //     // .attr("class", "container")
 //     // .attr("transform", "translate(" + maxLabelLength + ",0)");
 
-//     // this.link = d3.svg.diagonal()
+//     // this.link = d3.this.svg.diagonal()
 //     //  .projection(function(d)
 //     //  {
 //     //      return [d.x, d.y];
@@ -106,22 +102,22 @@ var svg = d3.select("#" + divId).append("svg")
 //  height = 500 - margin.top - margin.bottom;
  
 
-//     this.tree = d3.layout.tree()
+//     this.this.tree = d3.layout.this.tree()
 //         .size([size, size]);
 
 // var i = 0;
 
-// var diagonal = d3.svg.diagonal()
+// var diagonal = d3.this.svg.diagonal()
 //  .projection(function(d) { return [d.y, d.x]; });
 
 //  // Normalize for fixed-depth.
-//   this.nodes.forEach(function(d) { d.y = d.depth * 180; });
+//   this.this.nodes.forEach(function(d) { d.y = d.depth * 180; });
 
-//   // Declare the nodesâ€¦
-//   var node = this.svg.selectAll("g.node")
-//    .data(this.nodes, function(d) { return d.id || (d.id = ++i); });
+//   // Declare the this.nodesâ€¦
+//   var node = this.this.svg.selectAll("g.node")
+//    .data(this.this.nodes, function(d) { return d.id || (d.id = ++i); });
 
-//   // Enter the nodes.
+//   // Enter the this.nodes.
 //   var nodeEnter = node.enter().append("g")
 //    .attr("class", "node")
 //    .attr("transform", function(d) { 
@@ -140,11 +136,11 @@ var svg = d3.select("#" + divId).append("svg")
 //    .text(function(d) { return d.name; })
 //    .style("fill-opacity", 1);
 
-//   // Declare the linksâ€¦
-//   var link = this.svg.selectAll("path.link")
-//    .data(this.links, function(d) { return d.target.id; });
+//   // Declare the this.linksâ€¦
+//   var link = this.this.svg.selectAll("path.link")
+//    .data(this.this.links, function(d) { return d.target.id; });
 
-//   // Enter the links.
+//   // Enter the this.links.
 //   link.enter().insert("path", "g")
 //    .attr("class", "link")
 //    .attr("d", diagonal);
@@ -152,9 +148,9 @@ var svg = d3.select("#" + divId).append("svg")
 
 
     // this.display.selectAll("path.link")
-    //  .data(this.links)
+    //  .data(this.this.links)
     //  .enter()
-    //  .append("svg:path")
+    //  .append("this.svg:path")
     //  .attr("class", "link")
     //  .attr("d", this.link);
 
@@ -165,22 +161,22 @@ var svg = d3.select("#" + divId).append("svg")
 
 
     // this.nodeGroup = this.display.selectAll("g.node")
-    //  .data(this.nodes)
+    //  .data(this.this.nodes)
     //  .enter()
-    //  .append("svg:g")
+    //  .append("this.svg:g")
     //  .attr("class", "node")
     //  .attr("transform", function(d)
     //  {
     //      return "translate(" + d.y + "," + d.x + ")";
     //  });
 
-    // this.nodeGroup.append("svg:circle")
+    // this.nodeGroup.append("this.svg:circle")
     //     .attr("class", "node-dot")
     //     .attr("r", 2)
     //     .style("fill", "blue");
 
     // console.log(size)
-    // this.svg = d3.select('#' + divId).append('svg')
+    // this.this.svg = d3.select('#' + divId).append('this.svg')
     //     .attr('width', size)
     //     .attr('height', size);
 
@@ -189,10 +185,10 @@ var svg = d3.select("#" + divId).append("svg")
     //     .value(function(d) {return d.size;})
     //     .padding(3);
 
-    // this.nodes = this.bubble.nodes(json)
+    // this.this.nodes = this.bubble.this.nodes(json)
     //     .filter(function(d) { return !d.children; });
 
-    // this.visualization = this.svg.selectAll('circle').data(this.nodes);
+    // this.visualization = this.this.svg.selectAll('circle').data(this.this.nodes);
 
     // this.visualization.enter().append('circle')
     //     .attr('transform', function(d) {return 'translate(' + d.x + ',' + d.y + ')'; })
