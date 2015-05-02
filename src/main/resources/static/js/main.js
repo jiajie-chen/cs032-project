@@ -182,9 +182,9 @@
                         if (responseObject.tree.length > 0) {
                             document.getElementById("parse_div").innerHTML = "";
                             var json = JSON.parse(responseObject.tree);
+                            console.log(responseObject);
 
-                            
-                            var tree_artist = new treeArtist(json, "parse_div", 300);
+                            var tree_artist = new treeArtist(json, "parse_div", 200);
                         } else {
                             document.getElementById("parse_div").innerHTML = "Sorry, this sentence is too long to parse. Please try again!";
                         }

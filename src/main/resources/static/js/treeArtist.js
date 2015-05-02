@@ -1,59 +1,183 @@
 //Class function for the circle artist
-
+//inspired by - http://www.d3noob.org/2014/01/tree-diagrams-in-d3js_11.html
 
 function treeArtist(json, divId, size) {
 
-    this.tree = d3.layout.tree()
-        .size([size, size]);
-        // .children(function(d) 
-        // {
-        //     console.log(d._children);
-        //     (!d._children || d.children.length === 0) ? null : d._children;
-        // });
+var margin = {top: 20, right: 120, bottom: 20, left: 120},
+ width = 960 - margin.right - margin.left,
+ height = 500 - margin.top - margin.bottom;
+ 
 
 
-    this.nodes = this.tree.nodes(json);
-    this.links = this.tree.links(nodes);
-    console.log(json)
-    console.log(this.nodes)
-    console.log(this.links)
 
-    this.svg = d3.select('#' + divId).append("svg:svg")
-        .attr('width', size)
-        .attr('height', size);
+var i = 0;
 
+var tree = d3.layout.tree()
+ .size([height, width]);
 
-    this.display = this.svg.append("svg:g")
-    // .attr("class", "container")
-    // .attr("transform", "translate(" + maxLabelLength + ",0)");
+var diagonal = d3.svg.diagonal()
+ .projection(function(d) { return [d.x, d.y]; });
 
-    this.link = d3.svg.diagonal()
-     .projection(function(d)
-     {
-         return [d.y, d.x];
-     });
+var svg = d3.select("#" + divId).append("svg")
+ .attr("width", width + margin.right + margin.left)
+ .attr("height", height + margin.top + margin.bottom)
+  .append("g")
+ .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
 
-    this.display.selectAll("path.link")
-     .data(this.links)
-     .enter()
-     .append("svg:path")
-     .attr("class", "link")
-     .attr("d", this.link);
 
-    this.nodeGroup = this.display.selectAll("g.node")
-     .data(this.nodes)
-     .enter()
-     .append("svg:g")
-     .attr("class", "node")
-     .attr("transform", function(d)
-     {
-         return "translate(" + d.y + "," + d.x + ")";
-     });
+  // Compute the new tree layout.
+  var nodes = tree.nodes(json).reverse(),
+   links = tree.links(nodes);
+   console.log(json);
+   console.log(nodes);
+   console.log(links);
+  // Normalize for fixed-depth.
+  nodes.forEach(function(d) { d.y = d.depth * 59; });
+
+  // Declare the nodesâ€¦
+  var node = svg.selectAll("g.node")
+   .data(nodes, function(d) { return d.id || (d.id = ++i); });
+
+  // Enter the nodes.
+  var nodeEnter = node.enter().append("g")
+   .attr("class", "node")
+   .attr("transform", function(d) { 
+    return "translate(" + d.x + "," + d.y + ")"; });
+
+  nodeEnter.append("circle")
+   .attr("r", 10)
+   .style("fill", "#fff");
+
+  nodeEnter.append("text")
+   .attr("y", function(d) { 
+    return d.children || d._children ? -13 : 13; })
+   .attr("dy", ".35em")
+   .attr("text-anchor", function(d) { 
+    return d.children || d._children ? "end" : "start"; })
+   .text(function(d) { return d.name; })
+   .style("fill-opacity", 1);
+
+  // Declare the linksâ€¦
+  var link = svg.selectAll("path.link")
+   .data(links, function(d) { return d.target.id; });
+
+  // Enter the links.
+  link.enter().insert("path", "g")
+   .attr("class", "link")
+   .attr("d", diagonal);
+
+
+
+
+
+
+}
+
+
+//     this.tree = d3.layout.tree()
+//         .size([size, size]);
+
+
+//     this.nodes = this.tree.nodes(json);
+//     this.links = this.tree.links(this.nodes);
+//     console.log(json)
+//     console.log(this.nodes)
+//     console.log(this.links)
+
+//     this.svg = d3.select('#' + divId).append("svg:svg")
+//         .attr('width', size)
+//         .attr('height', size);
+
+
+//     this.display = this.svg.append("svg:g").attr("transform", "translate(" + 50 + "," + 50 + ")");
+
+//     // .attr("class", "container")
+//     // .attr("transform", "translate(" + maxLabelLength + ",0)");
+
+//     // this.link = d3.svg.diagonal()
+//     //  .projection(function(d)
+//     //  {
+//     //      return [d.x, d.y];
+//     //  });
+
+// var margin = {top: 20, right: 120, bottom: 20, left: 120},
+//  width = 960 - margin.right - margin.left,
+//  height = 500 - margin.top - margin.bottom;
+ 
+
+//     this.tree = d3.layout.tree()
+//         .size([size, size]);
+
+// var i = 0;
+
+// var diagonal = d3.svg.diagonal()
+//  .projection(function(d) { return [d.y, d.x]; });
+
+//  // Normalize for fixed-depth.
+//   this.nodes.forEach(function(d) { d.y = d.depth * 180; });
+
+//   // Declare the nodesâ€¦
+//   var node = this.svg.selectAll("g.node")
+//    .data(this.nodes, function(d) { return d.id || (d.id = ++i); });
+
+//   // Enter the nodes.
+//   var nodeEnter = node.enter().append("g")
+//    .attr("class", "node")
+//    .attr("transform", function(d) { 
+//     return "translate(" + d.y + "," + d.x + ")"; });
+
+//   nodeEnter.append("circle")
+//    .attr("r", 10)
+//    .style("fill", "#fff");
+
+//   nodeEnter.append("text")
+//    .attr("x", function(d) { 
+//     return d.children || d._children ? -13 : 13; })
+//    .attr("dy", ".35em")
+//    .attr("text-anchor", function(d) { 
+//     return d.children || d._children ? "end" : "start"; })
+//    .text(function(d) { return d.name; })
+//    .style("fill-opacity", 1);
+
+//   // Declare the linksâ€¦
+//   var link = this.svg.selectAll("path.link")
+//    .data(this.links, function(d) { return d.target.id; });
+
+//   // Enter the links.
+//   link.enter().insert("path", "g")
+//    .attr("class", "link")
+//    .attr("d", diagonal);
+
+
+
+    // this.display.selectAll("path.link")
+    //  .data(this.links)
+    //  .enter()
+    //  .append("svg:path")
+    //  .attr("class", "link")
+    //  .attr("d", this.link);
+
+
+
+
+
+
+
+    // this.nodeGroup = this.display.selectAll("g.node")
+    //  .data(this.nodes)
+    //  .enter()
+    //  .append("svg:g")
+    //  .attr("class", "node")
+    //  .attr("transform", function(d)
+    //  {
+    //      return "translate(" + d.y + "," + d.x + ")";
+    //  });
 
     // this.nodeGroup.append("svg:circle")
-    //  .attr("class", "node-dot")
-    //  .attr("r", 10);
+    //     .attr("class", "node-dot")
+    //     .attr("r", 2)
+    //     .style("fill", "blue");
 
     // console.log(size)
     // this.svg = d3.select('#' + divId).append('svg')
@@ -116,7 +240,7 @@ function treeArtist(json, divId, size) {
     //     return contains(selected_facets, id) ? "red" : "blue";
     // }
 
-}
+// }
 
 
 

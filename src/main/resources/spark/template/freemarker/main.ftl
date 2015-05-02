@@ -136,16 +136,21 @@
                 </div>
             </div></li>
 
-            <div id="big_4" class="stacked">
+            <li><div id="big_4" class="stacked">
                 <div class="big_child description" onclick="submit()" id="results_div">
-                    Click here to generate a sentence
+                    <h1>Click here to generate a sentence</h1>
                 </div>
 
-                <div id="parse_div" class="big_child"> 
-                    The tree will go here
+            </div></li>
+
+            <li> <div id="big_5" class="stacked">
+
+                <div id="parse_div"> 
+                    <h1>The tree will go here</h1>
                 </div>
 
-            </div>
+            </div> </li>
+
             
         </ol>
         </div>
