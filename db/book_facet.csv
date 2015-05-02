@@ -145,17 +145,16 @@ georgina_of_the_rainbows,Historical
 the_little_colonel,Childrens
 the_little_colonel,Series
 the_little_colonel,Historical
-state_of_the_union_addresses,Speech
-state_of_the_union_addresses,Political
-state_of_the_union_addresses,Speech
+state_of_the_union_addresses_jackson,Speech
+state_of_the_union_addresses_jackson,Political
 a_counter-blaste_to_tobacco,Political
 a_counter-blaste_to_tobacco,Historic
 a_counter-blaste_to_tobacco,Essay
 the_woman_beautiful,Medicine
 the_woman_beautiful,Beauty
 the_woman_beautiful,Cultural
-state_of_the_union_addresses,Speech
-state_of_the_union_addresses,Political
+state_of_the_union_addresses_kennedy,Speech
+state_of_the_union_addresses_kennedy,Political
 the_world_i_live_in,Biography
 the_world_i_live_in,Societal
 optimism_an_essay,Philosophy
@@ -171,8 +170,8 @@ the_white_peacock,Romance
 bohemian_society,Philosophy
 bohemian_society,Political
 the_emancipation_proclamation,Political
-state_of_the_union_addresses,Speech
-state_of_the_union_addresses,Political
+state_of_the_union_addresses_lincoln,Speech
+state_of_the_union_addresses_lincoln,Political
 second_treatise_of_government,Political
 second_treatise_of_government,Historical
 second_treatise_of_government,Essay
@@ -217,8 +216,8 @@ beyond_good_and_evil,Psychology
 the_dawn_of_day,Philosophy
 the_dawn_of_day,Psychology
 note_on_nursing,Medicine
-inaugural_presidential_address,Political
-inaugural_presidential_address,Speech
+inaugural_presidential_address_obama,Political
+inaugural_presidential_address_obama,Speech
 the_governors,Mystery
 the_fall_of_the_house_of_usher,Short Story
 the_fall_of_the_house_of_usher,Horror

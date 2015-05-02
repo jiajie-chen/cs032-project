@@ -9,7 +9,6 @@ sad,sorrowful
 sad,sorry
 sad,wistful
 sad,bereaved
-sad,blue
 sad,cheerless
 sad,dejected
 sad,despairing
@@ -17,7 +16,6 @@ sad,despondent
 sad,disconsolate
 sad,distressed
 sad,doleful
-sad,down
 sad,downcast
 sad,forlorn
 sad,gloomy
@@ -28,7 +26,6 @@ sad,heartsick
 sad,heavyhearted
 sad,hurting
 sad,languishing
-sad,low
 sad,low-spirited
 sad,lugubrious
 sad,morbid
@@ -78,7 +75,6 @@ happy,playful
 happy,sparkling
 happy,sunny
 happy,tickled
-happy,up
 stress,weight
 stress,accent
 stress,accentuation
@@ -108,7 +104,6 @@ love,amorousness
 love,amour
 love,ardor
 love,attachment
-love,case
 love,cherishing
 love,crush
 love,delight
@@ -122,7 +117,6 @@ love,hankering
 love,idolatry
 love,inclination
 love,involvement
-love,like
 love,partiality
 love,piety
 love,rapture
@@ -192,7 +186,6 @@ fear,chickenheartedness
 fear,recreancy
 crime,atrocity
 crime,breach
-crime,case
 crime,corruption
 crime,evil
 crime,felony
@@ -254,7 +247,6 @@ angry,antagonized
 angry,chafed
 angry,choleric
 angry,convulsed
-angry,cross
 angry,displeased
 angry,exacerbated
 angry,ferocious
