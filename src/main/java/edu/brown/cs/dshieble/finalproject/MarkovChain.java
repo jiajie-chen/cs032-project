@@ -123,21 +123,21 @@ public class MarkovChain {
       }
     }
     //make the string starting at first word
-    for (int i = 0; i < numTries; i ++) {
-      output = new ArrayList<String>();
-      output.add(getNextWord(start));
-      while (output.size() <= max) {
-        String n = getNextWord(output.get(output.size() - 1));
-        if (output.size() >= min) { 
-          if (bigram.containsKey(n))  {
-            if (bigram.get(n).contains(end)) {
-              return output;
-            }
-          }
-        }
-        output.add(n);
-      }
-    } 
+//    for (int i = 0; i < numTries; i ++) {
+//      output = new ArrayList<String>();
+//      output.add(getNextWord(start));
+//      while (output.size() <= max) {
+//        String n = getNextWord(output.get(output.size() - 1));
+//        if (output.size() >= min) { 
+//          if (bigram.containsKey(n))  {
+//            if (bigram.get(n).contains(end)) {
+//              return output;
+//            }
+//          }
+//        }
+//        output.add(n);
+//      }
+//    } 
     output = new ArrayList<String>();
     //output.add(makeRandomString(min));
     return output;
@@ -147,11 +147,11 @@ public class MarkovChain {
   * @param n the length of the string that we are making
   * @return A random, awesome, string of words
   */
-  public String makeRandomString(int n, String word) {
+  public String makeRandomString(int n, String prev) {
     String[] output = new String[n];
     for (int i = 0; i < n; i++) {
-      output[i] =  getNextWord(word);
-      String prev = output[i - 1];
+      output[i] =  getNextWord(prev);
+      prev = output[i];
       int l = prev.length();
       if (output[i].length() > 0
                       && (output[i].equals("i")

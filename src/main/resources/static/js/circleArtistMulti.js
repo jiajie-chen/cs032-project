@@ -4,7 +4,6 @@
 function circleArtistMulti(json, divId, size) {
 
     var selected_facets = [];
-    console.log(size)
     this.svg = d3.select('#' + divId).append('svg')
         .attr('width', size)
         .attr('height', size);
@@ -17,9 +16,9 @@ function circleArtistMulti(json, divId, size) {
     this.nodes = this.bubble.nodes(json)
         .filter(function(d) { return !d.children; });
 
-    this.vis = this.svg.selectAll('circle').data(this.nodes);
+    this.visualization = this.svg.selectAll('circle').data(this.nodes);
 
-    this.vis.enter().append('circle')
+    this.visualization.enter().append('circle')
         .attr('transform', function(d) {return 'translate(' + d.x + ',' + d.y + ')'; })
         .attr('r', function(d) { return d.r; })
         .attr('class', function(d) {
@@ -32,7 +31,7 @@ function circleArtistMulti(json, divId, size) {
         .append("title")
         .text(function(d) {return d.name;});
 
-    this.vis.enter().append("text")
+    this.visualization.enter().append("text")
         .attr('transform', function(d) { return 'translate(' + d.x + ',' + d.y + ')'; })
         .attr("text-anchor", "middle")
         .text(function(d) {
@@ -72,12 +71,12 @@ function circleArtistMulti(json, divId, size) {
 
 
 
-    // this.vis.enter().append("title")
+    // this.visualization.enter().append("title")
     //     .attr('transform', function(d) { return 'translate(' + d.x + ',' + d.y + ')'; })
     //     .attr("text-anchor", "middle")
     //     .text(function(d) {console.log(d.name); return d.name;});
 
-    // this.vis.selectAll("g.node").append("title")
+    // this.visualization.selectAll("g.node").append("title")
     //     // .attr('transform', function(d) { return 'translate(' + d.x + ',' + d.y + ')'; })
     //     // .attr("text-anchor", "middle")
     //     .text(function(d) {console.log(d); return d.name;});
