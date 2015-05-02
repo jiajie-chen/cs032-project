@@ -16,17 +16,16 @@ public class Main {
   public static void main(String[] args) {
     GUIManager.makeGUI();
 	
-
-    
-    //PARSER STUFF FOR DEMO
-    
+//
+//    
+//
 //      Parser parser = new Parser();
 //      String[] terminals = "i have".split(" ");
 //          //"i believe that she had met with considerable success .".split(" ");
 //      System.out.println("parse into parts: " + parser.parseSentence(terminals));
 //      System.out.println("JSON string: " + parser.toTreeData());
-//      System.out.println("regular parsing " + parser.testParsing(terminals));
-//      
+//      //System.out.println("regular parsing " + parser.testParsing(terminals));
+      
       /*
        * parseSentence method takes a string of sentence (punctuations and words separated by space)
        * returns its parsing in String
