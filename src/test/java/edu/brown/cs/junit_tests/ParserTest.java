@@ -1,19 +1,11 @@
 package edu.brown.cs.junit_tests;
 
-import static org.junit.Assert.*;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.nio.file.FileSystems;
-import java.nio.file.Files;
-import java.nio.file.Path;
+import static org.junit.Assert.assertTrue;
 import java.util.ArrayList;
-import java.util.HashSet;
-
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-
+// truly Beauty Reach out be forgotten, There love a Dagger
+// 473 - 440 - 248
 import edu.brown.cs.qc14.parser.*;
 
 public class ParserTest {
@@ -75,5 +67,34 @@ public class ParserTest {
 	public void testShort() {
 		
 	}
-
+	
+	@Test
+	public void testToTreeData() {
+		_parser.parseSentence(("this is a sentence longer than 28 , this is a sentence longer than 28 , "
+				+ "this is a sentence longer than 28 , this is a sentence longer than 28 , ").split(" "));
+	}
+	
+	@Test
+	public void testReplaceUNK() {
+		Pointers w1 = new Pointers(null, null, "*UNK*", 0.0);
+		Pointers w2 = new Pointers(null, null, "*UNK*", 0.0);
+		Pointers w3 = new Pointers(null, null, "*UNK*", 0.0);
+		Pointers C = new Pointers(w3, null, "C", 0.0);
+		Pointers D = new Pointers(w1, null, "D", 0.0);
+		Pointers E = new Pointers(w2, null, "E", 0.0);
+		Pointers B = new Pointers(D, E, "B", 0.0);
+		Pointers A = new Pointers(B, C, "A", 0.0);
+		String[] terminals = new String[] {"d", "w2", "c"};
+		_parser.replaceUNKs(A, terminals);
+		assertTrue(w1.getLabel().equals("d"));
+		assertTrue(w2.getLabel().equals("w2"));
+		assertTrue(w3.getLabel().equals("c"));
+	}
+	
+	@Test
+	public void testToJsonString() {
+		assertTrue(!_parser.toJsonString("i have jpjpjpjp .".split(" ")).contains("*UNK*"));
+		System.out.println(_parser.normalParsing("truly Beauty Reach out be forgotten, There love a Dagger".split(" ")));
+		System.out.println(_parser.toJsonString("truly Beauty Reach out be forgotten, There love a Dagger".split(" ")));
+	}
 }

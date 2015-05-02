@@ -21,6 +21,7 @@
       	<script src = "js/main.js"></script>
       	<script src="js/circleArtist.js"></script>
         <script src="js/circleArtistMulti.js"></script>
+        <script src="js/treeArtist.js"></script>
 
     </head>
     <body>
@@ -149,12 +150,20 @@
             </div></li>
 
             <li><div id="big_4" class="stacked">
-                <div id="parse_div"> </div>
-
-                <div onclick="submit()" id="results_div">
-                    Click here to generate a sentence
+                <div class="big_child description" onclick="submit()" id="results_div">
+                    <h1>Click here to generate a sentence</h1>
                 </div>
+
             </div></li>
+
+            <li> <div id="big_5" class="stacked">
+
+                <div id="parse_div"> 
+                    <h1>The tree will go here</h1>
+                </div>
+
+            </div> </li>
+
             
         </ol>
         </div>

@@ -5,24 +5,24 @@ import java.util.Arrays;
 
 public class Node {
 	
-	private String _parent;
-	private String _name;
-	private ArrayList<Node> _children;
+	private String parent;
+	private String name;
+	private ArrayList<Node> children;
 	
-	public Node(String name, String parent) {
-		_name = name;
-		_parent = parent;
+	public Node(String name0, String parent0) {
+		name = name0;
+		parent = parent0;
 	}
 	
-	public Node(String name, String parent, Node left) {
-		_name = name;
-		_parent = parent;
-		_children = new ArrayList<Node>(Arrays.asList(left));
+	public Node(String name0, String parent0, Node left) {
+		name = name0;
+		parent = parent0;
+		children = new ArrayList<Node>(Arrays.asList(left));
 	}
 	
-	public Node(String name, String parent, Node left, Node right) {
-		_name = name;
-		_parent = parent;
-		_children = new ArrayList<Node>(Arrays.asList(left, right));
+	public Node(String name0, String parent0, Node left, Node right) {
+		name = name0;
+		parent = parent0;
+		children = new ArrayList<Node>(Arrays.asList(left, right));
 	}
 }

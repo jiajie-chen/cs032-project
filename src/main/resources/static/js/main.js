@@ -147,7 +147,7 @@
                 }
                 if (!pending) {
                     var pending = true;
-                    document.getElementById("results_div").innerHTML = "Generating Phrase...";
+                    document.getElementById("results_div").innerHTML = " <h1> Generating Phrase... </h1>";
                     //Get all selected facets from multiple select
 
         			var postParameters = {
@@ -178,9 +178,14 @@
                     unchanged = true;
             		$.post("/results", postParameters, function(responseJSON){
             			var responseObject = JSON.parse(responseJSON);
-                        results_div.innerHTML = responseObject.sentence;
-                        document.getElementById("parse_div").innerHTML = responseObject.tree;
-
+                        results_div.innerHTML = "<h1>" + responseObject.sentence + "</h1>";
+                        if (responseObject.tree.length > 0) {
+                            document.getElementById("parse_div").innerHTML = "";
+                            var json = JSON.parse(responseObject.tree);
+                            var tree_artist = new treeArtist(json, "parse_div", [1000, 1500]);
+                        } else {
+                            document.getElementById("parse_div").innerHTML = "Sorry, this sentence is too long to parse. Please try again!";
+                        }
                         pending = false;
             		})
                 }
@@ -237,12 +242,7 @@
 
              makeCircles = function() {
                 circles = svg_map.append("g").selectAll("circle")
-                    .data(names
-                        //the circles' locations are determined here
-                        .sort(function(a, b) {
-                            return b.size - a.size; 
-                        })
-                    )
+                    .data(names)
                     .enter()
                     .append("circle")
                     .attr("transform", function(d,i) { 

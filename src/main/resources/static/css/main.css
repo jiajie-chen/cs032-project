@@ -131,14 +131,6 @@ h1 {
     top: 70%;*/
 }
 
-#parse_div {
-    /*height:30%;
-    width:30%;
-    position:fixed;
-    left: 40%;
-    top: 70%;*/
-}
-
 #facet_div {
     padding: 80px;
 }
@@ -192,3 +184,29 @@ button {
 #facetList > li {
     margin-top: 4px;
 }
+
+ .node circle {
+   fill: #fff;
+   stroke: steelblue;
+   stroke-width: 3px;
+ }
+
+ .node text { 
+    font: 12px sans-serif; 
+}
+
+ .link {
+   fill: none;
+   stroke: #ccc;
+   stroke-width: 2px;
+ }
+
+ #parse_div {
+    width: 100%;
+    height: 1500px;
+    margin-bottom: 100px
+ }
+
+ #big_5 {
+    height : 3000px;
+ }

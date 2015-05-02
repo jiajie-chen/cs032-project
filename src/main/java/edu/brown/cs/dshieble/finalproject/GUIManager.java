@@ -194,7 +194,7 @@ public final class GUIManager {
           String word = qm.value("f" + i).trim();
           String[] syns = db.getSynonyms(word);
           for (String s : syns) {
-            System.out.println(s);
+            //System.out.println(s);
             priorityWords.add(s.trim());
           }
           i++;
@@ -220,11 +220,11 @@ public final class GUIManager {
             i++;
           }
         }
-//
-//        System.out.println(bookFacets.size());
-//        System.out.println(locationNames.size());
-//        System.out.println(Integer.parseInt(qm.value("date_start")));
-//        System.out.println(Integer.parseInt(qm.value("date_end")));
+        System.out.println(priorityWords.size());
+        System.out.println(bookFacets.size());
+        System.out.println(locationNames.size());
+        System.out.println(Integer.parseInt(qm.value("date_start")));
+        System.out.println(Integer.parseInt(qm.value("date_end")));
         //get text here
         List<String[]> text = new ArrayList<String[]>();
         if (qm.value("type").equals("none")) {
@@ -253,10 +253,9 @@ public final class GUIManager {
         .toLowerCase()
         .replaceAll("[^a-z ]", "")
         .split(" ");
-      String parsed = p.testParsing(p.preprocess(sentenceArray));
       Map<String, Object> variables = new ImmutableMap.Builder()
         .put("sentence", str)
-        .put("tree", parsed)
+        .put("tree", p.toJsonString(sentenceArray))
         .build();
       return GSON.toJson(variables);
     }
