@@ -24,6 +24,7 @@ public class Parser {
 	private HashMap<String, Integer> _counts;
 	private HashMap[][] _tree;
 	private int _MAX_LENGTH = 25;
+	private int _MAX_JSON = 35;
 	private HashSet<String> _clauseTags, _phraseTags, _verbTags, _prepTags, _subTags, _knownWords;
 	private Pointers _lastParsing;
 	
@@ -182,6 +183,7 @@ public class Parser {
 		ArrayList<ArrayList<String>> res = new ArrayList<ArrayList<String>>();
 		if (terminals.length > _MAX_LENGTH) {
 			res.add(new ArrayList<String>(Arrays.asList("*IGNORE*")));
+			_lastParsing = new Pointers(null, null, "*IGNORE*", 0.0);
 			return res;
 			//return "*IGNORE*";
 		} else {
@@ -198,6 +200,7 @@ public class Parser {
 				//return this.debinarization(root.get("TOP"));
 			} else {
 				res.add(new ArrayList<String>(Arrays.asList("No Parsing")));
+				_lastParsing = new Pointers(null, null, "No Parsing", 0.0);
 				return res;
 				//return "No Parsing";
 			}
@@ -400,7 +403,10 @@ public class Parser {
 	
 	public String toTreeData() {
 		Gson gson = new Gson();
-		String json = gson.toJson(this.pointersToNode(_lastParsing, null));
+		String json = "";
+		if (_lastParsing.getLabel().equals("TOP")) {
+			json = gson.toJson(this.pointersToNode(_lastParsing, null));
+		}
 		return json;
 	}
 	
@@ -415,5 +421,10 @@ public class Parser {
 					this.pointersToNode(pointer.getLeft(), pointer.getLabel()), 
 					this.pointersToNode(pointer.getRight(),  pointer.getLabel()));
 		}
+	}
+	
+	public String toJsonString(String[] terminals) {
+		this.parseSentence(terminals);
+		return this.toTreeData();
 	}
 }
