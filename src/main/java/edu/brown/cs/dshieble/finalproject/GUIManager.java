@@ -253,7 +253,7 @@ public final class GUIManager {
         .toLowerCase()
         .replaceAll("[^a-z ]", "")
         .split(" ");
-      String parsed = p.toJsonString(sentenceArray);
+      String parsed = p.normalParsing(p.preprocess(sentenceArray));
       Map<String, Object> variables = new ImmutableMap.Builder()
         .put("sentence", str)
         .put("tree", parsed)

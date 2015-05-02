@@ -1,6 +1,5 @@
 package edu.brown.cs.qc14.parser;
 
-import edu.brown.cs.qc14.parser.Node;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.nio.file.FileSystems;
@@ -12,7 +11,6 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.ListIterator;
-import java.util.Set;
 import com.google.gson.Gson;
 
 /*
@@ -23,8 +21,8 @@ public class Parser {
 	private HashMap<String, HashMap<String, Double>> _rules;
 	private HashMap<String, Integer> _counts;
 	private HashMap[][] _tree;
-	private final int _MAX_LENGTH = 25;
-	private final int _MAX_LENGTH_JSON = 35;
+	private final int _MAX_LENGTH = 28;
+	private final int _MAX_LENGTH_JSON = 40;
 	private int _ind = 0;
 	private HashSet<String> _clauseTags, _phraseTags, _verbTags, _prepTags, _subTags, _knownWords;
 	private Pointers _lastParsing;
@@ -209,14 +207,15 @@ public class Parser {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public String testParsing(String[] terminals) {
+	public String normalParsing(String[] terminals) {
+		terminals = this.preprocess(terminals);
 		if (terminals.length > _MAX_LENGTH) {
 			return "*IGNORE*";
 			//return "*IGNORE*";
 		} else {
 			_tree = new HashMap[terminals.length][terminals.length];
 			for (int m=1; m <= terminals.length; m++) {
-				for (int n=0; n <= terminals.length-m; n++) {
+				for (int n=0; n <= terminals.length-m; n++) {    //
 					this.fillCell(n, n+m, terminals);
 				}
 			}

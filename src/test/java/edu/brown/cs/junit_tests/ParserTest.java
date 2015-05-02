@@ -1,19 +1,11 @@
 package edu.brown.cs.junit_tests;
 
-import static org.junit.Assert.*;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.nio.file.FileSystems;
-import java.nio.file.Files;
-import java.nio.file.Path;
+import static org.junit.Assert.assertTrue;
 import java.util.ArrayList;
-import java.util.HashSet;
-
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-
+// truly Beauty Reach out be forgotten, There love a Dagger
+// 473 - 440 - 248
 import edu.brown.cs.qc14.parser.*;
 
 public class ParserTest {
@@ -77,6 +69,12 @@ public class ParserTest {
 	}
 	
 	@Test
+	public void testToTreeData() {
+		_parser.parseSentence(("this is a sentence longer than 28 , this is a sentence longer than 28 , "
+				+ "this is a sentence longer than 28 , this is a sentence longer than 28 , ").split(" "));
+	}
+	
+	@Test
 	public void testReplaceUNK() {
 		Pointers w1 = new Pointers(null, null, "*UNK*", 0.0);
 		Pointers w2 = new Pointers(null, null, "*UNK*", 0.0);
@@ -96,5 +94,7 @@ public class ParserTest {
 	@Test
 	public void testToJsonString() {
 		assertTrue(!_parser.toJsonString("i have jpjpjpjp .".split(" ")).contains("*UNK*"));
+		System.out.println(_parser.normalParsing("truly Beauty Reach out be forgotten, There love a Dagger".split(" ")));
+		System.out.println(_parser.toJsonString("truly Beauty Reach out be forgotten, There love a Dagger".split(" ")));
 	}
 }

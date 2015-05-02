@@ -24,7 +24,7 @@ public class Main {
 //          //"i believe that she had met with considerable success .".split(" ");
 //      System.out.println("parse into parts: " + parser.parseSentence(terminals));
 //      System.out.println("JSON string: " + parser.toTreeData());
-//      //System.out.println("regular parsing " + parser.testParsing(terminals));
+//      //System.out.println("regular parsing " + parser.normalParsing(terminals));
       
       /*
        * parseSentence method takes a string of sentence (punctuations and words separated by space)
