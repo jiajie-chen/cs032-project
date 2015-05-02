@@ -23,8 +23,9 @@ public class Parser {
 	private HashMap<String, HashMap<String, Double>> _rules;
 	private HashMap<String, Integer> _counts;
 	private HashMap[][] _tree;
-	private int _MAX_LENGTH = 25;
-	private int _MAX_JSON = 35;
+	private final int _MAX_LENGTH = 25;
+	private final int _MAX_LENGTH_JSON = 35;
+	private int _ind = 0;
 	private HashSet<String> _clauseTags, _phraseTags, _verbTags, _prepTags, _subTags, _knownWords;
 	private Pointers _lastParsing;
 	
@@ -189,7 +190,7 @@ public class Parser {
 		} else {
 			_tree = new HashMap[terminals.length][terminals.length];
 			for (int m=1; m <= terminals.length; m++) {
-				for (int n=0; n <= terminals.length-m; n++) {
+				for (int n=0; n <= terminals.length-m; n++) {      //
 					this.fillCell(n, n+m, terminals);
 				}
 			}
@@ -423,8 +424,55 @@ public class Parser {
 		}
 	}
 	
+	@SuppressWarnings("unchecked")
+	public ArrayList<ArrayList<String>> parseForJsonString(String[] terminals) {
+		terminals = this.preprocess(terminals);
+		ArrayList<ArrayList<String>> res = new ArrayList<ArrayList<String>>();
+		if (terminals.length > _MAX_LENGTH_JSON) {
+			res.add(new ArrayList<String>(Arrays.asList("*IGNORE*")));
+			_lastParsing = new Pointers(null, null, "*IGNORE*", 0.0);
+			return res;
+			//return "*IGNORE*";
+		} else {
+			_tree = new HashMap[terminals.length][terminals.length];
+			for (int m=1; m <= terminals.length; m++) {
+				for (int n=0; n <= terminals.length-m; n++) {
+					this.fillCell(n, n+m, terminals);
+				}
+			}
+			HashMap<String, Pointers> root = _tree[terminals.length-1][0];
+			if (root.containsKey("TOP")) {
+				_lastParsing = root.get("TOP");
+				return this.decodePartialParse(this.partialParse(root.get("TOP")));
+				//return this.debinarization(root.get("TOP"));
+			} else {
+				res.add(new ArrayList<String>(Arrays.asList("No Parsing")));
+				_lastParsing = new Pointers(null, null, "No Parsing", 0.0);
+				return res;
+				//return "No Parsing";
+			}
+		}
+	}
+	
+	public void replaceUNKs(Pointers pointer, String[] terminals) {
+		if (pointer.isTerminal()) {
+			if (pointer.getLabel().equals("*UNK*")) {
+				pointer.setLabel(terminals[_ind]);
+			}
+			_ind += 1;
+			return;
+		}
+		this.replaceUNKs(pointer.getLeft(), terminals);
+		if (pointer.getRight() != null) {
+			this.replaceUNKs(pointer.getRight(), terminals);
+		}
+		return;
+	}
+	
 	public String toJsonString(String[] terminals) {
-		this.parseSentence(terminals);
-		return this.toTreeData();
+		this.parseForJsonString(terminals.clone());  // at this point, _lastParsing can be any parsing
+		_ind = 0;
+		this.replaceUNKs(_lastParsing, terminals);  // remove *UNK*
+		return this.toTreeData();  // *IGNORE* or No Parsing will be turned into ""
 	}
 }
