@@ -9,20 +9,20 @@ public class Node {
 	private String name;
 	private ArrayList<Node> children;
 	
-	public Node(String name, String parent) {
-		name = name;
-		parent = parent;
+	public Node(String name0, String parent0) {
+		name = name0;
+		parent = parent0;
 	}
 	
-	public Node(String name, String parent, Node left) {
-		name = name;
-		parent = parent;
+	public Node(String name0, String parent0, Node left) {
+		name = name0;
+		parent = parent0;
 		children = new ArrayList<Node>(Arrays.asList(left));
 	}
 	
-	public Node(String name, String parent, Node left, Node right) {
-		name = name;
-		parent = parent;
+	public Node(String name0, String parent0, Node left, Node right) {
+		name = name0;
+		parent = parent0;
 		children = new ArrayList<Node>(Arrays.asList(left, right));
 	}
 }
