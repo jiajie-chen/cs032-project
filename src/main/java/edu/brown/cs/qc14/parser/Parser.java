@@ -244,7 +244,7 @@ public class Parser {
 			// binary rules
 			// mid point j
 			for (int j=i+1; j<k; j++) {
-				HashMap<String, Pointers> leftCell = _tree[j-i-1][i];     // 
+				HashMap<String, Pointers> leftCell = _tree[j-i-1][i];
 				HashMap<String, Pointers> rightCell = _tree[k-j-1][j];
 				for (String rhs1 : leftCell.keySet()) {
 					try {
@@ -470,7 +470,7 @@ public class Parser {
 	}
 	
 	public String toJsonString(String[] terminals) {
-		this.parseForJsonString(terminals);  // at this point, _lastParsing can be any parsing
+		this.parseForJsonString(terminals.clone());  // at this point, _lastParsing can be any parsing
 		_ind = 0;
 		this.replaceUNKs(_lastParsing, terminals);  // remove *UNK*
 		return this.toTreeData();  // *IGNORE* or No Parsing will be turned into ""

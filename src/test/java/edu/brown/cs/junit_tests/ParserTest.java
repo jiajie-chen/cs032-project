@@ -92,5 +92,9 @@ public class ParserTest {
 		assertTrue(w2.getLabel().equals("w2"));
 		assertTrue(w3.getLabel().equals("c"));
 	}
-
+	
+	@Test
+	public void testToJsonString() {
+		assertTrue(!_parser.toJsonString("i have jpjpjpjp .".split(" ")).contains("*UNK*"));
+	}
 }
