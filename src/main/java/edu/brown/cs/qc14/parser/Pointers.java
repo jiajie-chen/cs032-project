@@ -36,4 +36,8 @@ public class Pointers {
 	public double getMu() {
 		return _mu;
 	}
+	
+	public void setLabel(String label) {
+		_label = label;
+	}
 }

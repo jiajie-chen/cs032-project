@@ -75,5 +75,22 @@ public class ParserTest {
 	public void testShort() {
 		
 	}
+	
+	@Test
+	public void testReplaceUNK() {
+		Pointers w1 = new Pointers(null, null, "*UNK*", 0.0);
+		Pointers w2 = new Pointers(null, null, "*UNK*", 0.0);
+		Pointers w3 = new Pointers(null, null, "*UNK*", 0.0);
+		Pointers C = new Pointers(w3, null, "C", 0.0);
+		Pointers D = new Pointers(w1, null, "D", 0.0);
+		Pointers E = new Pointers(w2, null, "E", 0.0);
+		Pointers B = new Pointers(D, E, "B", 0.0);
+		Pointers A = new Pointers(B, C, "A", 0.0);
+		String[] terminals = new String[] {"d", "w2", "c"};
+		_parser.replaceUNKs(A, terminals);
+		assertTrue(w1.getLabel().equals("d"));
+		assertTrue(w2.getLabel().equals("w2"));
+		assertTrue(w3.getLabel().equals("c"));
+	}
 
 }
