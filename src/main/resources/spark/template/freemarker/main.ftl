@@ -30,7 +30,13 @@
         <ol class="step">
 
             <li><div id="big_0" class="stacked">
-                <img id="wordCloud" src="images/wordCloud.png" alt="wordCloud">
+                <!--<img id="wordCloud" src="images/wordCloud.png" alt="wordCloud">-->
+                <p id="title_wrapper"><h1 id="title_header">Stilyagi</h1>
+                <ol id="title_definition">
+                    <li>(Russian) lit. "stylish", "style hunter"</li>
+                    <li>(formerly, in the Soviet Union) a person, usually young, who adopted the unconventional manner and dress of some Western youth groups, as rockers or punk-rock fans.</li>
+                    <li>a website for exploring literary styles</li>
+                </ol></p>
                 <h1> Follow the instructions below to select your facets and craft a custom phrase. </h1>
             </div></li>
 
