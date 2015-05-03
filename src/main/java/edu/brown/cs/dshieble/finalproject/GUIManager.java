@@ -220,11 +220,11 @@ public final class GUIManager {
             i++;
           }
         }
-        System.out.println(priorityWords.size());
-        System.out.println(bookFacets.size());
-        System.out.println(locationNames.size());
-        System.out.println(Integer.parseInt(qm.value("date_start")));
-        System.out.println(Integer.parseInt(qm.value("date_end")));
+//        System.out.println(priorityWords.size());
+//        System.out.println(bookFacets.size());
+//        System.out.println(locationNames.size());
+//        System.out.println(Integer.parseInt(qm.value("date_start")));
+//        System.out.println(Integer.parseInt(qm.value("date_end")));
         //get text here
         List<String[]> text = new ArrayList<String[]>();
         if (qm.value("type").equals("none")) {
@@ -253,9 +253,15 @@ public final class GUIManager {
         .toLowerCase()
         .replaceAll("[^a-z ]", "")
         .split(" ");
+      String json = "";
+      try {
+        json = p.toJsonString(sentenceArray);
+      } catch (Exception e) {
+        json = "";
+      }
       Map<String, Object> variables = new ImmutableMap.Builder()
         .put("sentence", str)
-        .put("tree", p.toJsonString(sentenceArray))
+        .put("tree", json)
         .build();
       return GSON.toJson(variables);
     }
