@@ -264,7 +264,7 @@
                 circles.transition()
                     //The transition takes one second
                     .duration(500)
-                    .attr("r", function(n) { 
+                    .attr("r", function(n) {
                         return 10;
                     });
                 circles.style("fill", function(d) {return get_color(d)})
