@@ -98,7 +98,7 @@ public final class AssetManager implements Closeable, AutoCloseable {
   /**
    * Gets the corpora of the files by the given attributes of the books.
    * @param author the name of the author.
-   * @param facets the set of facets each book must have; if empty or null, this is ignored.
+   * @param facets the set of facets each book can have; if empty or null, this is ignored.
    * @param locationName the set of locations the books can be set in; if empty or null, this is ignored.
    * @param startYear the starting year for the books to be published in.
    * @param endYear the end year for the book to be published in.

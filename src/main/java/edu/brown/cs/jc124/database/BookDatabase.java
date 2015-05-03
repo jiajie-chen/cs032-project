@@ -39,9 +39,9 @@ public class BookDatabase implements Closeable, AutoCloseable {
   }
   
   /**
-   * Gets all books that contain the facets given. Each book has ALL of the facets given.
-   * @param facets the facets all the books must have.
-   * @return the filenames of all the books with all the facets.
+   * Gets all books that contain the facets given. Each book has at least one of the facets given.
+   * @param facets the facets the books can have.
+   * @return the filenames of all the books with the facets.
    * @throws SQLException if the SQl query fails when executing.
    */
   public Set<String> getBooksWithFacets(Set<String> facets) throws SQLException {
@@ -61,8 +61,8 @@ public class BookDatabase implements Closeable, AutoCloseable {
         + "  $BOOK_FACET_TABLE AS f"
         + " WHERE"
         + "  f.facet IN " + facetQuery
-        + " GROUP BY f.book_id"
-        + " HAVING count(f.book_id) = ?;";
+        + " GROUP BY f.book_id;";
+        //+ " HAVING count(f.book_id) = ?;";
     query = query.replace("$BOOK_FACET_TABLE", BOOK_FACET_TABLE);
     
     Set<String> toReturn = new HashSet<>();
