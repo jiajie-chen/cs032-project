@@ -345,39 +345,43 @@ public class MarkovManager {
           .toLowerCase()
           .replaceAll("[^a-z, -]", "");
     }
-    List<ArrayList<String>> parsed = p.parseSentence(sentenceArray);
-    //make sure the parser output is valid
-    boolean bad = false;
-    if (parsed.size() > 1) {
-      int counter = 0;
-      for (ArrayList<String> a : parsed) {
-        counter += a.size();
-      }
-      if (counter != sentenceArray.length) {
+    try {
+      List<ArrayList<String>> parsed = p.parseSentence(sentenceArray);
+      //make sure the parser output is valid
+      boolean bad = false;
+      if (parsed.size() > 1) {
+        int counter = 0;
+        for (ArrayList<String> a : parsed) {
+          counter += a.size();
+        }
+        if (counter != sentenceArray.length) {
+          bad = true;
+        }
+      } else {
         bad = true;
       }
-    } else {
-      bad = true;
-    }
-    //System.out.println(bad);
-    if (bad) {
+      //System.out.println(bad);
+      if (bad) {
+        return splitSentenceNaive(sentenceArray);
+      }
+      Random rand = new Random();
+      int index = rand.nextInt(parsed.size());
+      //System.out.println(index);
+      //System.out.println(parsed.size());
+      int start = 0;
+      for (int i = 0; i < index; i++) {
+        start += parsed.get(i).size();
+        //System.out.println(parsed.get(i));
+      }
+      int end = start + parsed.get(index).size() - 1;
+      //int end = start + 1 + rand.nextInt(Math.max(start + 1, sentenceArray.length - start - 1));
+      //assert end < sentenceArray.length;
+      assert start >= 0;
+      assert end < sentenceArray.length;
+      return new int[] {start, end};
+    } catch(Exception e) {
       return splitSentenceNaive(sentenceArray);
     }
-    Random rand = new Random();
-    int index = rand.nextInt(parsed.size());
-    //System.out.println(index);
-    //System.out.println(parsed.size());
-    int start = 0;
-    for (int i = 0; i < index; i++) {
-      start += parsed.get(i).size();
-      //System.out.println(parsed.get(i));
-    }
-    int end = start + parsed.get(index).size() - 1;
-    //int end = start + 1 + rand.nextInt(Math.max(start + 1, sentenceArray.length - start - 1));
-    //assert end < sentenceArray.length;
-    assert start >= 0;
-    assert end < sentenceArray.length;
-    return new int[] {start, end};
   }
 
   

@@ -1,0 +1,31 @@
+Order of talking:
+
+Dan:
+What does our project do 
+- Generate text and grammar parsing, subject to user facets
+
+What are our project's goals 
+- Learn about writing styles and grammar structures over time, location, author and type of text
+- Learn about how certain emotions and themes change sentence structure
+
+Potential users
+- Students of history or literature
+- Digital Humanities researchers
+- Natural language processing researchers
+
+Directions for future
+- Add larger corpus
+- Experiment with different algorithms
+
+What are the contributions of each group member?
+- Dan: Built Markov Algorithm and frontend functionality (talk about algorithm)
+- Jiajie: Built Database and frontend appearance (talk about database)
+- Sergio: Built Sentence Parser (talk about parsing)
+
+Good Combos (Dan plugs in the combos and reads the sentences, Sergio walks class through the parse tree for each one)
+Nietzche - Greece - Fear
+Shakespeare - 1900-2000 - anger
+Dostoyevsky - Sexuality - love
+
+
+
