@@ -16,6 +16,7 @@ import edu.brown.cs.jc124.database.BookDatabase;
 public class BookDatabaseTest {
   private static final String DEFAULT_DB_PATH = "db/smallBooks.sqlite3";
 
+  /*
   @Test
   public void facetsTest() {
     try (BookDatabase bd = new BookDatabase(DEFAULT_DB_PATH)) {
@@ -33,6 +34,7 @@ public class BookDatabaseTest {
       fail(e.getMessage());
     }
   }
+  */
   
   @Test
   public void locationTest() {
