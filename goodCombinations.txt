@@ -4,10 +4,12 @@ Dan:
 What does our project do 
 - Generate text and grammar parsing, subject to user facets
 
+JJ-
 What are our project's goals 
 - Learn about writing styles and grammar structures over time, location, author and type of text
 - Learn about how certain emotions and themes change sentence structure
 
+Sergio-
 Potential users
 - Students of history or literature
 - Digital Humanities researchers
@@ -16,6 +18,12 @@ Potential users
 Directions for future
 - Add larger corpus
 - Experiment with different algorithms
+
+walk through
+-dan picks facets
+-jj talks about database
+-dan talks about algorithm
+-sergio talks about parse tree
 
 What are the contributions of each group member?
 - Dan: Built Markov Algorithm and frontend functionality (talk about algorithm)
