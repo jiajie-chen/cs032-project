@@ -37,7 +37,7 @@
                         <li id="definition_begin">(stil-<strong>yah</strong>-gee) <em>noun, plural</em></li>
                         <li>(Russian) lit. "stylish", "style hunter"</li>
                         <li>(formerly, in the Soviet Union) a person, usually young, who adopted the unconventional manner and dress of some Western youth groups, as rockers or punk-rock fans.</li>
-                        <li id="definition_emphasis">a website for exploring literary styles</li>
+                        <li id="definition_emphasis">a website for exploring unconventional literary styles</li>
                     </ol>
                 </div>
                 <h2>Explore styles of authors by following the steps below!</h1>

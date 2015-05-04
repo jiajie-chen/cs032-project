@@ -253,12 +253,15 @@ public class MarkovManager {
       }
     }
     sentence = sentence
+        .toLowerCase()
         .trim()
         .replaceAll("([a-z])([A-Z])", "$1 $2")
         //.replaceAll("( [A-Z][a-z]+)", "$1,")
-        .replaceAll(",+", ",");
+        .replaceAll(" i ", " I ")
+        .replaceAll(",+", ",")
+        .replaceAll("[;,.?!]$", "");
     return sentence.substring(0, 1).toUpperCase()
-        + sentence.substring(1).toLowerCase()
+        + sentence.substring(1)
         + ".";
   }
 
