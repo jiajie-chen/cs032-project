@@ -75,7 +75,7 @@
                 </div>
 
                 <div class="invisible_div big_child" id="location_child">
-                    <div id="label"> Click on the circles to select locations. Select no circles if you would like to see all locations. </br> </div>
+                    <div id="label"> Click on the circles to select locations. Select no circles if you would like to see all locations.</div>
                     <div id="map" ></div>
                 </div>
 
