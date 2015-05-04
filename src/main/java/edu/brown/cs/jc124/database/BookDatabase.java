@@ -73,7 +73,7 @@ public class BookDatabase implements Closeable, AutoCloseable {
         i++;
       }
       
-      stat.setInt(i, i - 1);
+      // stat.setInt(i, i - 1);
       
       try (ResultSet rs = stat.executeQuery()) {
         while (rs.next()) {
