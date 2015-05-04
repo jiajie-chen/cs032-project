@@ -75,7 +75,7 @@
                 </div>
 
                 <div class="invisible_div big_child" id="location_child">
-                    <div id="label"> Click on the circles to select locations. Select no circles if you would like to see all locations.</div>
+                    <div id="label"> Click on the circles to select locations. No circles defaults to all locations.</div>
                     <div id="map" ></div>
                 </div>
 
@@ -175,7 +175,7 @@
         <div class="lightbox_content">
             <div id="parse_rules">
                 <h1>Sentence Breakdown</h1>
-                <h4>In order to understand the labels on the nodes below, please click <a href="http://web.mit.edu/6.863/www/PennTreebankTags.html"> here </a></h4>
+                <h4>In order to understand the labels on the nodes below, please click <a target="_blank" href="http://web.mit.edu/6.863/www/PennTreebankTags.html"> here </a></h4>
             </div>
             <div id="parse_div"> 
             </div>
