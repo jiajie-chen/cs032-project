@@ -23,7 +23,6 @@
             //var circle_artist = undefined;
             var author = undefined;
             var facetType = "location";
-            var oldFacetId = "location";
             var bubbleSize = 400;//document.getElementById("author").offsetWidth*0.8;
             //Load the JSON files
             $.post("/location", {}, function(responseJSON) {
@@ -41,6 +40,7 @@
 
                 //handle shuffling the invisible divs
                 document.getElementById(facetType + "_child").style.display = "inline";
+                $("#"+facetType).addClass("btn-success");
 
                 //Draw the Map using the MapBox Tiling - ZOOMING IS DISABLED
                 tile = 'http://{s}.tile.stamen.com/watercolor/{z}/{x}/{y}.jpg'
@@ -141,6 +141,7 @@
                 //     alert("Please select at least one location")
                 //     return
                 // }
+                document.getElementById("show_parse").style.display = "";
                 if (author == undefined) {
                     console.log("AUTHOR ERROR");
                     return;
@@ -180,10 +181,12 @@
             			var responseObject = JSON.parse(responseJSON);
                         results_div.innerHTML = "<h1>" + responseObject.sentence + "</h1>";
                         if (responseObject.tree.length > 0) {
+                            document.getElementById("show_parse").style.display = "inline";
                             document.getElementById("parse_div").innerHTML = "";
                             var json = JSON.parse(responseObject.tree);
                             var tree_artist = new treeArtist(json, "parse_div", [1000, 1500]);
                         } else {
+                            document.getElementById("show_parse").style.display = "";
                             document.getElementById("parse_div").innerHTML = "Sorry, this sentence is too long to parse. Please try again!";
                         }
                         pending = false;
@@ -196,11 +199,11 @@
                 var index = sentenceFacets.indexOf(id);
                 if (index != -1) {
                     sentenceFacets.splice(index, 1);
-                    document.getElementById(id).style["background"] = "";
+                    $("#"+id).removeClass("btn-success");
                     console.log(document.getElementById(id));
                 } else {
                     sentenceFacets.push(id);
-                    document.getElementById(id).style["background"] = "red";
+                    $("#"+id).addClass("btn-success");
                     console.log(document.getElementById(id));
                 }
                 unchanged = false;
@@ -209,11 +212,10 @@
             //responds when the radioButtonDiv is changed
             function facetClick(id) {
                 unchanged = false;
+                $("#"+facetType).removeClass("btn-success");
                 document.getElementById(facetType + "_child").style.display = "";
-                document.getElementById(oldFacetId).style["background"] = "";
-                oldFacetId = id;
                 facetType = id;
-                document.getElementById(id).style["background"] = "red";
+                $("#"+facetType).addClass("btn-success");
                 document.getElementById(facetType + "_child").style.display = "inline";
             }
 
@@ -301,6 +303,16 @@
                 //writeSelected();
                 d3.select(e)
                     .style("fill", get_color(e.id))
+            }
+
+            showParsed = function() {
+                document.getElementById("parse_wrapper").style.display = "inline";
+                $("html, body").animate({ scrollTop: 0 }, "slow");
+            }
+
+            hideParsed = function() {
+                document.getElementById("parse_wrapper").style.display = "";
+                $("html, body").animate({scrollTop: $("#big_4").offset().top}, "slow");
             }
 
 

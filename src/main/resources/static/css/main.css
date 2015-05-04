@@ -7,36 +7,90 @@ body {
 }
 
 #title_wrapper {
-  display: inline;
+  width: 60%;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: auto;
 }
 
 #title_header {
-  display: inline;
-  font: bold 80px Sans-Serif;
-  padding: 40px 0;
+  display: inline-block;
+  float: left;
+  margin-right: 50px;
+  margin-bottom: 10px;
 
+  font: bold 100px Sans-Serif;
   color: white;
-  text-shadow: 0 1px 0 #ccc,
-               0 2px 0 #c9c9c9,
-               0 3px 0 #bbb,
-               0 4px 0 #b9b9b9,
-               0 5px 0 #aaa,
-               0 6px 1px rgba(0,0,0,.1),
-               0 0 5px rgba(0,0,0,.1),
-               0 1px 3px rgba(0,0,0,.3),
-               0 3px 5px rgba(0,0,0,.2),
-               0 5px 10px rgba(0,0,0,.25),
-               0 10px 10px rgba(0,0,0,.2),
-               0 20px 20px rgba(0,0,0,.15);
+  text-shadow:  0 1px 0 #ccc,
+                0 2px 0 #c9c9c9,
+                0 3px 0 #bbb,
+                0 4px 0 #b9b9b9,
+                0 5px 0 #aaa,
+                0 6px 1px rgba(0,0,0,.1),
+                0 0 5px rgba(0,0,0,.1),
+                0 1px 3px rgba(0,0,0,.3),
+                0 3px 5px rgba(0,0,0,.2),
+                0 5px 10px rgba(0,0,0,.25),
+                0 10px 10px rgba(0,0,0,.2),
+                0 20px 20px rgba(0,0,0,.15);
 }
 
 #title_definition {
-  display: inline;
+  display: inline-block;
+  padding: 0;
+
+  font: normal 20px Sans-Serif;
+  color: #eee;
+  text-shadow:  0 1px 0 #ccc,
+                0 2px 0 #c9c9c9,
+                0 6px 1px rgba(0,0,0,.1);
+
+  counter-reset: item;
 }
+
 #title_definition > li {
-  /*display: inline;*/
-  padding: 0 6px;
+  text-align: left;
+
+  margin-right: 0.5em;
+  margin-bottom: 5px;
+
+  list-style-type: none;
 }
+
+#title_definition > li:not(#definition_begin) {
+  counter-increment: item;
+}
+
+#title_definition > li:not(#definition_begin):before {
+  display: inline-block;
+  width: 1em;
+  padding-right: 0.5em;
+  margin-right: 0.5em;
+  font-weight: bold;
+  text-align: right;
+  content: counter(item) ".";
+}
+
+#title_definition > #definition_emphasis {
+  font-size: 35px;
+  color: white;
+
+  float: left;
+  margin-right: 0.5em;
+  margin-bottom: 5px;
+
+  list-style-type: none;
+  counter-increment: item;
+}
+
+#big_0 > h2 {
+  margin-top: 75px;
+
+  color: white;
+  text-shadow:  0 1px 0 rgba(255, 255, 255, 0.4),
+                0 2px 0 rgba(255, 255, 255, 0.4);
+}
+
 /*
 h1 {
     color:red;
@@ -49,26 +103,45 @@ h1 {
 .description {
     text-align: left;
     width: 200px;
+    padding: 25px;
 }
 
 .big_child {
+    position:relative;
+    margin: 0;
+    padding: 25px;
     font-size: 15px;
-    width:400px;
-    height:400px;/*    height: 30%;
-*/    background-color: #7ACCC8;
-    padding-right: 50px;
+    width:500px;
+    height:500px;
+
+    color: white;
+    text-shadow:  0 1px 0 rgba(255, 255, 255, 0.4);
+
+    background-color: #35404F;
 }
 
-.big_child:last-child {
-    margin-right: 0;
+.big_child button {
+    color: black;
 }
+
+#author > svg, #type_child > svg {
+  text-shadow:  1px 1px 0 #fff,
+                  -1px -1px 0 #fff,
+                  1px -1px 0 #fff,
+                  -1px 1px 0 #fff,
+                  0px 1px 0 #fff,
+                  1px 0px 0 #fff,
+                  0px -1px 0 #fff,
+                  -1px 0px 0 #fff;
+}
+
 .stacked {
     display: flex;
     justify-content: space-around;
 
     padding: 50px;
     width: 100%;
-    height: 500px;
+    min-height: 500px;
     text-align: center;
 }
 
@@ -81,12 +154,37 @@ h1 {
     /*background-image: url(../images/wordCloud.png);*/
     background-size: cover;
     text-align: center;
-    color: #ddd;
+    color: #fff;
 }
 
 #big_0 img {
     /*background-image: url(../images/wordCloud.png);*/
     width: 100%;
+}
+
+.step_title {
+  color: #444;
+  background: transparent;
+  text-shadow:  0 1px 0 rgba(25, 25, 25, 0.4),
+                0 2px 0 rgba(25, 25, 25, 0.4);
+}
+
+#none_child {
+  position: relative;
+}
+
+#none_child > *,
+#type_child > *,
+#location_child > svg,
+#time_child > *,
+#author > *,
+#imgGrid {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  -webkit-transform: translate(-50%, -50%);
+  -moz-transform: translate(-50%, -50%);
 }
 
 #circles circle {
@@ -118,6 +216,7 @@ h1 {
 }
 
 #map{
+    margin:auto;
     width:400px;
     height:400px;
 }
@@ -175,7 +274,7 @@ button {
   text-align: center;
   width: 260px;
   height: 260px;
-  margin: 0 auto;
+  margin: auto;
 /*  display: table;
 */}
 
@@ -205,6 +304,7 @@ button {
 }
 
 #facetList {
+    margin-top:50px;
     margin-left: auto;
     margin-right: auto;
     text-align: center;
@@ -217,6 +317,24 @@ button {
     margin-top: 4px;
 }
 
+#facetList button {
+  width: 100%;
+}
+
+#show_parse {
+  display: none;
+  margin: auto;
+  margin-top: 10px;
+}
+
+#results_div {
+  margin-bottom: 10px;
+  margin: auto;
+  display: block;
+  word-wrap: normal;
+  white-space: normal;
+}
+
  .node circle {
    fill: #fff;
    stroke: steelblue;
@@ -225,6 +343,15 @@ button {
 
  .node text {
     font: 12px sans-serif; 
+
+    text-shadow:  1px 1px 0 #fff,
+                  -1px -1px 0 #fff,
+                  1px -1px 0 #fff,
+                  -1px 1px 0 #fff,
+                  0px 1px 0 #fff,
+                  1px 0px 0 #fff,
+                  0px -1px 0 #fff,
+                  -1px 0px 0 #fff;
 }
 
  .link {
@@ -233,12 +360,51 @@ button {
    stroke-width: 2px;
  }
 
- #parse_div {
-    width: 100%;
-    height: 3000px;
-    margin-bottom: 100px
- }
+.lightbox {
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
 
- #big_5 {
-    height : 3000px;
- }
+.lightbox_overlay {
+  z-index: 999;
+
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  
+  text-align: center;
+  
+  background: rgba(0,0,0,0.8);
+}
+
+.lightbox_content {
+  z-index: 1000;
+
+  position: absolute;
+  top: 10%;
+  left: 50%;
+  transform: translate(-50%, 0%);
+  -webkit-transform: translate(-50%, 0%);
+  -moz-transform: translate(-50%, 0%);
+
+  width: 1500px;
+  
+  background: #A3D39C;
+}
+.lightbox_content #parse_rules {
+  text-align: center;
+  margin: auto;
+  width: 70%;
+}
+
+.lightbox_content #parse_div {
+  margin: auto;
+  overflow: auto;
+  width: 100%;
+}
