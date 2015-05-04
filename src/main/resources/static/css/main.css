@@ -117,6 +117,9 @@ h1 {
     color: white;
     text-shadow:  0 1px 0 rgba(255, 255, 255, 0.4);
 
+    border: 1px solid transparent;
+    border-radius: 4px;
+
     background-color: #35404F;
 }
 
@@ -161,6 +164,10 @@ h1 {
 #big_0 img {
     /*background-image: url(../images/wordCloud.png);*/
     width: 100%;
+}
+
+#big_4 {
+  padding-top: 100px;
 }
 
 .step_title {
@@ -277,8 +284,8 @@ button {
  
 #imgGrid {
   text-align: center;
-  width: 260px;
-  height: 260px;
+  width: 300px;
+  height: 300px;
   margin: auto;
 /*  display: table;
 */}
@@ -287,8 +294,8 @@ button {
   margin: 2px;
   display: block;
   float: left;
-  width: 80px;
-  height: 80px;
+  width: 90px;
+  height: 90px;
   /*background: transparent;*/
 }
 #imgGrid button label {
@@ -399,7 +406,13 @@ button {
   -moz-transform: translate(-50%, 0%);
 
   width: 1500px;
+
+  color: #444;
+  text-shadow:  0 1px 0 rgba(25, 25, 25, 0.4),
+                0 2px 0 rgba(25, 25, 25, 0.4);
   
+  border: 1px solid transparent;
+  border-radius: 4px;
   background: #A3D39C;
 }
 .lightbox_content #parse_rules {

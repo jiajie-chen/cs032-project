@@ -75,7 +75,7 @@
                 </div>
 
                 <div class="invisible_div big_child" id="location_child">
-                    <div id="label"> Click on the circles to select locations. No circles defaults to all locations.</div>
+                    <div id="label"> Click to select locations. No circles defaults to all locations.</div>
                     <div id="map" ></div>
                 </div>
 
@@ -89,7 +89,7 @@
                 </div>
 
                 <div class="invisible_div big_child" id = "type_child">
-                    Click the bubbles to select what types of theme you would like to emulate. Hover over a bubble to see the full name of that type of theme. Select no types if you would like to see all types.
+                    Click the bubbles to select what types of theme you would like to emulate. Hover over a bubble to see the full name of that type of theme. No selection defaults to all types.
 <!--                     <select id="facets_select" multiple> </select>
  -->                </div>
 
@@ -99,7 +99,7 @@
                 <div class="big_child step_title"><h1> Step 3: Mood </h1></div>
                 <div id="big_3_description" class="big_child description">
                     </br>
-                    <h4> In this step, you can select emotions or themes that you want your phrase to invoke. Click on the emoticons to choose themes and emotions.</h4>
+                    <h4> In this step, you can select emotions or atmospheres that you want your phrase to invoke. Click on the emoticons to choose emotions.</h4>
                 </div>
                 <div class="big_child">
 
@@ -108,12 +108,12 @@
 
                             <button class="btn" id="sad" onclick="imageClick(this.id)"> 
                                 <img id="img_sad" src="images/sad.png" alt="sad">
-                                <label>Sad</label>
+                                <label>Sadness</label>
                             </button>
 
                             <button class="btn" id="happy" onclick="imageClick(this.id)"> 
                                 <img id = "img_happy" src="images/happy.png" alt="happy">
-                                <label>Happy</label>
+                                <label>Happiness</label>
                             </button>
 
                             <button class="btn" id="stress" onclick="imageClick(this.id)"> 
@@ -128,7 +128,7 @@
 
                             <button class="btn" id="war" onclick="imageClick(this.id)"> 
                                 <img id = "img_war" src="images/war.png" alt="war">
-                                <label>War</label>
+                                <label>Violence</label>
                             </button>
 
                             <button class="btn" id="fear" onclick="imageClick(this.id)"> 
@@ -138,17 +138,17 @@
 
                             <button class="btn" id="crime" onclick="imageClick(this.id)">
                                 <img id = "img_crime" src="images/crime.png" alt="crime">
-                                <label>Crime</label>
+                                <label>Deviance</label>
                             </button>
 
                             <button class="btn" id="angry" onclick="imageClick(this.id)"> 
                                 <img id = "img_angry" src="images/angry.png" alt="angry">
-                                <label>Angry</label>
+                                <label>Anger</label>
                             </button>
 
                             <button class="btn" id="alcohol" onclick="imageClick(this.id)"> 
                                 <img id = "img_alcohol" src="images/alcohol.png" alt="alcohol">
-                                <label>Alcohol</label>
+                                <label>Inebriation</label>
                             </button>
 
                         </div>
