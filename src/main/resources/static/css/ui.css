@@ -28,7 +28,7 @@
 }
 .step > li:last-child {
 	background-color: #A3D39C;
-	border-bottom: 25px solid red;
+	border-bottom: 5px solid red;
 }
 .step > li:not(:last-child):after {
     content: '';
@@ -59,56 +59,3 @@
 .step > li:first-child:after {
     border-color: #35404F transparent transparent transparent;
 }
-/*
-.step li:not(:last-child) a:after {
-	position: right;
-	display: block;
-	margin-top: -5px;
-	margin-left: auto;
-	margin-right: -32px;
-	height: 5px;
-	width: 15px;
-	content: " ";
-	-webkit-transform: skew(-45deg);
-	background: #aaa;
-	border-right: 5px solid white;
-	-moz-transform: skew(-45deg);
-	-o-transform: skew(-45deg);
-	transform: skew(-45deg);
-}
-.step li::before {
-	float: right;
-	display: block;
-	margin-bottom: -5px;
-	margin-left: auto;
-	margin-right: -32px;
-	height: 5px;
-	width: 15px;
-	content: " ";
-	-webkit-transform: skew(45deg);
-	background: #aaa;
-	border-right: 5px solid white;
-	-moz-transform: skew(45deg);
-	-o-transform: skew(45deg);
-	transform: skew(45deg);
-}
-.step li:first-child,
-.step li:first-child::before,
-.step li:first-child::after {background: #aaa;}
-.step li:nth-child(2),
-.step li:nth-child(2)::before,
-.step li:nth-child(2)::after {background: #555;}
-.step li:nth-child(3),
-.step li:nth-child(3)::before,
-.step li:nth-child(3)::after {background: #000;}
-.step li:nth-last-child(2)::before,
-.step li:nth-last-child(2)::after {display: none;}
-.step li:last-child {
-	padding: 35px 25px 35px 25px;
-	background: transparent !important;
-	color: black;
-	font-size: 40px;
-	font-weight: 900;
-	text-shadow: 0 0 2px rgba(0,0,0,0.6);
-}
-*/

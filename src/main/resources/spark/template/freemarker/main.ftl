@@ -31,19 +31,21 @@
 
             <li><div id="big_0" class="stacked">
                 <!--<img id="wordCloud" src="images/wordCloud.png" alt="wordCloud">-->
-                <p id="title_wrapper"><h1 id="title_header">Stilyagi</h1>
-                <ol id="title_definition">
-                    <li>(Russian) lit. "stylish", "style hunter"</li>
-                    <li>(formerly, in the Soviet Union) a person, usually young, who adopted the unconventional manner and dress of some Western youth groups, as rockers or punk-rock fans.</li>
-                    <li>a website for exploring literary styles</li>
-                </ol></p>
-                <h1> Follow the instructions below to select your facets and craft a custom phrase. </h1>
+                <div id="title_wrapper">
+                    <h1 id="title_header">Stilyagi</h1>
+                    <ol id="title_definition">
+                        <li id="definition_begin">(stil-<strong>yah</strong>-gee) <em>noun, plural</em></li>
+                        <li>(Russian) lit. "stylish", "style hunter"</li>
+                        <li>(formerly, in the Soviet Union) a person, usually young, who adopted the unconventional manner and dress of some Western youth groups, as rockers or punk-rock fans.</li>
+                        <li id="definition_emphasis">a website for exploring unconventional literary styles</li>
+                    </ol>
+                </div>
+                <h2>Explore styles of authors by following the steps below!</h1>
             </div></li>
 
             <li><div id="big_1" class="stacked">
+                <div class="big_child step_title"> <h1> Step 1: Choose Style </h1></div>
                 <div id="big_1_description" class="big_child description">
-                    <h1> Step 1: Choose Style </h1>
-                    </br>
                     <h4> In this step, select an author whose style you would like to emulate. Mouseover a bubble to see the author's full name and click on a bubble to choose an author. </h4>
                 </div>
                 <div id="author" class="big_child">
@@ -56,10 +58,9 @@
             </div></li>
 
             <li><div id="big_2" class="stacked">
+                <div class="big_child step_title"><h1> Step 2: Mix-ins </h1></div>
                 <div id="big_2_description" class="big_child description">
-                    <h1> Step 2: Mix-ins </h1> 
-                    </br>
-                    <h4> In this step, you have the option to add the style of a particular type of text or from a particular location or time period. Use the radio buttons to select your choice of facet, and then follow the prompt. </h4>
+                    <h4> In this step, you have the option to add the style of a particular type of text or from a particular location or time period. Use the buttons to select your choice of facet, and then follow the prompt. </h4>
 
                     <ul id="facetList">
                         <li><button class="btn" id="location" onclick="facetClick(this.id)">Facet by Location</button></li>
@@ -74,7 +75,7 @@
                 </div>
 
                 <div class="invisible_div big_child" id="location_child">
-                    <div id="label"> Click on the circles to select locations. Select no circles if you would like to see all locations. </br> </div>
+                    <div id="label"> Click to select locations. No circles defaults to all locations.</div>
                     <div id="map" ></div>
                 </div>
 
@@ -88,31 +89,31 @@
                 </div>
 
                 <div class="invisible_div big_child" id = "type_child">
-                    Click the bubbles to select what types of theme you would like to emulate. Hover over a bubble to see the full name of that type of theme. Select no types if you would like to see all types.
+                    Click the bubbles to select what types of theme you would like to emulate. Hover over a bubble to see the full name of that type of theme. No selection defaults to all types.
 <!--                     <select id="facets_select" multiple> </select>
  -->                </div>
 
             </div></li>
 
             <li><div id="big_3" class="stacked">
+                <div class="big_child step_title"><h1> Step 3: Mood </h1></div>
                 <div id="big_3_description" class="big_child description">
-                    <h1> Step 3: Mood </h1> 
                     </br>
-                    <h4> In this step, you can select emotions or themes that you want your phrase to invoke. Click on the emoticons to choose themes and emotions.</h4>
+                    <h4> In this step, you can select emotions or atmospheres that you want your phrase to invoke. Click on the emoticons to choose emotions.</h4>
                 </div>
                 <div class="big_child">
 
-                    <div id="facet_div">
+                    <!--<div id="facet_div">-->
                         <div id="imgGrid">
 
                             <button class="btn" id="sad" onclick="imageClick(this.id)"> 
                                 <img id="img_sad" src="images/sad.png" alt="sad">
-                                <label>Sad</label>
+                                <label>Sadness</label>
                             </button>
 
                             <button class="btn" id="happy" onclick="imageClick(this.id)"> 
                                 <img id = "img_happy" src="images/happy.png" alt="happy">
-                                <label>Happy</label>
+                                <label>Happiness</label>
                             </button>
 
                             <button class="btn" id="stress" onclick="imageClick(this.id)"> 
@@ -127,7 +128,7 @@
 
                             <button class="btn" id="war" onclick="imageClick(this.id)"> 
                                 <img id = "img_war" src="images/war.png" alt="war">
-                                <label>War</label>
+                                <label>Violence</label>
                             </button>
 
                             <button class="btn" id="fear" onclick="imageClick(this.id)"> 
@@ -137,44 +138,48 @@
 
                             <button class="btn" id="crime" onclick="imageClick(this.id)">
                                 <img id = "img_crime" src="images/crime.png" alt="crime">
-                                <label>Crime</label>
+                                <label>Deviance</label>
                             </button>
 
                             <button class="btn" id="angry" onclick="imageClick(this.id)"> 
                                 <img id = "img_angry" src="images/angry.png" alt="angry">
-                                <label>Angry</label>
+                                <label>Anger</label>
                             </button>
 
                             <button class="btn" id="alcohol" onclick="imageClick(this.id)"> 
                                 <img id = "img_alcohol" src="images/alcohol.png" alt="alcohol">
-                                <label>Alcohol</label>
+                                <label>Inebriation</label>
                             </button>
 
                         </div>
-                    </div> 
+                    <!--</div>-->
                 </div>
             </div></li>
 
             <li><div id="big_4" class="stacked">
-                <div class="big_child description" onclick="submit()" id="results_div">
+                <div class="btn btn-success" onclick="submit()" id="results_div">
                     <h1>Click here to generate a phrase</h1>
                 </div>
-
-
-            </div></li>
-
-            <li> <div id="big_5" class="stacked">
-                <div id="parse_rules"> 
-                    <h1>In order to understand the labels on the nodes below, please click <a href="http://web.mit.edu/6.863/www/PennTreebankTags.html"> here </a></h1>
+                </br>
+                <div class="invisble_div" id="show_parse" onclick="showParsed()">
+                    <h4>Click here to show the sentence breakdown</h4>
                 </div>
-                <div id="parse_div"> 
-<!--                     <h1>The parse tree for your senten</h1>
- -->                </div>
-
             </div> </li>
 
             
         </ol>
+        </div>
+
+        <div class="lightbox" id="parse_wrapper">
+        <div class="lightbox_overlay" onclick="hideParsed()"></div>
+        <div class="lightbox_content">
+            <div id="parse_rules">
+                <h1>Sentence Breakdown</h1>
+                <h4>In order to understand the labels on the nodes below, please click <a target="_blank" href="http://web.mit.edu/6.863/www/PennTreebankTags.html"> here </a></h4>
+            </div>
+            <div id="parse_div"> 
+            </div>
+        </div>
         </div>
 
 

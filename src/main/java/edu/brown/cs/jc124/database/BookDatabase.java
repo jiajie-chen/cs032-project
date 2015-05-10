@@ -62,7 +62,7 @@ public class BookDatabase implements Closeable, AutoCloseable {
         + " WHERE"
         + "  f.facet IN " + facetQuery
         + " GROUP BY f.book_id;";
-        //+ " HAVING count(f.book_id) = ?;";
+        // + " HAVING count(f.book_id) = ?;";
     query = query.replace("$BOOK_FACET_TABLE", BOOK_FACET_TABLE);
     
     Set<String> toReturn = new HashSet<>();
@@ -73,7 +73,7 @@ public class BookDatabase implements Closeable, AutoCloseable {
         i++;
       }
       
-      stat.setInt(i, i - 1);
+      // stat.setInt(i, i - 1);
       
       try (ResultSet rs = stat.executeQuery()) {
         while (rs.next()) {

@@ -37,9 +37,6 @@ function circleArtist(json, divId, size) {
     this.visualization.enter().append("text")
         .attr('transform', function(d) { return 'translate(' + d.x + ',' + d.y + ')'; })
         .attr("text-anchor", "middle")
-        // .on('click',function(d) {
-        //     circle_click(this)
-        // })
         .style("color", "green")
         .text(function(d) {
             var n = d.name; 
