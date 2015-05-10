@@ -34,6 +34,10 @@ function circleArtistMulti(json, divId, size) {
     this.visualization.enter().append("text")
         .attr('transform', function(d) { return 'translate(' + d.x + ',' + d.y + ')'; })
         .attr("text-anchor", "middle")
+        // .on('click',function(d) {
+        //     circle_click_facets(this)
+        // })
+        .style("color", "green")
         .text(function(d) {
             var n = d.name; 
             return n.replace( /[a-z ]/g, '' ); 

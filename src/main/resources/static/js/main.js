@@ -132,8 +132,6 @@
                         unchanged = false
                     };
                 })
-
-
             });
 
             function submit() {
@@ -184,7 +182,7 @@
                             var json = JSON.parse(responseObject.tree);
                             var tree_artist = new treeArtist(json, "parse_div", [1000, 1500]);
                         } else {
-                            document.getElementById("parse_div").innerHTML = "Sorry, this sentence is too long to parse. Please try again!";
+                            document.getElementById("parse_div").innerHTML = "Sorry, this sentence has a parsing issue. It may be too long, or it may have an unusual structure. Please try again!";
                         }
                         pending = false;
             		})
